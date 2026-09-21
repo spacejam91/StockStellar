@@ -16,3 +16,4 @@ wheels/
 site/
 data/.sec_cache/
 data/.news_cache/
+stockstellar.db
