@@ -13,3 +13,15 @@ dependencies = [
     "uvicorn[standard]>=0.48.0",
     "yfinance>=1.4.0",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The test functions return a details dict, which the standalone runners
+# (`python -m tests.test_null_control`) print as a report. pytest warns because
+# a returned value is usually a mistaken `return` in place of `assert` -- here
+# the asserts are present and the return is additional. Narrowly silenced so a
+# real occurrence of that mistake elsewhere still surfaces.
+filterwarnings = ["ignore::pytest.PytestReturnNotNoneWarning"]

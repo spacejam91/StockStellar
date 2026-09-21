@@ -455,17 +455,61 @@ else:
     log.info("Market data: MOCK (deterministic synthetic bars, offline)")
 
 
+BARS_CONTRACT = ["date", "ticker", "open", "high", "low", "close", "volume"]
+
+
+def validate_bars(df: pd.DataFrame, provider: str) -> pd.DataFrame:
+    """Contract + fill-rate check on every fetch.
+
+    The fill-rate half is the point. Several upstreams return HTTP 200 with
+    silent nulls for a column they no longer recognise -- TradingView's scanner
+    does exactly this for any unknown column name. In a scanner whose correct
+    output on a quiet day is NOTHING, a dead column is indistinguishable from a
+    quiet market: the scan runs, reports no names, and looks healthy while
+    having been dead for weeks. Fail loudly instead.
+    """
+    missing = [c for c in BARS_CONTRACT if c not in df.columns]
+    if missing:
+        raise ValueError(f"provider {provider!r} returned bars missing {missing}")
+    if df.empty:
+        raise ValueError(f"provider {provider!r} returned zero rows")
+    for col in ("close", "volume"):
+        fill = df[col].notna().mean()
+        if fill < 0.90:
+            raise ValueError(
+                f"provider {provider!r}: column {col!r} only {fill:.1%} populated "
+                f"(expected >=90%). Treat this as a dead upstream, not a quiet market.")
+    dupes = int(df.duplicated(subset=["ticker", "date"]).sum())
+    if dupes:
+        raise ValueError(f"provider {provider!r} returned {dupes} duplicate (ticker, date) rows")
+    return df
+
+
+class _Validated:
+    """Wraps a provider so daily_bars() cannot bypass the guard.
+
+    Structural rather than conventional: a new provider cannot forget to call
+    it, because it never gets the chance.
+    """
+
+    def __init__(self, inner):
+        self._inner = inner
+
+    def __getattr__(self, item):
+        return getattr(self._inner, item)
+
+    def daily_bars(self, *a, **kw):
+        return validate_bars(self._inner.daily_bars(*a, **kw), getattr(self._inner, "name", "?"))
+
+
 def get_provider(name: str | None = None):
     """Explicit provider lookup, for tests and for the CLI's --provider flag."""
     if name is None:
         return provider
     name = name.lower()
-    if name == "yahoo":
-        return YahooMarketData()
-    if name == "mock":
-        return MockMarketData()
-    if name == "null":
-        return NullMarketData()
-    if name == "signal":
-        return SignalMarketData()
-    raise ValueError(f"unknown market data provider: {name!r} (mock|null|signal|yahoo)")
+    impls = {"yahoo": YahooMarketData, "mock": MockMarketData,
+             "null": NullMarketData, "signal": SignalMarketData}
+    if name not in impls:
+        raise ValueError(
+            f"unknown market data provider: {name!r} (have: {'|'.join(sorted(impls))})")
+    return _Validated(impls[name]())

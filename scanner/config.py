@@ -1,4 +1,4 @@
-"""Scan configuration — every threshold from SCORING_SPEC.md in one place.
+"""Scan configuration — every threshold from docs/PARAMETERS.md in one place.
 
 Defaults here are the spec's defaults. Change them deliberately; several have
 non-obvious interactions documented inline.
