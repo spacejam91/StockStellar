@@ -54,10 +54,16 @@ class ScanConfig:
     # candidates and a top-3 list always fills, which would make "unusual"
     # meaningless. The qualifiers are in own-history units and genuinely do not
     # fire on a quiet day.
-    qual_rvol: float = 2.0
-    qual_ret_z: float = 2.0
-    qual_range_ratio: float = 1.5
-    qual_gap_atr: float = 0.75
+    # Tightened 2026-09-21 from the spec's 2.0 / 2.0 / 1.5 / 0.75. Those
+    # defaults produced ~0-3% empty sessions on real data against the spec's
+    # own >=20% target, and docs/PARAMETERS.md is explicit that below 20% the
+    # bar is too loose and the score has stopped meaning "unusual" -- tighten,
+    # never loosen. min_qualifiers stays at 2, so the "2 of 4" structure is
+    # unchanged; only the levels moved.
+    qual_rvol: float = 3.0
+    qual_ret_z: float = 2.5
+    qual_range_ratio: float = 2.0
+    qual_gap_atr: float = 1.00
 
     # --- Step 6: weights ----------------------------------------------------
     # Equal by default, and that is a considered choice, not laziness. Dawes
