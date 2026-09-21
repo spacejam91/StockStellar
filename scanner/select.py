@@ -43,12 +43,26 @@ def select(scored: pd.DataFrame, cfg: ScanConfig | None = None) -> pd.DataFrame:
             if len(used) and sum(used.values()) >= cfg.max_picks:
                 break
             sector = row.get("sector")
-            key = str(sector) if pd.notna(sector) else "UNKNOWN"
+            known_sector = pd.notna(sector) and str(sector).strip() != ""
             # On a sector-wide move day an uncapped list returns three copies of
             # one bet, formatted to look like three independent signals.
-            if cfg.one_per_sector and used.get(key, 0) >= 1:
-                continue
-            used[key] = used.get(key, 0) + 1
+            #
+            # But the cap can only apply where the sector is KNOWN. Bucketing
+            # every unclassified name under one "UNKNOWN" key treats "we have no
+            # sector data" as "these are all the same sector", which silently
+            # caps the whole list at one name. That is exactly what happened to
+            # US names: nasdaqtraded.txt publishes no sector, so every US row
+            # collided in one bucket and max_picks=3 could never return more
+            # than 1. An unknown sector is an absence of evidence, not evidence
+            # of sameness -- so those rows are not capped against each other.
+            if known_sector:
+                key = str(sector)
+                if cfg.one_per_sector and used.get(key, 0) >= 1:
+                    continue
+                used[key] = used.get(key, 0) + 1
+            else:
+                # Counted toward max_picks, never toward a sector bucket.
+                used[f"__unknown_{len(used)}"] = 1
             flags = []
             if bool(row.get("suspect_unadjusted_split", False)):
                 flags.append("suspect_unadjusted_split")
