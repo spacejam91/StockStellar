@@ -130,7 +130,9 @@ def format_watchlist(result: ScanResult) -> str:
     else:
         for r in today.itertuples(index=False):
             lines.append("")
-            lines.append(f"  {r.rank}. {r.ticker}  [{r.market}/{r.sector}]  {r.side.upper()}")
+            # A missing sector is unknown, not a company in a sector called "nan".
+            sec = "" if r.sector is None or pd.isna(r.sector) else f"/{r.sector}"
+            lines.append(f"  {r.rank}. {r.ticker}  [{r.market}{sec}]  {r.side.upper()}")
             lines.append(f"     score {r.score_pct:.0f}/100   composite {r.composite_z:+.2f}z"
                          f"   qualifiers {r.n_qualifiers}/4")
             lines.append(f"     close {r.close:.2f}   ATR14 {r.atr14}   RVOL {r.rvol}")
