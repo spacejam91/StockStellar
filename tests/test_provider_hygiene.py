@@ -103,11 +103,38 @@ def test_base_rate_query_excludes_every_synthetic_provider():
     return {"excluded": sorted(params), "n_excluded": len(params)}
 
 
+def test_display_surfaces_exclude_synthetic():
+    """latest_scan_date / day_for / day_history must not surface generated data.
+
+    A mock session dated today outranked the real session dated the last
+    trading day and became "latest", so the page rendered synthetic bars. It
+    was labelled "mock", which is the only reason it was noticed. Same rule as
+    the base rates: generated data never reaches a surface that represents the
+    market.
+    """
+    from scanner import store
+
+    real = store.latest_scan_date()
+    with_syn = store.latest_scan_date(include_synthetic=True)
+    day = store.day_for(None)
+    hist = store.day_history(limit=200)
+
+    bad = sorted({h.get("provider") for h in hist} & md.SYNTHETIC_PROVIDERS)
+    assert not bad, f"day_history surfaced synthetic provider(s) {bad}"
+    if day is not None:
+        assert day.get("provider") not in md.SYNTHETIC_PROVIDERS, (
+            f"day_for returned a {day.get('provider')!r} session — synthetic data "
+            f"must never be the displayed session")
+    return {"latest_real": real, "latest_incl_synthetic": with_syn,
+            "history_providers": sorted({h.get("provider") for h in hist})}
+
+
 def main() -> int:
     checks = [
         ("every provider is classified", test_every_provider_is_classified),
         ("no phantom names in the list", test_synthetic_list_has_no_phantoms),
         ("base-rate SQL excludes all synthetic", test_base_rate_query_excludes_every_synthetic_provider),
+        ("display surfaces exclude synthetic", test_display_surfaces_exclude_synthetic),
     ]
     print("=" * 72)
     print("  Provider hygiene — can generated data reach a measurement?")

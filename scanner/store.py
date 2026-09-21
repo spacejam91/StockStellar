@@ -190,9 +190,30 @@ def backfill_forward_returns(bars: pd.DataFrame, horizons=(1, 5, 20)) -> int:
 
 # ---- read-back ---------------------------------------------------------------
 
-def latest_scan_date() -> str | None:
+
+def _synthetic_filter(include_synthetic: bool) -> tuple[str, list]:
+    """SQL fragment excluding generated providers, and its params.
+
+    The same rule the base rates use, applied to the DISPLAY surfaces too. A
+    mock session dated today outranked a real one dated the last trading day
+    and became "latest", so the page rendered synthetic bars. It was labelled
+    "mock", which is the only reason it was caught -- but a page that is
+    supposed to show the market must not be able to show generated data at all.
+    """
+    if include_synthetic:
+        return "", []
+    from app.market_data import SYNTHETIC_PROVIDERS
+    names = sorted(SYNTHETIC_PROVIDERS)
+    return f" AND r.provider NOT IN ({','.join('?' * len(names))})", names
+
+
+def latest_scan_date(include_synthetic: bool = False) -> str | None:
+    clause, params = _synthetic_filter(include_synthetic)
     with _conn() as c:
-        row = c.execute("SELECT MAX(as_of_date) FROM scan_day").fetchone()
+        row = c.execute(
+            f"""SELECT MAX(d.as_of_date) FROM scan_day d
+                JOIN scan_run r ON r.run_id = d.run_id
+                WHERE 1=1{clause}""", params).fetchone()
         return row[0] if row and row[0] else None
 
 
@@ -211,8 +232,8 @@ def picks_for(as_of: str | None = None) -> list[dict]:
         return [dict(r) for r in rows]
 
 
-def day_for(as_of: str | None = None) -> dict | None:
-    as_of = as_of or latest_scan_date()
+def day_for(as_of: str | None = None, include_synthetic: bool = False) -> dict | None:
+    as_of = as_of or latest_scan_date(include_synthetic)
     if not as_of:
         return None
     with _conn() as c:
@@ -223,12 +244,12 @@ def day_for(as_of: str | None = None) -> dict | None:
         # produced. Reading it from os.getenv mislabels real sessions as mock
         # the moment the variable is unset, which is exactly backwards -- it
         # makes live output look like test output.
+        clause, params = _synthetic_filter(include_synthetic)
         row = c.execute(
-            """SELECT d.*, r.provider FROM scan_day d
-               JOIN (SELECT MAX(run_id) rid FROM scan_day WHERE as_of_date = ?) m
-                 ON m.rid = d.run_id
-               JOIN scan_run r ON r.run_id = d.run_id
-               WHERE d.as_of_date = ?""", (as_of, as_of)).fetchone()
+            f"""SELECT d.*, r.provider FROM scan_day d
+                JOIN scan_run r ON r.run_id = d.run_id
+                WHERE d.as_of_date = ?{clause}
+                ORDER BY d.run_id DESC LIMIT 1""", (as_of, *params)).fetchone()
         return dict(row) if row else None
 
 
@@ -243,14 +264,17 @@ def provider_breakdown() -> list[dict]:
         return [dict(r) for r in rows]
 
 
-def day_history(limit: int = 60) -> list[dict]:
+def day_history(limit: int = 60, include_synthetic: bool = False) -> list[dict]:
+    clause, params = _synthetic_filter(include_synthetic)
     with _conn() as c:
         c.row_factory = sqlite3.Row
         rows = c.execute(
-            """SELECT d.* FROM scan_day d
-               JOIN (SELECT as_of_date, MAX(run_id) rid FROM scan_day GROUP BY as_of_date) m
-                 ON m.as_of_date = d.as_of_date AND m.rid = d.run_id
-               ORDER BY d.as_of_date DESC LIMIT ?""", (limit,)).fetchall()
+            f"""SELECT d.*, r.provider FROM scan_day d
+                JOIN scan_run r ON r.run_id = d.run_id
+                JOIN (SELECT as_of_date, MAX(run_id) rid FROM scan_day GROUP BY as_of_date) m
+                  ON m.as_of_date = d.as_of_date AND m.rid = d.run_id
+                WHERE 1=1{clause}
+                ORDER BY d.as_of_date DESC LIMIT ?""", (*params, limit)).fetchall()
         return [dict(r) for r in rows]
 
 
