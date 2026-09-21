@@ -29,13 +29,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-from app import store
+from app import links, store
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("stockstellar")
 
 TEMPLATES = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+TEMPLATES.env.globals.update(links.jinja_globals())
 
 app = FastAPI(title="StockStellar")
 app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")), name="static")
@@ -168,6 +169,16 @@ async def api_scan_run(req: ScanRunRequest):
     })
 
 
+def _thresholds() -> dict:
+    """The absolute qualifier limits each meter is drawn against."""
+    from scanner.config import ScanConfig
+    c = ScanConfig()
+    return {"composite": c.composite_threshold, "rvol": c.qual_rvol,
+            "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
+            "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
+            "max_picks": c.max_picks}
+
+
 # ---- Pages ---------------------------------------------------------------------
 
 @app.get("/", response_class=HTMLResponse)
@@ -191,5 +202,9 @@ async def scan_page(request: Request, as_of: str | None = None):
             # From the log, not the env var: the env says how this process
             # is configured now, the log says what produced this session.
             "provider": (day or {}).get("provider") or os.getenv("MARKET_DATA", "mock"),
+            # Thresholds come from the live config, never hardcoded in the
+            # template -- a meter drawn against a stale limit is worse than no
+            # meter, because it looks authoritative while being wrong.
+            "th": _thresholds(),
         },
     )

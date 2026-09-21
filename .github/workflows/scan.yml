@@ -1,0 +1,111 @@
+name: Daily scan
+
+# Runs after the US close, renders the page, publishes it to Pages, and commits
+# the updated log back.
+#
+# Two things worth knowing before relying on the schedule:
+#
+#  * GitHub's cron is BEST-EFFORT. Scheduled runs are routinely delayed 5-30
+#    minutes and occasionally much longer at peak. Fine for an evening scan;
+#    useless if you ever want a precise market-open trigger.
+#  * GitHub disables scheduled workflows on a repository with no activity for
+#    60 days. The daily log commit counts as activity, so this self-sustains --
+#    but if you turn the commit step off, the schedule will eventually stop.
+#
+# The log (stockstellar.db) is committed deliberately. A point-in-time record is
+# worthless if it resets every run, and Actions caches are not durable enough to
+# hold it. It contains market data only -- no keys, no personal data.
+
+on:
+  schedule:
+    # 22:30 UTC = 18:30 ET in summer, 17:30 ET in winter. Comfortably after the
+    # 16:00 ET close either way. Cron has no DST, so the local hour drifts by
+    # one across the year; that is harmless for an end-of-day scan.
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      history_days:
+        description: "Also score this many prior sessions"
+        default: "0"
+      provider:
+        description: "mock | yahoo"
+        default: "yahoo"
+
+concurrency:
+  group: daily-scan
+  cancel-in-progress: false
+
+permissions:
+  contents: write      # commit the log back
+  pages: write
+  id-token: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Self-check before trusting anything
+        # Test 10 first. If the pipeline can manufacture an edge from noise,
+        # publishing its output is worse than publishing nothing.
+        run: |
+          uv run python -m tests.test_null_control
+          uv run python -m tests.test_provider_hygiene
+
+      - name: Refresh universe and sectors
+        # Cheap and keeps listings/sectors current. Never fail the run on it --
+        # a stale universe still scans; no universe at all does not.
+        continue-on-error: true
+        env:
+          SEC_CONTACT: ${{ vars.SEC_CONTACT || 'aaron-thompson@outlook.com' }}
+        run: |
+          uv run python scripts/build_universe.py
+          uv run python scripts/fetch_sectors.py --no-api
+
+      - name: Run the scan
+        id: scan
+        env:
+          MARKET_DATA: ${{ github.event.inputs.provider || 'yahoo' }}
+        run: |
+          set -o pipefail
+          uv run python -m scanner \
+            --history-days "${{ github.event.inputs.history_days || 0 }}" \
+            --backfill 2>&1 | tee scan-output.txt
+
+      - name: Build the static site
+        run: uv run python scripts/build_site.py --out site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Commit the updated log
+        run: |
+          git config user.name  "stockstellar-bot"
+          git config user.email "noreply@github.com"
+          git add -f stockstellar.db data/universe_us.csv data/universe_ca.csv
+          git diff --staged --quiet || git commit -m "scan: $(date -u +%Y-%m-%d)"
+          git push
+
+  deploy:
+    needs: scan
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

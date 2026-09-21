@@ -45,8 +45,13 @@ def build(out: Path) -> int:
     hist = scan_store.day_history(limit=30)
     empty_share = (sum(1 for r in hist if r["empty_day"]) / len(hist)) if hist else None
 
+    from app import links
+    from scanner.config import ScanConfig
+
     env = Environment(loader=FileSystemLoader(str(TEMPLATES)),
                       autoescape=select_autoescape(["html"]))
+    env.globals.update(links.jinja_globals())
+    c = ScanConfig()
     # The template calls url_for / request in the served path; give it a stub
     # so the same file renders headless.
     html = env.get_template("scan.html").render(
@@ -56,6 +61,10 @@ def build(out: Path) -> int:
         history=hist,
         empty_share=empty_share,
         provider=(day or {}).get("provider") or "unknown",
+        th={"composite": c.composite_threshold, "rvol": c.qual_rvol,
+            "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
+            "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
+            "max_picks": c.max_picks},
         static_build=True,
     )
 

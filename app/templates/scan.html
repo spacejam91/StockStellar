@@ -73,6 +73,7 @@
     .mval { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
     .mval.under { color: var(--muted); }
     .mkey { font-size: 11px; color: var(--muted); margin-top: 9px; }
+    .legend { font-size: 11px; color: var(--muted); margin: 2px 0 4px; line-height: 1.5; }
     .tkr a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
     .tkr a:hover { border-bottom-color: var(--accent); }
     .newslink { font-size: 11px; }
@@ -143,12 +144,9 @@
             </div>
             <div class="bar"><span style="width: {{ p.score_pct }}%"></span></div>
             <div class="kv">
-              <span>composite <b>{{ '%+.2f'|format(p.composite_z) }}z</b></span>
-              <span>qualifiers <b>{{ p.n_qualifiers }}/4</b></span>
               <span>close <b>{{ '%.2f'|format(p.close) }}</b></span>
-              {% if p.rvol %}<span>RVOL <b>{{ '%.1f'|format(p.rvol) }}×</b></span>{% endif %}
-              {% if p.ret_z %}<span>move <b>{{ '%+.1f'|format(p.ret_z) }}σ</b></span>{% endif %}
               {% if p.atr14 %}<span>ATR14 <b>{{ '%.2f'|format(p.atr14) }}</b></span>{% endif %}
+              <span>qualifiers <b>{{ p.n_qualifiers }}/4</b></span>
             </div>
             <div class="meters">
               {{ meter('composite',  p.composite_z,  th.composite,  3.2,  '%+.2f', 'z') }}
@@ -157,14 +155,15 @@
               {{ meter('range/ATR',  p.range_ratio,  th.range_ratio, 2.5, '%.2f',  '') }}
               {{ meter('gap/ATR',    p.gap_atr,      th.gap_atr,    1.5,  '%+.2f', '') }}
             </div>
-            <div class="mkey">Bar shows the value; the tick is the threshold it must clear.
-              {{ p.n_qualifiers }} of 4 absolute qualifiers fired.
-              <a class="newslink" href="{{ news_url(p.ticker, p.market) }}"
+            <div class="mkey"><a class="newslink" href="{{ news_url(p.ticker, p.market) }}"
                  target="_blank" rel="noopener noreferrer">news &rarr;</a></div>
             {% if p.drivers %}<div class="drivers">drivers: {{ p.drivers }}</div>{% endif %}
             {% if p.flags %}<div class="flags">⚠ {{ p.flags }}</div>{% endif %}
           </div>
         {% endfor %}
+        <div class="legend">Each bar is the value; the tick is the threshold it has to clear.
+          Blue cleared it, grey did not. A name needs composite &ge; {{ th.composite }}z plus at least
+          {{ th.min_qualifiers }} of the four absolute qualifiers. Tap a ticker for the company.</div>
       {% else %}
         <h2>Flagged</h2>
         <div class="empty">
