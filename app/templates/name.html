@@ -1,0 +1,201 @@
+{% from "_macros.html" import meter %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ ticker }} — StockStellar</title>
+  <meta name="theme-color" content="#0e1116" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/icon-180.png" />
+  <link rel="manifest" href="/static/manifest.webmanifest" />
+  <style>
+    :root {
+      --bg:#0e1116; --panel:#161b22; --border:#2a313c; --text:#e6edf3;
+      --muted:#8b949e; --green:#3fb950; --red:#f85149; --accent:#58a6ff; --amber:#d29922;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font:14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background:var(--bg); color:var(--text); }
+    header { padding:16px; border-bottom:1px solid var(--border);
+             display:flex; align-items:center; gap:12px; }
+    header a.back { color:var(--accent); text-decoration:none; font-size:13px; }
+    h1 { margin:0; font-size:19px; }
+    main { padding:16px; max-width:760px; margin:0 auto; }
+    h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+         color:var(--muted); margin:24px 0 10px; }
+    .side { font-size:11px; font-weight:600; padding:2px 7px; border-radius:4px; }
+    .side.long { color:var(--green); border:1px solid var(--green); }
+    .side.short { color:var(--red); border:1px solid var(--red); }
+    .muted { color:var(--muted); font-size:12px; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:10px;
+            padding:14px; margin-bottom:10px; }
+
+    /* Criteria verdict: a deterministic rule state, not a prediction. */
+    .verdict { border-left:3px solid var(--border); padding:12px 14px; border-radius:6px;
+               background:var(--panel); }
+    .verdict.met { border-left-color:var(--accent); }
+    .vtitle { font-size:15px; font-weight:600; margin-bottom:2px; }
+    .check { display:grid; grid-template-columns:18px 1fr auto; gap:8px;
+             align-items:baseline; font-size:12px; padding:3px 0; }
+    .check .mark { font-weight:700; }
+    .check.ok .mark { color:var(--accent); }
+    .check.no .mark { color:var(--muted); }
+    .check .val { color:var(--text); font-variant-numeric:tabular-nums; }
+    .check.no .val { color:var(--muted); }
+
+    .meters { margin-top:12px; display:grid; gap:7px; }
+    .meter { display:grid; grid-template-columns:78px 1fr 62px; align-items:center;
+             gap:10px; font-size:11px; }
+    .mlabel { color:var(--muted); }
+    .mtrack { position:relative; height:8px; border-radius:4px; background:#222a35; }
+    .mfill { position:absolute; left:0; top:0; height:100%; border-radius:0 4px 4px 0; }
+    .mfill.fired { background:var(--accent); }
+    .mfill.under { background:#4a5462; }
+    .mtick { position:absolute; top:-3px; width:1px; height:14px; background:var(--muted); }
+    .mval { text-align:right; font-variant-numeric:tabular-nums; }
+    .mval.under { color:var(--muted); }
+
+    .row { display:flex; justify-content:space-between; gap:12px; padding:8px 0;
+           border-bottom:1px solid var(--border); font-size:13px; }
+    .row:last-child { border-bottom:none; }
+    .row a { color:var(--text); text-decoration:none; }
+    .row a:hover { color:var(--accent); }
+    .tag { font-size:10px; padding:2px 6px; border-radius:4px; background:#222a35;
+           color:var(--muted); white-space:nowrap; }
+    .links a { color:var(--accent); text-decoration:none; margin-right:14px; font-size:13px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th,td { text-align:right; padding:6px 8px; border-bottom:1px solid var(--border);
+            font-variant-numeric:tabular-nums; }
+    th:first-child, td:first-child { text-align:left; }
+    th { color:var(--muted); font-weight:500; }
+    .note { margin:20px 0 8px; padding:12px 14px; border-left:2px solid var(--border);
+            color:var(--muted); font-size:12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" href="/">&larr; scan</a>
+    <h1>{{ ticker }}</h1>
+    {% if pick %}<span class="side {{ pick.side }}">{{ pick.side|upper }}</span>{% endif %}
+    <span class="muted">{{ market or '' }}{% if sector %} · {{ sector }}{% endif %}</span>
+  </header>
+
+  <main>
+    {% if pick %}
+      {#- The verdict is a restatement of the selection rule, evaluated on this
+          name's own numbers. It says which criteria fired -- not what the price
+          will do next. -#}
+      <div class="verdict {{ 'met' if verdict.meets else '' }}">
+        <div class="vtitle">
+          {% if verdict.meets %}
+            Criteria met — {{ pick.side|upper }} side
+          {% else %}
+            Criteria not met
+          {% endif %}
+        </div>
+        <div class="muted" style="margin-bottom:8px">
+          Every condition below is a threshold on observed price and volume.
+          Meeting them means this name is statistically unusual today; it is not a
+          forecast of where it goes next.
+        </div>
+        {% for c in verdict.checks %}
+          <div class="check {{ 'ok' if c.ok else 'no' }}">
+            <span class="mark">{{ '✓' if c.ok else '·' }}</span>
+            <span>{{ c.label }}</span>
+            <span class="val">{{ c.value }}</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <h2>Where each parameter landed</h2>
+      <div class="card">
+        <div class="meters">
+          {{ meter('composite',  pick.composite_z,  th.composite,   3.2, '%+.2f', 'z') }}
+          {{ meter('RVOL',       pick.rvol,         th.rvol,        4.0, '%.1f',  '×') }}
+          {{ meter('move',       pick.ret_z,        th.ret_z,       3.0, '%+.1f', 'σ') }}
+          {{ meter('range/ATR',  pick.range_ratio,  th.range_ratio, 2.5, '%.2f',  '') }}
+          {{ meter('gap/ATR',    pick.gap_atr,      th.gap_atr,     1.5, '%+.2f', '') }}
+        </div>
+        <div class="muted" style="margin-top:10px">
+          close {{ '%.2f'|format(pick.close) }} · ATR14 {{ '%.2f'|format(pick.atr14 or 0) }}
+          {% if pick.drivers %} · drivers: {{ pick.drivers }}{% endif %}
+          {% if pick.flags %} · <span style="color:var(--amber)">⚠ {{ pick.flags }}</span>{% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="card muted">{{ ticker }} was not flagged in the latest logged session.</div>
+    {% endif %}
+
+    <h2>What followed this score band, historically</h2>
+    {% if band and band.n %}
+      <div class="card">
+        <table>
+          <thead><tr><th>band</th><th>n</th><th>closed higher</th><th>± SE</th><th>mean return</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>{{ band.score_band }}–{{ band.score_band + 10 }}</td>
+              <td>{{ band.n }}</td>
+              <td>{{ band.up_rate_pct }}%</td>
+              <td>{{ band.se_pp }} pp</td>
+              <td>{{ band.mean_ret_pct }}%</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="muted" style="margin-top:8px">
+          Measured from the point-in-time log over {{ band.horizon }} sessions forward,
+          in the direction the scanner called. Read <b>n</b> and <b>SE</b> before the
+          headline number: a band with few observations is not a finding, and this is a
+          record of what happened, not a probability of what will.
+        </div>
+      </div>
+    {% else %}
+      <div class="card muted">
+        Not enough logged history yet. Base rates need forward returns to have actually
+        happened — run the scanner daily and this fills in on its own.
+      </div>
+    {% endif %}
+
+    <h2>Recent news</h2>
+    <div class="card">
+      {% if news %}
+        {% for n in news %}
+          <div class="row">
+            <a href="{{ n.url }}" target="_blank" rel="noopener noreferrer">{{ n.title }}</a>
+            <span class="tag">{{ n.source or '' }}</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <span class="muted">No headlines returned.</span>
+      {% endif %}
+    </div>
+
+    {% if filings %}
+      <h2>Recent SEC filings</h2>
+      <div class="card">
+        {% for f in filings %}
+          <div class="row">
+            <a href="{{ f.url }}" target="_blank" rel="noopener noreferrer">
+              {{ f.desc or f.form }}</a>
+            <span class="tag">{{ f.form }} · {{ f.date }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <h2>Elsewhere</h2>
+    <div class="card links">
+      <a href="{{ company_url(ticker, market) }}" target="_blank" rel="noopener noreferrer">Google &rarr;</a>
+      <a href="{{ news_url(ticker, market) }}" target="_blank" rel="noopener noreferrer">Google News &rarr;</a>
+    </div>
+
+    <div class="note">
+      StockStellar reports observable market facts and the measured history of its own
+      output. It does not predict returns and does not tell you what to buy or sell.
+    </div>
+  </main>
+</body>
+</html>

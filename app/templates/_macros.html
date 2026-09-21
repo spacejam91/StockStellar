@@ -1,0 +1,20 @@
+{#- One ratio against its limit. `floor` keeps a small value from filling the
+    track and looking maximal; the tick marks the threshold the value must clear. -#}
+{% macro meter(label, value, threshold, floor, fmt, suffix) %}
+  {%- if value is not none -%}
+    {%- set v = (value | abs) -%}
+    {%- set scale = [floor, v * 1.15] | max -%}
+    {%- set fired = v >= threshold -%}
+    <div class="meter">
+      <span class="mlabel">{{ label }}</span>
+      <span class="mtrack">
+        <span class="mfill {{ 'fired' if fired else 'under' }}"
+              style="width: {{ (100 * v / scale) | round(1) }}%"></span>
+        <span class="mtick" style="left: {{ (100 * threshold / scale) | round(1) }}%"
+              title="threshold {{ threshold }}"></span>
+      </span>
+      <span class="mval {{ '' if fired else 'under' }}">{{ fmt | format(value) }}{{ suffix }}</span>
+    </div>
+  {%- endif -%}
+{% endmacro %}
+

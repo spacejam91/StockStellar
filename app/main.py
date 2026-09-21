@@ -179,6 +179,81 @@ def _thresholds() -> dict:
             "max_picks": c.max_picks}
 
 
+def _verdict(pick: dict, th: dict) -> dict:
+    """Restate the selection rule against one name's own numbers.
+
+    This is exactly the rule select.py applies -- no extra judgement, no model.
+    It answers "did the parameters hit their thresholds", which is a fact about
+    today's tape, and deliberately does not answer "what happens next", which
+    would be a forecast this project does not make.
+    """
+    q = th["min_qualifiers"]
+    checks = [
+        {"label": f"composite \u2265 {th['composite']}z",
+         "value": f"{pick.get('composite_z', 0):+.2f}z",
+         "ok": (pick.get("composite_z") or -9) >= th["composite"]},
+        {"label": f"at least {q} of 4 absolute qualifiers",
+         "value": f"{pick.get('n_qualifiers', 0)}/4",
+         "ok": (pick.get("n_qualifiers") or 0) >= q},
+        {"label": f"RVOL \u2265 {th['rvol']}\u00d7",
+         "value": f"{pick.get('rvol') or 0:.1f}\u00d7",
+         "ok": (pick.get("rvol") or 0) >= th["rvol"]},
+        {"label": f"|move| \u2265 {th['ret_z']}\u03c3",
+         "value": f"{pick.get('ret_z') or 0:+.1f}\u03c3",
+         "ok": abs(pick.get("ret_z") or 0) >= th["ret_z"]},
+        {"label": f"range/ATR \u2265 {th['range_ratio']}",
+         "value": f"{pick.get('range_ratio') or 0:.2f}",
+         "ok": (pick.get("range_ratio") or 0) >= th["range_ratio"]},
+        {"label": f"|gap|/ATR \u2265 {th['gap_atr']}",
+         "value": f"{pick.get('gap_atr') or 0:+.2f}",
+         "ok": abs(pick.get("gap_atr") or 0) >= th["gap_atr"]},
+    ]
+    # "Meets" mirrors selection: the composite floor AND enough qualifiers.
+    # The individual qualifier rows are shown for transparency, not ANDed --
+    # the rule has always been "at least N of 4", never "all 4".
+    meets = checks[0]["ok"] and checks[1]["ok"]
+    return {"meets": meets, "checks": checks}
+
+
+@app.get("/name/{ticker}", response_class=HTMLResponse)
+async def name_page(request: Request, ticker: str):
+    """One name: which criteria fired, where each parameter landed, what
+    historically followed that score band, and the current news and filings."""
+    from scanner import news as news_mod
+    from scanner import store as scan_store
+
+    ticker = ticker.strip().upper()
+    day = scan_store.day_for(None)
+    picks = scan_store.picks_for(day["as_of_date"]) if day else []
+    pick = next((p for p in picks if str(p.get("ticker", "")).upper() == ticker), None)
+    market = (pick or {}).get("market")
+    th = _thresholds()
+
+    band = None
+    if pick is not None:
+        try:
+            df = scan_store.score_band_base_rates(horizon=5)
+            if not df.empty:
+                lo = int(pick["score_pct"] // 10 * 10)
+                hit = df[df["score_band"] == min(lo, 90)]
+                if not hit.empty:
+                    band = hit.iloc[0].to_dict() | {"horizon": 5}
+        except Exception as e:                                   # noqa: BLE001
+            log.info("base rates unavailable: %s", e)
+
+    return TEMPLATES.TemplateResponse(request, "name.html", {
+        "ticker": ticker,
+        "pick": pick,
+        "market": market,
+        "sector": (pick or {}).get("sector"),
+        "th": th,
+        "verdict": _verdict(pick, th) if pick else None,
+        "band": band,
+        "news": news_mod.fetch_news(ticker, market, limit=8),
+        "filings": news_mod.fetch_filings(news_mod.cik_for(ticker), limit=6),
+    })
+
+
 # ---- Pages ---------------------------------------------------------------------
 
 @app.get("/", response_class=HTMLResponse)
