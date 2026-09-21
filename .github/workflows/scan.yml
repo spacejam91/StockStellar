@@ -90,6 +90,13 @@ jobs:
           path: site
 
       - name: Commit the updated log
+        # Never fatal. This is the LAST step of the job and `deploy` needs the
+        # job to succeed, so a failure here blocked publishing entirely -- which
+        # is what happened on the first run: the scan worked, the artifact
+        # uploaded, and a push race meant the page was never deployed. Losing a
+        # day of log is a small problem; not publishing the page is the whole
+        # point of the run.
+        continue-on-error: true
         run: |
           git config user.name  "stockstellar-bot"
           git config user.email "noreply@github.com"
