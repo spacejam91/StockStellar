@@ -94,25 +94,37 @@ jobs:
         # job to succeed, so a failure here blocked publishing entirely -- which
         # is what happened on the first run: the scan worked, the artifact
         # uploaded, and a push race meant the page was never deployed. Losing a
-        # day of log is a small problem; not publishing the page is the whole
-        # point of the run.
+        # day of log is a small problem; not publishing the page is the point.
         continue-on-error: true
         run: |
+          set -u
           git config user.name  "stockstellar-bot"
           git config user.email "noreply@github.com"
-          git add -f stockstellar.db data/universe_us.csv data/universe_ca.csv
-          git diff --staged --quiet && { echo "nothing to commit"; exit 0; }
-          git commit -m "scan: $(date -u +%Y-%m-%d)"
-          # Someone may have pushed to main while the scan ran -- that happened
-          # on the very first run. Rebase and retry rather than failing the job
-          # over a race that resolves itself.
+
+          # Do NOT rebase or merge. Every file committed here is a regenerated
+          # artifact -- a binary SQLite log and two derived CSVs -- so a
+          # three-way merge has nothing sensible to do and produces conflicts
+          # git cannot resolve. Rebasing failed exactly that way on run 2, and
+          # the retry loop then kept pulling with unmerged files, which can
+          # never succeed.
+          #
+          # Instead: take origin/main's history, keep this runner's files, and
+          # commit them on top. "Ours wins" is correct for generated output.
           for i in 1 2 3; do
-            git pull --rebase --autostash origin main && git push && exit 0
-            echo "push attempt $i failed; retrying"
+            git fetch origin main
+            git reset --soft origin/main
+            git add -f stockstellar.db data/universe_us.csv data/universe_ca.csv
+            if git diff --staged --quiet; then
+              echo "nothing to commit"; exit 0
+            fi
+            git commit -m "scan: $(date -u +%Y-%m-%d)"
+            if git push origin HEAD:main; then
+              echo "log pushed"; exit 0
+            fi
+            echo "push attempt $i lost a race; retrying against the new tip"
             sleep $((i * 5))
           done
-          echo "could not push the log after 3 attempts" >&2
-          exit 1
+          echo "could not push the log after 3 attempts (scan and page are fine)" >&2
 
   deploy:
     needs: scan
