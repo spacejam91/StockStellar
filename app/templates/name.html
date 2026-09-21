@@ -60,12 +60,13 @@
     .mval.under { color:var(--muted); }
 
     .row { display:flex; justify-content:space-between; gap:12px; padding:8px 0;
-           border-bottom:1px solid var(--border); font-size:13px; }
+           border-bottom:1px solid var(--border); font-size:13px; align-items:flex-start; }
     .row:last-child { border-bottom:none; }
     .row a { color:var(--text); text-decoration:none; }
     .row a:hover { color:var(--accent); }
     .tag { font-size:10px; padding:2px 6px; border-radius:4px; background:#222a35;
-           color:var(--muted); white-space:nowrap; }
+           color:var(--muted); white-space:nowrap; align-self:flex-start;
+           flex:0 0 auto; margin-top:2px; }
     .links a { color:var(--accent); text-decoration:none; margin-right:14px; font-size:13px; }
     table { width:100%; border-collapse:collapse; font-size:12px; }
     th,td { text-align:right; padding:6px 8px; border-bottom:1px solid var(--border);
