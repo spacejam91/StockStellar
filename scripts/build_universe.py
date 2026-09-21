@@ -129,6 +129,28 @@ def build_ca() -> pd.DataFrame:
     # A bare Canadian ticker is provably not unique across venues, so dedupe on
     # the suffixed form, which is what Yahoo is asked for.
     out = out.drop_duplicates("ticker")
+
+    # Canadian sub-suffixes sit BEFORE the venue suffix (FTN.PR.A.TO), so they
+    # need their own pass. Measured on the live list: 256 preferred, 122 NEX,
+    # 59 warrants -- and every one of them failed to resolve at the data
+    # provider, which is how they surfaced.
+    #   drop  .PR/.PF  preferred series
+    #         .WT/.RT  warrants and rights
+    #         .DB      debentures
+    #         .H       NEX board (issuers that fell below TSXV requirements)
+    #   KEEP  .UN      income-trust/REIT units -- GRT.UN, BIP.UN are real and liquid
+    #         .A/.B    share classes -- AGF.B is ordinary equity
+    base = out["ticker"].str.replace(r"\.(TO|V|CN|NE)$", "", regex=True)
+    drop = base.str.contains(r"\.(?:PR|PF|WT|RT|DB)\b", regex=True) | base.str.endswith(".H")
+
+    # .U is the USD-denominated twin of a CAD listing. Drop it only when the
+    # CAD line also exists, otherwise a USD-only name (FIH.U) would vanish.
+    bases = set(base[~drop])
+    usd_dupe = base.str.endswith(".U") & base.str.replace(r"\.U$", "", regex=True).isin(bases)
+
+    removed = int((drop | usd_dupe).sum())
+    out = out[~(drop | usd_dupe)]
+    print(f"  CA: dropped {removed} preferred/warrant/NEX/USD-duplicate lines")
     print(f"  CA total: {len(out):,} ({out.exchange.value_counts().to_dict()})")
     return out.reset_index(drop=True)
 
@@ -139,9 +161,8 @@ def main() -> int:
     us.to_csv(DATA_DIR / "universe_us.csv", index=False)
     ca.to_csv(DATA_DIR / "universe_ca.csv", index=False)
     print(f"\n  wrote {DATA_DIR/'universe_us.csv'} and {DATA_DIR/'universe_ca.csv'}")
-    print("  NOTE: the US file carries no sector — nasdaqtraded.txt has no sector column. "
-          "rs_sector_20d and the one-per-sector cap are therefore CA-only until a free "
-          "US sector source is wired in.")
+    print("  NOTE: this OVERWRITES universe_us.csv, dropping the cik/sic/sector columns.")
+    print("        Run scripts/fetch_sectors.py straight after — they are a pair.")
     return 0
 
 
