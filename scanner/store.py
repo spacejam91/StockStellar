@@ -282,10 +282,12 @@ def score_band_base_rates(horizon: int = 5, band: int = 10, provider: str | None
     asserted one. Read the SE column before reading anything else -- a band with
     a handful of observations is not a finding.
 
-    Rows scored against the mock provider are EXCLUDED by default. Mock bars are
-    a random walk, so mixing them into a base rate dilutes a real measurement
-    toward 50% with a deceptively small standard error -- the one number here
-    that has to be trustworthy would be the first thing corrupted. Pass
+    Rows from EVERY synthetic provider (see SYNTHETIC_PROVIDERS) are excluded
+    by default. 'mock' and 'null' are random walks and would dilute a real
+    measurement toward 50% with a deceptively small standard error. 'signal'
+    is worse: it plants a strong artificial edge by design, so including it
+    would report a fabricated edge as a measurement. The one number here that
+    has to be trustworthy would be the first thing corrupted. Pass
     include_mock=True only to sanity-check the harness itself.
     """
     col = f"fwd_{horizon}d"
@@ -295,7 +297,16 @@ def score_band_base_rates(horizon: int = 5, band: int = 10, provider: str | None
         where.append("r.provider = ?")
         params.append(provider)
     elif not include_mock:
-        where.append("r.provider <> 'mock'")
+        # Exclude EVERY synthetic provider, not just 'mock'. This filter used
+        # to read `r.provider <> 'mock'`, which silently admitted 'null' and
+        # 'signal' once those were added -- and 'signal' plants an artificial
+        # edge on purpose, so its rows would have shown up here as a measured
+        # one. Fail loudly on an unknown provider rather than guessing: a
+        # missing measurement is obvious, a fabricated one is not.
+        from app.market_data import SYNTHETIC_PROVIDERS
+        marks = ",".join("?" * len(SYNTHETIC_PROVIDERS))
+        where.append(f"r.provider NOT IN ({marks})")
+        params.extend(sorted(SYNTHETIC_PROVIDERS))
     q = f"""SELECT MIN(CAST(s.score_pct / {band} AS INT) * {band}, {100 - band}) AS score_band,
                    COUNT(*) AS n,
                    AVG(CASE WHEN (CASE WHEN s.side='short' THEN -f.{col} ELSE f.{col} END) > 0

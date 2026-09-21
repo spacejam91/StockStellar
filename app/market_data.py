@@ -42,6 +42,15 @@ DATA_DIR = Path(__file__).parent.parent / "data"
 
 BENCH_TICKERS = {"CA": "^GSPTSE", "US": "^GSPC"}
 
+# Providers whose bars are generated, not observed. Any measurement that is
+# meant to describe the real world MUST exclude these. Adding a synthetic
+# provider without adding it here is the single most damaging mistake
+# available in this file: `signal` plants a deliberately strong artificial
+# edge, so leaking it into the base-rate table would report a manufactured
+# edge as measured fact -- and the base rate is the ONLY probability-shaped
+# number the scanner produces.
+SYNTHETIC_PROVIDERS = frozenset({"mock", "null", "signal"})
+
 SECTORS = ["Energy", "Materials", "Financials", "Industrials", "Technology",
            "Health Care", "Consumer", "Utilities", "Real Estate", "Communication"]
 
