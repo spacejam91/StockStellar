@@ -7,7 +7,14 @@ hours per sweep. The scanner needs whole-universe daily bars in a handful of
 calls, so it gets its own seam.
 
 Toggle with the MARKET_DATA env var:
-    MARKET_DATA=mock    → deterministic synthetic bars, no network (default)
+    MARKET_DATA=mock    → deterministic synthetic bars, no network (default).
+                          Plants events: development data AND a smoke test,
+                          NOT a null case.
+    MARKET_DATA=null    → driftless random walk, volume independent of returns.
+                          Nothing to find. The Test 10 harness.
+    MARKET_DATA=signal  → null plus a deliberately strong planted signal.
+                          The positive control: proves the measuring apparatus
+                          can detect an edge, so a clean null means something.
     MARKET_DATA=yahoo   → real daily bars via yfinance, free, unofficial
 
 Everything in `scanner/` imports `provider` from here and doesn't care which
@@ -45,11 +52,22 @@ SECTORS = ["Energy", "Materials", "Financials", "Industrials", "Technology",
 # ---------------------------------------------------------------------------
 
 class MockMarketData:
-    """Synthetic universe with a fixed seed.
+    """Offline development data, and the POSITIVE control.
 
-    Deliberately a random walk with a few injected volume/gap anomalies: a
-    random walk is the correct null case. If the scanner's evaluation shows an
-    edge on this provider, the harness has a bug -- that is what it is for.
+    This is NOT a null case, despite being mostly a random walk. It plants real
+    structure on purpose: a permanent 5-16% level shift and a 3.5-9x volume
+    spike on the SAME session, two to five times per name, on top of a small
+    positive drift. That is precisely the volume/displacement relationship the
+    scanner is built to detect.
+
+    So the scanner SHOULD show an edge here, and a near-zero IC on this provider
+    means the measurement apparatus is broken, not that the scanner is honest.
+
+    For the null control -- no drift, volume independent of returns, nothing to
+    find -- use NullMarketData below. Do not confuse the two: running Test 10
+    against this provider would "validate" the harness by rediscovering events
+    that were planted for it, which is the exact failure the test exists to
+    catch.
     """
 
     name = "mock"
@@ -118,6 +136,139 @@ class MockMarketData:
         if end is not None:
             df = df[df["date"] <= pd.Timestamp(end)]
         return df.reset_index(drop=True).copy()
+
+
+# ---------------------------------------------------------------------------
+# null: the Test 10 harness -- provably nothing to find
+# ---------------------------------------------------------------------------
+
+class NullMarketData:
+    """Driftless random walk with volume independent of returns.
+
+    The whole point is that there is no signal here, so the scanner must score
+    ~zero on it. If it does not, the pipeline manufactures an edge out of noise
+    and every positive result on real data is worthless until that is fixed.
+
+    Three properties are load-bearing and easy to break by accident:
+
+    1. NO DRIFT. The -sigma^2/2 term keeps E[price] flat rather than drifting
+       up through Jensen's inequality. Any drift makes "went up" partially
+       predictable from "is up", which is a real (if small) edge.
+    2. VOLUME INDEPENDENT OF |RETURN|. Real markets correlate them; correlating
+       them here would hand the volume pillar a genuine relationship with the
+       displacement pillar and produce an IC that looks like signal.
+    3. NO INJECTED EVENTS. No level shifts, no volume spikes. Contrast
+       MockMarketData, which plants both on purpose.
+
+    If you edit this class, re-read those three before you commit.
+    """
+
+    name = "null"
+
+    def __init__(self, n_tickers: int = 120, n_sessions: int = 420, seed: int = 11,
+                 annual_vol: float = 0.40, planted_drift: float = 0.0,
+                 planted_horizon: int = 10):
+        self.n_tickers = n_tickers
+        self.n_sessions = n_sessions
+        self.seed = seed
+        self.annual_vol = annual_vol
+        # planted_drift > 0 turns this into the POSITIVE control: see
+        # SignalMarketData. Left at 0.0 this is a pure null.
+        self.planted_drift = planted_drift
+        self.planted_horizon = planted_horizon
+        self._bars: pd.DataFrame | None = None
+        self._bench: pd.DataFrame | None = None
+
+    def _build(self) -> None:
+        rng = np.random.default_rng(self.seed)
+        n, d = self.n_tickers, self.n_sessions
+        dates = pd.bdate_range(end=pd.Timestamp(date.today()), periods=d)
+        sig = self.annual_vol / np.sqrt(252.0)
+
+        # Driftless GBM in PRICE: the -sig^2/2 makes E[S_t+1/S_t] = 1, so simple
+        # returns -- the thing evaluate.py correlates against -- have zero mean.
+        # Mean LOG return is then -sig^2/2 by construction. That is volatility
+        # drag, an identity, not drift; do not "fix" it.
+        shocks = rng.normal(0.0, sig, size=(d, n)) - 0.5 * sig**2
+
+        # Volume drawn from its own state, never a function of the returns.
+        volume = np.exp(rng.uniform(11.5, 14.0, size=n) + rng.normal(0, 0.5, size=(d, n)))
+
+        if self.planted_drift > 0:
+            # Positive control. A volume spike on day t is followed by drift in
+            # a consistent direction over the next `planted_horizon` sessions,
+            # so the spike genuinely PREDICTS forward return. This is the thing
+            # mock does not have: mock's level shift is fully realised on the
+            # event day, leaving nothing ahead to detect.
+            # The drift starts on day t ITSELF, not t+1. That matters: the
+            # scanner scores day t, so the direction has to be observable in
+            # day t's own bar or there is nothing for it to key on. Drift
+            # beginning at t+1 plants a move whose direction is unknowable at
+            # scan time, which no scanner could detect and which therefore
+            # tests nothing.
+            h = self.planted_horizon
+            for j in range(n):
+                for t in rng.choice(np.arange(60, d - h), size=rng.integers(3, 7), replace=False):
+                    volume[t, j] *= rng.uniform(4.0, 9.0)
+                    direction = rng.choice([-1.0, 1.0])
+                    shocks[t, j] += direction * self.planted_drift * 4.0   # visible same-day move
+                    shocks[t + 1:t + 1 + h, j] += direction * self.planted_drift
+
+        close = np.exp(np.log(rng.uniform(4.0, 180.0, size=n)) + np.cumsum(shocks, axis=0))
+
+        prev = np.vstack([close[0:1], close[:-1]])
+        open_ = prev * np.exp(rng.normal(0, sig * 0.4, size=(d, n)))
+        span = np.abs(rng.normal(0, sig * 1.1, size=(d, n)))
+        high = np.maximum(open_, close) * (1 + span)
+        low = np.minimum(open_, close) * (1 - span)
+
+        idx = np.arange(n)
+        self._bars = pd.DataFrame({
+            "date": np.repeat(dates.to_numpy(), n),
+            "ticker": np.tile(np.array([f"{'CA' if i % 2 == 0 else 'US'}{i:03d}"
+                                        + (".TO" if i % 2 == 0 else "") for i in idx]), d),
+            "market": np.tile(np.where(idx % 2 == 0, "CA", "US"), d),
+            "sector": np.tile(np.array([SECTORS[i % len(SECTORS)] for i in idx]), d),
+            "open": open_.ravel(), "high": high.ravel(),
+            "low": low.ravel(), "close": close.ravel(), "volume": volume.ravel(),
+        })
+        # Keep OHLC coherent after the independent draws.
+        self._bars["high"] = self._bars[["open", "high", "low", "close"]].max(axis=1)
+        self._bars["low"] = self._bars[["open", "high", "low", "close"]].min(axis=1)
+        self._bars = self._bars.sort_values(["ticker", "date"]).reset_index(drop=True)
+
+        bench_shocks = rng.normal(0.0, 0.009, size=d) - 0.5 * 0.009**2
+        self._bench = pd.concat([
+            pd.DataFrame({"date": dates, "market": m,
+                          "bench_close": 100 * np.exp(np.cumsum(bench_shocks))})
+            for m in ("CA", "US")
+        ], ignore_index=True)
+
+    _ensure = MockMarketData._ensure
+    universe = MockMarketData.universe
+    daily_bars = MockMarketData.daily_bars
+    benchmarks = MockMarketData.benchmarks
+
+
+class SignalMarketData(NullMarketData):
+    """The POSITIVE control: identical to the null except signal is planted.
+
+    A volume spike on session t is followed by consistent drift over the next
+    10 sessions, so the spike genuinely predicts forward return. A scanner that
+    cannot find THIS cannot find anything, which is what makes a clean null
+    control meaningful rather than vacuous.
+
+    Note this is a deliberately unrealistic, unusually strong relationship. It
+    exists to prove the measuring apparatus works, and says nothing whatsoever
+    about whether real markets contain anything comparable. They do not.
+    """
+
+    name = "signal"
+
+    def __init__(self, **kw):
+        kw.setdefault("planted_drift", 0.015)
+        kw.setdefault("seed", 23)
+        super().__init__(**kw)
 
 
 # ---------------------------------------------------------------------------
@@ -260,4 +411,8 @@ def get_provider(name: str | None = None):
         return YahooMarketData()
     if name == "mock":
         return MockMarketData()
-    raise ValueError(f"unknown market data provider: {name!r} (mock|yahoo)")
+    if name == "null":
+        return NullMarketData()
+    if name == "signal":
+        return SignalMarketData()
+    raise ValueError(f"unknown market data provider: {name!r} (mock|null|signal|yahoo)")

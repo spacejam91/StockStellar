@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StockStellar — Daily Scan</title>
+  <style>
+    :root {
+      --bg: #0e1116; --panel: #161b22; --border: #2a313c;
+      --text: #e6edf3; --muted: #8b949e;
+      --green: #3fb950; --red: #f85149; --accent: #58a6ff; --amber: #d29922;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: var(--bg); color: var(--text); }
+    header { padding: 16px; border-bottom: 1px solid var(--border);
+             display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    h1 { margin: 0; font-size: 17px; }
+    a { color: var(--accent); text-decoration: none; }
+    .tag { font-size: 11px; padding: 3px 9px; border-radius: 999px;
+           background: var(--panel); border: 1px solid var(--border); color: var(--muted); }
+    main { padding: 16px; max-width: 760px; margin: 0 auto; }
+    h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+         color: var(--muted); margin: 24px 0 10px; }
+    .meta { color: var(--muted); font-size: 12px; }
+    .pick { background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+            padding: 14px; margin-bottom: 10px; }
+    .pick-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .tkr { font-size: 17px; font-weight: 600; }
+    .side { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+    .side.long { color: var(--green); border: 1px solid var(--green); }
+    .side.short { color: var(--red); border: 1px solid var(--red); }
+    .score { margin-left: auto; font-size: 19px; font-variant-numeric: tabular-nums; }
+    .score small { font-size: 11px; color: var(--muted); }
+    .bar { height: 4px; background: #222a35; border-radius: 3px; margin: 10px 0 8px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); }
+    .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+          gap: 6px 14px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .kv b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+    .drivers { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .flags { margin-top: 8px; font-size: 12px; color: var(--amber); }
+    .empty { background: var(--panel); border: 1px dashed var(--border); border-radius: 10px;
+             padding: 22px 16px; text-align: center; }
+    .empty strong { display: block; font-size: 15px; margin-bottom: 8px; }
+    .empty p { color: var(--muted); margin: 0 auto; max-width: 46ch; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border);
+             font-variant-numeric: tabular-nums; }
+    th:first-child, td:first-child { text-align: left; }
+    th { color: var(--muted); font-weight: 500; }
+    tr.none td { color: var(--muted); }
+    .disclaimer { margin: 28px 0 8px; padding: 12px 14px; border-left: 2px solid var(--border);
+                  color: var(--muted); font-size: 12px; }
+    .scroll { overflow-x: auto; }
+    button { font: inherit; background: var(--panel); color: var(--text);
+             border: 1px solid var(--border); border-radius: 7px; padding: 7px 12px; }
+    button:active { border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Daily Scan</h1>
+    <span class="tag">{{ provider }}</span>
+    <a href="/">← dashboard</a>
+  </header>
+
+  <main>
+    {% if day %}
+      <div class="meta">
+        Session <b>{{ day.as_of_date }}</b> · {{ day.n_eligible }} eligible ·
+        {{ day.n_over_threshold }} over threshold · {{ day.n_qualified }} qualified
+        {% if day.ceiling_z %} · ceiling {{ day.ceiling_z }}z{% endif %}
+      </div>
+
+      {% if picks %}
+        <h2>Flagged — {{ picks|length }} of max 3</h2>
+        {% for p in picks %}
+          <div class="pick">
+            <div class="pick-top">
+              <span class="tkr">{{ p.ticker }}</span>
+              <span class="side {{ p.side }}">{{ p.side|upper }}</span>
+              <span class="meta">{{ p.market }}{% if p.sector %} · {{ p.sector }}{% endif %}</span>
+              <span class="score">{{ p.score_pct|round(0)|int }}<small>/100</small></span>
+            </div>
+            <div class="bar"><span style="width: {{ p.score_pct }}%"></span></div>
+            <div class="kv">
+              <span>composite <b>{{ '%+.2f'|format(p.composite_z) }}z</b></span>
+              <span>qualifiers <b>{{ p.n_qualifiers }}/4</b></span>
+              <span>close <b>{{ '%.2f'|format(p.close) }}</b></span>
+              {% if p.rvol %}<span>RVOL <b>{{ '%.1f'|format(p.rvol) }}×</b></span>{% endif %}
+              {% if p.ret_z %}<span>move <b>{{ '%+.1f'|format(p.ret_z) }}σ</b></span>{% endif %}
+              {% if p.atr14 %}<span>ATR14 <b>{{ '%.2f'|format(p.atr14) }}</b></span>{% endif %}
+            </div>
+            {% if p.drivers %}<div class="drivers">drivers: {{ p.drivers }}</div>{% endif %}
+            {% if p.flags %}<div class="flags">⚠ {{ p.flags }}</div>{% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <h2>Flagged</h2>
+        <div class="empty">
+          <strong>No names cleared the threshold.</strong>
+          <p>That is an output, not a failure: nothing in the universe was statistically
+             unusual enough on the configured criteria this session.</p>
+        </div>
+      {% endif %}
+
+      <h2>Recent sessions{% if empty_share is not none %}
+        — {{ (empty_share * 100)|round(0)|int }}% empty{% endif %}</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr>
+            <th>session</th><th>eligible</th><th>over thr.</th><th>qualified</th>
+            <th>picks</th><th>max z</th>
+          </tr></thead>
+          <tbody>
+            {% for r in history %}
+              <tr {% if r.empty_day %}class="none"{% endif %}>
+                <td><a href="/scan?as_of={{ r.as_of_date }}">{{ r.as_of_date }}</a></td>
+                <td>{{ r.n_eligible }}</td>
+                <td>{{ r.n_over_threshold }}</td>
+                <td>{{ r.n_qualified }}</td>
+                <td>{{ r.n_picks if r.n_picks else '—' }}</td>
+                <td>{{ r.max_composite_z if r.max_composite_z is not none else '—' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty" style="margin-top:20px">
+        <strong>No scan logged yet.</strong>
+        <p>Run <code>uv run python -m scanner</code>, or use the button below.</p>
+        <p style="margin-top:12px"><button onclick="runScan(this)">Run scan now</button></p>
+      </div>
+    {% endif %}
+
+    <div class="disclaimer">
+      <b>What the score means.</b> <code>score_pct</code> is a 0–100 percentile of criteria
+      strength within that session's eligible universe: 92 means only 8% of the universe
+      fired this hard on these criteria. It is not a probability of gain, not a forecast,
+      and not a recommendation. The only probability-shaped figures here are the measured
+      base rates at <a href="/api/scan/base-rates">/api/scan/base-rates</a>, which report
+      what actually followed each score band, with sample sizes and standard errors.
+    </div>
+  </main>
+
+  <script>
+    async function runScan(btn) {
+      btn.disabled = true; btn.textContent = 'Scanning…';
+      try {
+        const r = await fetch('/api/scan/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ history_days: 0 }),
+        });
+        if (!r.ok) throw new Error('scan failed: ' + r.status);
+        location.reload();
+      } catch (e) {
+        btn.disabled = false; btn.textContent = 'Run scan now';
+        alert(e.message);
+      }
+    }
+  </script>
+</body>
+</html>

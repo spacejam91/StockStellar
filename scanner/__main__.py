@@ -88,7 +88,12 @@ def main(argv=None) -> int:
         if hist:
             empty = sum(1 for r in hist if r["empty_day"]) / len(hist)
             print(f"\n--- log: {len(hist)} sessions, {100 * empty:.0f}% empty ---")
-        br = store.score_band_base_rates(horizon=5)
+        for pb in store.provider_breakdown():
+            print(f"  provider {pb['provider']}: {pb['sessions']} sessions "
+                  f"({pb['first_date']} -> {pb['last_date']})")
+        # mock rows are a random walk; including them would dilute a real
+        # measurement toward 50% with a deceptively tight standard error
+        br = store.score_band_base_rates(horizon=5, include_mock=(provider.name == "mock"))
         if br.empty:
             print("no outcomes logged yet -- run with --history-days and --backfill first")
         else:

@@ -224,6 +224,17 @@ def day_for(as_of: str | None = None) -> dict | None:
         return dict(row) if row else None
 
 
+def provider_breakdown() -> list[dict]:
+    """Sessions logged per provider. Check this before reading any measurement."""
+    with _conn() as c:
+        c.row_factory = sqlite3.Row
+        rows = c.execute(
+            """SELECT provider, COUNT(DISTINCT as_of_date) AS sessions,
+                      MIN(as_of_date) AS first_date, MAX(as_of_date) AS last_date
+               FROM scan_run GROUP BY provider ORDER BY sessions DESC""").fetchall()
+        return [dict(r) for r in rows]
+
+
 def day_history(limit: int = 60) -> list[dict]:
     with _conn() as c:
         c.row_factory = sqlite3.Row
@@ -254,26 +265,42 @@ def scores_frame(start: str | None = None, end: str | None = None) -> pd.DataFra
     return df
 
 
-def score_band_base_rates(horizon: int = 5, band: int = 10) -> pd.DataFrame:
+def score_band_base_rates(horizon: int = 5, band: int = 10, provider: str | None = None,
+                          include_mock: bool = False) -> pd.DataFrame:
     """What actually followed each score band, measured from the log.
 
     This is the only legitimate probability-shaped output the scanner has: a
     measured base rate reported with n and a binomial standard error, never an
     asserted one. Read the SE column before reading anything else -- a band with
     a handful of observations is not a finding.
+
+    Rows scored against the mock provider are EXCLUDED by default. Mock bars are
+    a random walk, so mixing them into a base rate dilutes a real measurement
+    toward 50% with a deceptively small standard error -- the one number here
+    that has to be trustworthy would be the first thing corrupted. Pass
+    include_mock=True only to sanity-check the harness itself.
     """
     col = f"fwd_{horizon}d"
-    q = f"""SELECT CAST(s.score_pct / {band} AS INT) * {band} AS score_band,
+    where = [f"f.{col} IS NOT NULL"]
+    params: list = []
+    if provider is not None:
+        where.append("r.provider = ?")
+        params.append(provider)
+    elif not include_mock:
+        where.append("r.provider <> 'mock'")
+    q = f"""SELECT MIN(CAST(s.score_pct / {band} AS INT) * {band}, {100 - band}) AS score_band,
                    COUNT(*) AS n,
                    AVG(CASE WHEN (CASE WHEN s.side='short' THEN -f.{col} ELSE f.{col} END) > 0
                             THEN 1.0 ELSE 0.0 END) AS up_rate,
                    AVG(CASE WHEN s.side='short' THEN -f.{col} ELSE f.{col} END) AS mean_ret
-            FROM scan_score s JOIN forward_return f
+            FROM scan_score s
+            JOIN scan_run r ON r.run_id = s.run_id
+            JOIN forward_return f
               ON f.as_of_date = s.as_of_date AND f.ticker = s.ticker
-            WHERE f.{col} IS NOT NULL
+            WHERE {' AND '.join(where)}
             GROUP BY score_band ORDER BY score_band"""
     with _conn() as c:
-        df = pd.read_sql_query(q, c)
+        df = pd.read_sql_query(q, c, params=params)
     if df.empty:
         return df
     df["up_rate_pct"] = (100 * df["up_rate"]).round(1)
