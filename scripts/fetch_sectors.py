@@ -156,12 +156,16 @@ def main() -> int:
     uni = uni.merge(sic_from_quarterlies(), on="cik", how="left")
     print(f"    covered {uni.sic.notna().sum():,} ({uni.sic.notna().mean():.1%})")
 
-    missing = uni[uni.sic.isna() & uni.cik.notna()]["cik"].astype(int).tolist()
+    # Deduplicate: two tickers can share one CIK (a company with both common
+    # shares and listed notes), so the same CIK would be requested twice and
+    # the merge below would duplicate every row matching it.
+    missing = sorted(set(uni[uni.sic.isna() & uni.cik.notna()]["cik"].astype(int)))
     if missing and not args.no_api:
         print(f"  [3/3] per-CIK API for {len(missing):,} stragglers "
               f"(~{len(missing)/RATE/60:.1f} min at {RATE:.0f} req/s)")
         extra = sic_from_api(missing, limit=args.api_limit)
         if len(extra):
+            extra = extra.drop_duplicates("cik")
             uni = uni.merge(extra.rename(columns={"sic": "sic_api"}), on="cik", how="left")
             uni["sic"] = uni["sic"].fillna(uni.pop("sic_api"))
     else:

@@ -79,7 +79,14 @@ def build_us() -> pd.DataFrame:
     is_nasdaq = df["Listing Exchange"] == "Q"
     suffix5 = is_nasdaq & (sym.str.len() == 5) & sym.str[-1].isin(list("WRU"))
     dotted = (~is_nasdaq) & sym.str.contains(r"[.$]", regex=True)
-    df = df[~(suffix5 | dotted)]
+    # Debt and preferred instruments listed under a plain symbol slip past the
+    # suffix rules (e.g. "…8.50% Notes due 2031", "First Mortgage Bonds"). The
+    # security name is unreliable for classification generally, but these
+    # instrument words are unambiguous.
+    debt = df["Security Name"].str.contains(
+        r"\b(?:Note|Notes|Bond|Bonds|Debenture|Debentures|Preferred|Depositary|Trust Preferred)\b",
+        case=False, regex=True, na=False)
+    df = df[~(suffix5 | dotted | debt)]
 
     out = pd.DataFrame({
         "ticker": sym[df.index],
