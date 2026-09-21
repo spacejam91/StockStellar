@@ -47,6 +47,11 @@
     .side.short { color: var(--red); border: 1px solid var(--red); }
     .score { margin-left: auto; font-size: 19px; font-variant-numeric: tabular-nums; }
     .score small { font-size: 11px; color: var(--muted); }
+    /* score_pct is a percentile, so on a 3,000-name universe the top handful
+       all round to 100 and it stops telling them apart. composite_z is the
+       number that actually discriminates (3.57 vs 3.27 vs 3.02), so it leads,
+       with the rank spelled out underneath. */
+    .rank { font-size: 11px; color: var(--muted); margin: -2px 0 6px; }
     .bar { height: 4px; background: #222a35; border-radius: 3px; margin: 10px 0 8px; overflow: hidden; }
     .bar > span { display: block; height: 100%; background: var(--accent); }
     .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -132,9 +137,11 @@
                  title="{{ p.ticker }}: criteria, news, filings">{{ p.ticker }}</a></span>
               <span class="side {{ p.side }}">{{ p.side|upper }}</span>
               <span class="meta">{{ p.market }}{% if p.sector %} · {{ p.sector }}{% endif %}</span>
-              <span class="score">{{ p.score_pct|round(0)|int }}<small>/100</small></span>
+              <span class="score">{{ '%+.2f'|format(p.composite_z) }}<small>z</small></span>
             </div>
             <div class="bar"><span style="width: {{ p.score_pct }}%"></span></div>
+            <div class="rank">#{{ loop.index }} of {{ day.n_eligible }} eligible
+              · stronger than {{ '%.2f'|format(p.score_pct) }}% of them</div>
             <div class="kv">
               <span>close <b>{{ '%.2f'|format(p.close) }}</b></span>
               {% if p.atr14 %}<span>ATR14 <b>{{ '%.2f'|format(p.atr14) }}</b></span>{% endif %}

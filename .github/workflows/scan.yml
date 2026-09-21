@@ -72,6 +72,14 @@ jobs:
           uv run python scripts/build_universe.py
           uv run python scripts/fetch_sectors.py --no-api
 
+      - name: Restore the log from CSV
+        # The point-in-time log lives in git as TEXT, not as the SQLite file.
+        # A tracked binary cannot be merged, so `git pull` resolves it by
+        # overwrite -- which destroyed a real 90-session log when CI's fresh
+        # one-session database landed on a laptop. Import is additive: it adds
+        # rows the database lacks and never rewrites one it already has.
+        run: uv run python -m scanner.logexport import
+
       - name: Run the scan
         id: scan
         env:
@@ -110,10 +118,12 @@ jobs:
           #
           # Instead: take origin/main's history, keep this runner's files, and
           # commit them on top. "Ours wins" is correct for generated output.
+          uv run python -m scanner.logexport export
+
           for i in 1 2 3; do
             git fetch origin main
             git reset --soft origin/main
-            git add -f stockstellar.db data/universe_us.csv data/universe_ca.csv
+            git add -f data/log/*.csv data/universe_us.csv data/universe_ca.csv
             if git diff --staged --quiet; then
               echo "nothing to commit"; exit 0
             fi

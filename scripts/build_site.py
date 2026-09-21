@@ -10,9 +10,11 @@ Two things differ from the served version:
   * Paths are made relative. GitHub Pages serves a project site from
     /<repo>/, so an absolute "/static/icon-180.png" resolves to the user's
     root and 404s. Every "/static/..." becomes "static/...".
-  * The per-session history links point at "/scan?as_of=..." which needs a
-    running server. Static output has no query routing, so they render as
-    plain text instead of dead links.
+  * The per-session history links point at "/scan?as_of=..." which needs query
+    routing a static host does not have. So one page per session is written to
+    s/<date>.html and the links are rewritten to those. Without this the live
+    site had no way to reach a past session at all -- the history table
+    rendered as inert text.
 """
 
 from __future__ import annotations
@@ -68,12 +70,43 @@ def build(out: Path) -> int:
         static_build=True,
     )
 
-    html = html.replace('href="/static/', 'href="static/').replace('src="/static/', 'src="static/')
-    # Session links need a server; leave the date visible, drop the anchor.
-    html = re.sub(r'<a href="/scan\?as_of=[^"]*">([^<]*)</a>', r"\1", html)
+    def localise(page: str, depth: int = 0) -> str:
+        """Absolute app paths -> paths that work on a project Pages site.
+
+        GitHub Pages serves this from /<repo>/, so "/static/x" resolves to the
+        user root and 404s. `depth` is how many directories deep the page sits.
+        """
+        up = "../" * depth
+        page = (page.replace('href="/static/', f'href="{up}static/')
+                    .replace('src="/static/', f'src="{up}static/'))
+        page = re.sub(r'href="/scan\?as_of=([0-9-]+)"', rf'href="{up}s/\1.html"', page)
+        page = page.replace('href="/name/', f'href="{up}name/')
+        page = page.replace('href="/"', f'href="{up}index.html"')
+        return page
 
     out.mkdir(parents=True, exist_ok=True)
-    (out / "index.html").write_text(html, encoding="utf-8")
+    (out / "index.html").write_text(localise(html, 0), encoding="utf-8")
+
+    # One page per logged session, so the history table is navigable.
+    sess_dir = out / "s"
+    sess_dir.mkdir(exist_ok=True)
+    written = 0
+    for row in hist:
+        d = row["as_of_date"]
+        day_i = scan_store.day_for(d)
+        if day_i is None:
+            continue
+        page = env.get_template("scan.html").render(
+            request=None, day=day_i, picks=scan_store.picks_for(d), history=hist,
+            empty_share=empty_share, provider=day_i.get("provider") or "unknown",
+            th={"composite": c.composite_threshold, "rvol": c.qual_rvol,
+                "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
+                "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
+                "max_picks": c.max_picks},
+            static_build=True)
+        (sess_dir / f"{d}.html").write_text(localise(page, 1), encoding="utf-8")
+        written += 1
+    print(f"  wrote {written} per-session pages to {sess_dir}")
     if STATIC.exists():
         shutil.copytree(STATIC, out / "static", dirs_exist_ok=True)
         # The manifest carries its own absolute paths, which the HTML rewrite

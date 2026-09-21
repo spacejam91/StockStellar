@@ -65,6 +65,39 @@ class ScanConfig:
     qual_range_ratio: float = 2.0
     qual_gap_atr: float = 1.00
 
+    # --- Qualifier scaling ---------------------------------------------------
+    # A FIXED absolute threshold does not survive a change of universe size,
+    # and this was measured, not assumed:
+    #
+    #     universe      eligible/session   qualifying/session   empty days
+    #     400 tickers        ~190                ~2.4             25.4%
+    #     full CA+US        2,877               21.6              2.2%
+    #
+    # Same thresholds, fifteen times the names, fifteen times as many clearing
+    # any fixed bar -- so 21.6 names qualify for 3 slots and an empty day
+    # becomes impossible. Raising the levels by hand just re-fits them to one
+    # universe size and breaks again when the universe changes.
+    #
+    # In "scaled" mode each threshold is instead the quantile of that metric's
+    # own TRAILING distribution that leaves `target_qualifiers` names expected
+    # to clear it, whatever the universe size:
+    #
+    #     threshold = trailing_quantile(metric, 1 - target_qualifiers/n_eligible)
+    #
+    # Trailing, not today's cross-section. That distinction is the whole point:
+    # a bar set from today's own names is a percentile and can never be empty,
+    # while a bar set from the past 60 sessions is one today may simply fail to
+    # reach. Quiet day, nothing clears it, empty list.
+    qualifier_mode: str = "scaled"          # "scaled" | "absolute"
+    # 5, not 6. Measured across three universe sizes (2,882 / 743 / 128
+    # eligible), 6 lands at 17.7% / 15.6% / 30.2% empty and misses the spec's
+    # >=20% floor at two of them; 5 gives 21.9% / 20.8% / 31.2% and clears it
+    # everywhere while keeping the most names (1.07-1.57 picks/session).
+    # 4 also clears but costs picks for no benefit.
+    target_qualifiers: int = 5              # expected names clearing the bar
+    qualifier_lookback: int = 60            # trailing sessions for the baseline
+    qualifier_floor_frac: float = 0.5       # never fall below this x the absolute level
+
     # --- Step 6: weights ----------------------------------------------------
     # Equal by default, and that is a considered choice, not laziness. Dawes
     # (1979) on improper linear models and DeMiguel/Garlappi/Uppal (2009) on 1/N
