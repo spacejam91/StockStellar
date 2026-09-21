@@ -217,10 +217,18 @@ def day_for(as_of: str | None = None) -> dict | None:
         return None
     with _conn() as c:
         c.row_factory = sqlite3.Row
+        # Join scan_run for `provider`. Callers need to know which data source
+        # produced a session and cannot infer it from the environment: the env
+        # var reflects how the process is configured NOW, not how this row was
+        # produced. Reading it from os.getenv mislabels real sessions as mock
+        # the moment the variable is unset, which is exactly backwards -- it
+        # makes live output look like test output.
         row = c.execute(
-            """SELECT d.* FROM scan_day d
+            """SELECT d.*, r.provider FROM scan_day d
                JOIN (SELECT MAX(run_id) rid FROM scan_day WHERE as_of_date = ?) m
-                 ON m.rid = d.run_id WHERE d.as_of_date = ?""", (as_of, as_of)).fetchone()
+                 ON m.rid = d.run_id
+               JOIN scan_run r ON r.run_id = d.run_id
+               WHERE d.as_of_date = ?""", (as_of, as_of)).fetchone()
         return dict(row) if row else None
 
 

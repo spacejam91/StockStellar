@@ -25,6 +25,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
@@ -37,6 +38,7 @@ log = logging.getLogger("stockstellar")
 TEMPLATES = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 
 app = FastAPI(title="StockStellar")
+app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")), name="static")
 
 
 @app.get("/health")
@@ -186,6 +188,8 @@ async def scan_page(request: Request, as_of: str | None = None):
             "picks": picks,
             "history": hist,
             "empty_share": empty_share,
-            "provider": os.getenv("MARKET_DATA", "mock"),
+            # From the log, not the env var: the env says how this process
+            # is configured now, the log says what produced this session.
+            "provider": (day or {}).get("provider") or os.getenv("MARKET_DATA", "mock"),
         },
     )

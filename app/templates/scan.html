@@ -4,6 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>StockStellar — Daily Scan</title>
+
+  <!-- Home-screen install. `apple-mobile-web-app-capable` is what drops the
+       Safari chrome once the page is added to the Home Screen; without it the
+       icon opens an ordinary browser tab. iOS ignores the manifest's icons,
+       so apple-touch-icon has to be declared separately or iOS screenshots
+       the page and uses that. -->
+  <meta name="theme-color" content="#0e1116" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="StockStellar" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/icon-180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/icon-192.png" />
+  <link rel="manifest" href="/static/manifest.webmanifest" />
   <style>
     :root {
       --bg: #0e1116; --panel: #161b22; --border: #2a313c;
@@ -59,9 +74,8 @@
 </head>
 <body>
   <header>
-    <h1>Daily Scan</h1>
+    <h1>StockStellar</h1>
     <span class="tag">{{ provider }}</span>
-    <a href="/">← dashboard</a>
   </header>
 
   <main>
