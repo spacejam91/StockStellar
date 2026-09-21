@@ -45,13 +45,72 @@ def apply(df: pd.DataFrame, cfg: ScanConfig | None = None) -> pd.DataFrame:
         reason = reason.where(out[f"gate_{g}"], reason + g + ",")
     out["gate_fail_reason"] = reason.str.rstrip(",")
 
-    # Absolute, own-history qualifiers. NaN is not a fired condition.
-    fired = (
-        (out["rvol"] >= cfg.qual_rvol).fillna(False).astype(int)
-        + (out["ret_z"].abs() >= cfg.qual_ret_z).fillna(False).astype(int)
-        + (out["range_ratio"] >= cfg.qual_range_ratio).fillna(False).astype(int)
-        + (out["gap_atr"].abs() >= cfg.qual_gap_atr).fillna(False).astype(int)
-    )
+    out = add_qualifiers(out, cfg)
+    return out
+
+
+# metric -> (column, use |value|, the fixed fallback level on cfg)
+QUALIFIERS = (
+    ("rvol", "rvol", False, "qual_rvol"),
+    ("ret_z", "ret_z", True, "qual_ret_z"),
+    ("range_ratio", "range_ratio", False, "qual_range_ratio"),
+    ("gap_atr", "gap_atr", True, "qual_gap_atr"),
+)
+
+
+def scaled_thresholds(df: pd.DataFrame, cfg: ScanConfig) -> pd.DataFrame:
+    """Per-session qualifier levels that hold the expected count steady.
+
+    For each session: look back `qualifier_lookback` sessions of ELIGIBLE rows,
+    and take the quantile of each metric that leaves `target_qualifiers` names
+    expected to clear it out of today's eligible count.
+
+    The window ends at the PREVIOUS session. Including today would make the bar
+    a percentile of today's own names, which always admits the same proportion
+    and can never produce an empty day -- the exact failure this replaces.
+    """
+    dates = sorted(df.loc[df["eligible"], "date"].unique())
+    rows = []
+    for i, d in enumerate(dates):
+        lo = max(0, i - cfg.qualifier_lookback)
+        past = df[df["eligible"] & df["date"].isin(dates[lo:i])] if i else None
+        n_today = int((df["eligible"] & (df["date"] == d)).sum())
+        rec = {"date": d, "n_eligible": n_today}
+        # q chosen so ~target_qualifiers names are expected above it.
+        q = 1.0 - (cfg.target_qualifiers / max(n_today, 1))
+        q = min(max(q, 0.5), 0.99999)
+        for name, col, absolute, fallback in QUALIFIERS:
+            fixed = float(getattr(cfg, fallback))
+            if past is None or past.empty:
+                rec[name] = fixed
+                continue
+            series = past[col].abs() if absolute else past[col]
+            v = float(series.quantile(q)) if series.notna().any() else fixed
+            # Never drop far below the spec's absolute level: a stretch of dead
+            # sessions would otherwise drag the bar down to noise.
+            rec[name] = max(v, fixed * cfg.qualifier_floor_frac)
+        rows.append(rec)
+    return pd.DataFrame(rows)
+
+
+def add_qualifiers(out: pd.DataFrame, cfg: ScanConfig) -> pd.DataFrame:
+    """n_qualifiers, by fixed level or by trailing-scaled level."""
+    if cfg.qualifier_mode == "absolute":
+        levels = {n: float(getattr(cfg, fb)) for n, _c, _a, fb in QUALIFIERS}
+        fired = sum(
+            ((out[col].abs() if absolute else out[col]) >= levels[name]).fillna(False).astype(int)
+            for name, col, absolute, _fb in QUALIFIERS)
+        for name in levels:
+            out[f"thr_{name}"] = levels[name]
+        out["n_qualifiers"] = fired.astype(np.int8)
+        return out
+
+    thr = scaled_thresholds(out, cfg)
+    out = out.merge(thr.rename(columns={n: f"thr_{n}" for n, _c, _a, _f in QUALIFIERS})
+                       .drop(columns=["n_eligible"]), on="date", how="left")
+    fired = sum(
+        ((out[col].abs() if absolute else out[col]) >= out[f"thr_{name}"]).fillna(False).astype(int)
+        for name, col, absolute, _fb in QUALIFIERS)
     out["n_qualifiers"] = fired.astype(np.int8)
     return out
 
