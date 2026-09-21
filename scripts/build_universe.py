@@ -120,8 +120,13 @@ def build_ca() -> pd.DataFrame:
     df = pd.concat(frames, ignore_index=True)
     df = df[df["listing_market"].isin(YAHOO_SUFFIX)]
 
+    # Yahoo spells a Canadian sub-suffix with a HYPHEN, not a dot: BIP-UN.TO,
+    # CTC-A.TO, AGF-B.TO. Emitting BIP.UN.TO returns "possibly delisted; no
+    # timezone found" -- so every .UN REIT unit and every .A/.B share class,
+    # exactly the ones kept deliberately above, silently fetched nothing.
+    sym = (df["symbol"].str.strip().str.upper().str.replace(".", "-", regex=False))
     out = pd.DataFrame({
-        "ticker": df["symbol"].str.strip().str.upper() + df["listing_market"].map(YAHOO_SUFFIX),
+        "ticker": sym + df["listing_market"].map(YAHOO_SUFFIX),
         "name": df["security_name"].str.strip(),
         "exchange": df["listing_market"],
         "sector": df["sector"].fillna("").str.title().replace("", pd.NA),
@@ -141,12 +146,12 @@ def build_ca() -> pd.DataFrame:
     #   KEEP  .UN      income-trust/REIT units -- GRT.UN, BIP.UN are real and liquid
     #         .A/.B    share classes -- AGF.B is ordinary equity
     base = out["ticker"].str.replace(r"\.(TO|V|CN|NE)$", "", regex=True)
-    drop = base.str.contains(r"\.(?:PR|PF|WT|RT|DB)\b", regex=True) | base.str.endswith(".H")
+    drop = base.str.contains(r"-(?:PR|PF|WT|RT|DB)\b", regex=True) | base.str.endswith("-H")
 
     # .U is the USD-denominated twin of a CAD listing. Drop it only when the
     # CAD line also exists, otherwise a USD-only name (FIH.U) would vanish.
     bases = set(base[~drop])
-    usd_dupe = base.str.endswith(".U") & base.str.replace(r"\.U$", "", regex=True).isin(bases)
+    usd_dupe = base.str.endswith("-U") & base.str.replace(r"-U$", "", regex=True).isin(bases)
 
     removed = int((drop | usd_dupe).sum())
     out = out[~(drop | usd_dupe)]

@@ -6,21 +6,21 @@ SAP.TO,SAPUTO INC.,TSX,Food Prod & Dstr
 AFN.TO,AG GROWTH INTERNATIONAL INC.,TSX,Investment Company
 MTL.TO,MULLEN GROUP LTD.,TSX,Transport Services
 STN.TO,STANTEC INC.,TSX,Consulting Services
-GRT.UN.TO,GRANITE REAL ESTATE INVESTMENT TR STAPLED UN,TSX,Investment Trust
+GRT-UN.TO,GRANITE REAL ESTATE INVESTMENT TR STAPLED UN,TSX,Investment Trust
 SU.TO,SUNCOR ENERGY INC.,TSX,Oil/Gas Expl & Dev
 WCP.TO,WHITECAP RESOURCES INC. J,TSX,Oil/Gas Expl & Dev
-BIP.UN.TO,BROOKFIELD INFRASTRUCTURE PARTNERS L.P. UN,TSX,Limited Partnership
+BIP-UN.TO,BROOKFIELD INFRASTRUCTURE PARTNERS L.P. UN,TSX,Limited Partnership
 SBC.TO,BROMPTON SPLIT BANC CORP. CLASS 'A',TSX,Investment Company
 BIR.TO,BIRCHCLIFF ENERGY LTD.,TSX,Oil/Gas Expl
 PHX.TO,PHX ENERGY SERVICES CORP.,TSX,Drilling Services
 RFA.TO,RFA Financial Inc,TSX,Investment Fund
 EFX.TO,ENERFLEX LTD.,TSX,Gas Equip Mfg/Lse
-AGF.B.TO,AGF MANAGEMENT LTD. CL 'B' NV,TSX,Mutual Funds
+AGF-B.TO,AGF MANAGEMENT LTD. CL 'B' NV,TSX,Mutual Funds
 AGI.TO,ALAMOS GOLD INC. J,TSX,Mineral Expl & Dev
 ADEN.TO,ADENTRA Inc.,TSX,Lumber Process/Mkt
 WEF.TO,WESTERN FOREST PRODUCTS INC.,TSX,Forest Products
 OGC.TO,OCEANAGOLD CORPORATION,TSX,Gold Mining
-BTB.UN.TO,BTB REAL ESTATE INVESTMENT TRUST UN,TSX,Investment Trust
+BTB-UN.TO,BTB REAL ESTATE INVESTMENT TRUST UN,TSX,Investment Trust
 FSV.TO,FIRSTSERVICE CORPORATION SV,TSX,Property Services
 MX.TO,METHANEX CORPORATION,TSX,Oil/Gas Expl & Dev
 NEXT.TO,NextSource Materials Inc.,TSX,Metal Expl & Dev
@@ -33,7 +33,7 @@ PIF.TO,Polaris Renewable Energy Inc.,TSX,Geothermal Res Dev
 EIF.TO,EXCHANGE INCOME CORPORATION,TSX,Investment Company
 GUD.TO,KNIGHT THERAPEUTICS INC.,TSX,Pharmaceutical
 NA.TO,NATIONAL BANK OF CANADA,TSX,Banking
-CRR.UN.TO,CROMBIE REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
+CRR-UN.TO,CROMBIE REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
 WFG.TO,WEST FRASER TIMBER CO. LTD.,TSX,Forest Products
 CS.TO,Capstone Copper Corp,TSX,Mineral Expl & Dev
 GWO.TO,GREAT-WEST LIFECO INC.,TSX,Holding Company
@@ -45,11 +45,11 @@ QTRH.TO,Quarterhill Inc.,TSX,Wireless Data Tech
 DFN.TO,DIVIDEND 15 SPLIT CORP. CL 'A',TSX,Investment Company
 MDI.TO,MAJOR DRILLING GROUP INTERNATIONAL INC.,TSX,Constr Drilling
 BDGI.TO,Badger Infrastructure Solutions Ltd.,TSX,Oil/Gas Services
-CHE.UN.TO,CHEMTRADE LOGISTICS INCOME FUND UNITS,TSX,Investment Fund
+CHE-UN.TO,CHEMTRADE LOGISTICS INCOME FUND UNITS,TSX,Investment Fund
 ELD.TO,ELDORADO GOLD,TSX,Mineral Expl & Dev
 OBE.TO,Obsidian Energy Ltd.,TSX,Oil/Gas Expl & Dev
-CSH.UN.TO,CHARTWELL RETIREMENT RESIDENCES UNITS,TSX,Investment Company
-FCR.UN.TO,FIRST CAPITAL REIT,TSX,Investment Trust
+CSH-UN.TO,CHARTWELL RETIREMENT RESIDENCES UNITS,TSX,Investment Company
+FCR-UN.TO,FIRST CAPITAL REIT,TSX,Investment Trust
 TOT.TO,TOTAL ENERGY SERVICES INC.,TSX,Drilling Services
 AIF.TO,ALTUS GROUP LIMITED,TSX,Real Est Consult Serv
 T.TO,TELUS CORPORATION,TSX,Telecommunications
@@ -62,7 +62,7 @@ LMR.V,Lomiko Metals Inc.,TSX.V,Mining
 FTS.TO,FORTIS INC.,TSX,Management Co
 TA.TO,TRANSALTA CORPORATION,TSX,Public Utility
 WM.TO,WALLBRIDGE MINING COMPANY LIMITED J,TSX,Mineral Expl & Dev
-CHP.UN.TO,CHOICE PROPERTIES REAL EST INVESTMENT TR UN,TSX,Investment Trust
+CHP-UN.TO,CHOICE PROPERTIES REAL EST INVESTMENT TR UN,TSX,Investment Trust
 AIM.TO,AIMIA INC.,TSX,Loyalty Prod & Serv
 WN.TO,WESTON LTD. GEORGE,TSX,Food Prod & Dstr
 MEQ.TO,MAINSTREET EQUITY CORP. J,TSX,Real Estate
@@ -74,7 +74,7 @@ CAE.TO,CAE INC.,TSX,Aerospace Tech
 HLF.TO,HIGH LINER FOODS INCORPORATED,TSX,Seafood Prod Mfg
 EMA.TO,EMERA INCORPORATED,TSX,Holding Company
 KEY.TO,KEYERA CORP.,TSX,Investment Company
-CTC.A.TO,"CANADIAN TIRE CORPORATION, LIMITED CL 'A' NV",TSX,Retail Stores
+CTC-A.TO,"CANADIAN TIRE CORPORATION, LIMITED CL 'A' NV",TSX,Retail Stores
 GAU.TO,Galiano Gold Inc.,TSX,Mineral Expl & Dev
 PXT.TO,PAREX RESOURCES INC. J,TSX,Oil/Gas Expl & Dev
 WPK.TO,WINPAK LIMITED,TSX,Packaging Dsgn/Mfg
@@ -83,8 +83,8 @@ FTT.TO,FINNING INTERNATIONAL INC.,TSX,Heavy Equipment
 WRG.TO,WESTERN ENERGY SERVICES CORP.,TSX,Oil Field Service
 PNE.TO,PINE CLIFF ENERGY LTD. J,TSX,Oil/Gas Expl & Dev
 SGY.TO,SURGE ENERGY INC. J,TSX,Oil/Gas Expl & Dev
-CAR.UN.TO,CDN APARTMENT PROP REAL EST INV TR UNITS,TSX,Investment Trust
-DII.B.TO,DOREL INDUSTRIES INC. CL 'B' SV,TSX,Furniture Mfg
+CAR-UN.TO,CDN APARTMENT PROP REAL EST INV TR UNITS,TSX,Investment Trust
+DII-B.TO,DOREL INDUSTRIES INC. CL 'B' SV,TSX,Furniture Mfg
 CU.TO,CANADIAN UTILITIES LIMITED CL 'A' NV,TSX,Diversified Oper
 PNP.TO,PINETREE CAPITAL LTD. J,TSX,Finance Serv & Inv
 CAS.TO,CASCADES INC.,TSX,Paper & Packaging
@@ -92,21 +92,21 @@ WSP.TO,WSP GLOBAL INC.,TSX,Engineer Constr/Serv
 WTE.TO,WESTSHORE TERMINALS INVESTMENT CORPORATION,TSX,Investment Company
 BNE.TO,BONTERRA ENERGY CORP.,TSX,Res Expl & Dev
 FFH.TO,FAIRFAX FINANCIAL HOLDINGS LTD. SV,TSX,Holding Company
-EMP.A.TO,EMPIRE COMPANY LTD. CL 'A' NV,TSX,Holding Company
+EMP-A.TO,EMPIRE COMPANY LTD. CL 'A' NV,TSX,Holding Company
 OTEX.TO,OPEN TEXT CORPORATION,TSX,Software Dev/Mkt
 XTC.TO,EXCO TECHNOLOGIES LTD.,TSX,Tool & Metalwork
 IAG.TO,iA Financial Corporation,TSX,Holding Company
-TECK.B.TO,TECK RESOURCES LIMITED CL 'B' SV,TSX,Mineral Expl & Dev
+TECK-B.TO,TECK RESOURCES LIMITED CL 'B' SV,TSX,Mineral Expl & Dev
 ENB.TO,ENBRIDGE INC.,TSX,Oil Pipeline
 RSI.TO,ROGERS SUGAR INC.,TSX,Sugar Refinery
-DIR.UN.TO,DREAM INDUSTRIAL REAL ESTATE INVEST TR UNITS,TSX,Investment Trust
+DIR-UN.TO,DREAM INDUSTRIAL REAL ESTATE INVEST TR UNITS,TSX,Investment Trust
 FVI.TO,Fortuna Mining Corp.,TSX,Silver Mining & Expl
-TCL.A.TO,TRANSCONTINENTAL INC. CL 'A' SV,TSX,Printing & Publish
+TCL-A.TO,TRANSCONTINENTAL INC. CL 'A' SV,TSX,Printing & Publish
 DXT.TO,Dexterra Group Inc.,TSX,Drilling Services
 POU.TO,PARAMOUNT RESOURCES LTD. CLASS A,TSX,Oil/Gas Expl & Dev
 DIV.TO,DIVERSIFIED ROYALTY CORP. J,TSX,Investment Company
 NFI.TO,NFI GROUP INC,TSX,Heavy Vhcl Mfg & Serv
-QBR.B.TO,QUEBECOR INC. CL 'B' SV,TSX,Holding Company
+QBR-B.TO,QUEBECOR INC. CL 'B' SV,TSX,Holding Company
 X.TO,TMX GROUP LIMITED,TSX,Holding Company
 POW.TO,POWER CORPORATION OF CANADA SV,TSX,Holding Company
 SIA.TO,SIENNA SENIOR LIVING INC.,TSX,Healthcare Facility
@@ -117,22 +117,22 @@ NG.TO,NOVAGOLD RESOURCES INC. J,TSX,Gold Expl & Dev
 MFI.TO,MAPLE LEAF FOODS INC.,TSX,Food Prod & Dstr
 TRP.TO,TC ENERGY CORPORATION,TSX,Gas Pipeline
 SII.TO,SPROTT INC.,TSX,Asset Mgt/Advise Serv
-CJR.B.TO,CORUS ENTERTAINMENT INC. CL 'B' NV,TSX,Broadcasting
+CJR-B.TO,CORUS ENTERTAINMENT INC. CL 'B' NV,TSX,Broadcasting
 L.TO,LOBLAW COMPANIES LIMITED,TSX,Retail Food Chain
 ALS.TO,ALTIUS MINERALS CORPORATION,TSX,Oil/Gas Res Prop
 MG.TO,MAGNA INTERNATIONAL INC.,TSX,Auto Components
 BB.TO,BLACKBERRY LIMITED,TSX,Commun Systems
 CJT.TO,CARGOJET INC.,TSX,Air Cargo Services
-HOT.UN.TO,AMERICAN HOTEL INCOME PROPERTIES REIT LP UN,TSX,Limited Partnership
+HOT-UN.TO,AMERICAN HOTEL INCOME PROPERTIES REIT LP UN,TSX,Limited Partnership
 PAAS.TO,PAN AMERICAN SILVER CORP.,TSX,Mineral Expl & Dev
 TCW.TO,TRICAN WELL SERVICE LTD.,TSX,Oil Services
 SJ.TO,STELLA-JONES INC.,TSX,Forest Products
 VET.TO,VERMILION ENERGY INC.,TSX,Oil/Gas Expl & Dev
-BBD.A.TO,BOMBARDIER INC. CL 'A' MV,TSX,Diversified Oper
+BBD-A.TO,BOMBARDIER INC. CL 'A' MV,TSX,Diversified Oper
 KEEK.V,Keek Social Inc.,TSX.V,Technology
 PPL.TO,PEMBINA PIPELINE CORPORATION,TSX,Investment Company
 YTY.V,Wi2Wi Corporation,TSX.V,Technology
-BBD.B.TO,BOMBARDIER INC. CL 'B' SV,TSX,Diversified Oper
+BBD-B.TO,BOMBARDIER INC. CL 'B' SV,TSX,Diversified Oper
 RUS.TO,RUSSEL METALS INC.,TSX,Metal Process/Dstr
 DOL.TO,DOLLARAMA INC.,TSX,Consumer Prod
 TD.TO,TORONTO-DOMINION BANK (THE),TSX,Banking
@@ -140,12 +140,12 @@ CCA.TO,COGECO COMMUNICATIONS INC. SV,TSX,Cable Television
 LB.TO,LAURENTIAN BANK OF CANADA,TSX,Banking
 MER.TO,Meren Energy Inc,TSX,Oil & Gas Expl
 DOO.TO,BRP INC. SV,TSX,Sports Vhcl Mfg/Mkt
-AP.UN.TO,ALLIED PROPERTIES REAL ESTATE INVEST TRUST UN,TSX,Investment Trust
+AP-UN.TO,ALLIED PROPERTIES REAL ESTATE INVEST TRUST UN,TSX,Investment Trust
 DPM.TO,DPM Metals Inc,TSX,Investment Company
 SLF.TO,SUN LIFE FINANCIAL INC.,TSX,Insurance
 PBH.TO,PREMIUM BRANDS HOLDINGS CORPORATION,TSX,Food Prod & Dstr
 Y.TO,YELLOW PAGES LIMITED,TSX,Holding Company
-CCL.B.TO,CCL INDUSTRIES INC. CL 'B' NV,TSX,Diversified Oper
+CCL-B.TO,CCL INDUSTRIES INC. CL 'B' NV,TSX,Diversified Oper
 IFC.TO,INTACT FINANCIAL CORPORATION,TSX,Insurance
 CCO.TO,CAMECO CORPORATION,TSX,Uranium Expl & Dev
 DR.TO,MEDICAL FACILITIES CORPORATION,TSX,Medical Facility
@@ -156,7 +156,7 @@ LBS.TO,LIFE & BANC SPLIT CORP. CLASS 'A',TSX,Investment Company
 AQN.TO,ALGONQUIN POWER & UTILITIES CORP.,TSX,Investment Company
 IFP.TO,INTERFOR CORPORATION,TSX,Forest Products
 BOS.TO,AIRBOSS OF AMERICA CORP. J,TSX,Tire Mfg/Dstr
-HR.UN.TO,H&R REIT,TSX,Investment Trust
+HR-UN.TO,H&R REIT,TSX,Investment Trust
 BCE.TO,BCE INC.,TSX,Telecommunications
 IGM.TO,IGM FINANCIAL INC.,TSX,Financial Services
 DRM.TO,DREAM UNLIMITED CORP. CL 'A' SV,TSX,Real Estate
@@ -164,7 +164,7 @@ RAY.TO,Stingray Group Inc,TSX,Music & Media Solutn
 CM.TO,CANADIAN IMPERIAL BANK OF COMMERCE,TSX,Banking
 HBM.TO,HUDBAY MINERALS INC.,TSX,Base Mtl Expl/Dev
 NPI.TO,NORTHLAND POWER INC.,TSX,Elect Power Oper
-BPF.UN.TO,BOSTON PIZZA ROYALTIES INCOME FUND UNITS,TSX,Investment Fund
+BPF-UN.TO,BOSTON PIZZA ROYALTIES INCOME FUND UNITS,TSX,Investment Fund
 DRT.TO,DIRTT ENVIRONMENTAL SOLUTIONS LTD. J,TSX,Recycled Products
 III.TO,IMPERIAL METALS CORP.,TSX,Res Expl & Dev
 RBA.TO,RB Global Inc.,TSX,Auction
@@ -192,16 +192,16 @@ ATS.TO,ATS Corporation,TSX,Automated Mfg Sys
 AC.TO,AIR CANADA VOTING AND VARIABLE VOTING,TSX,Airline
 PSI.TO,PASON SYSTEMS INC.,TSX,Oil Field Service
 CNQ.TO,CANADIAN NATURAL RESOURCES LIMITED,TSX,Oil/Gas Expl & Dev
-RCI.B.TO,ROGERS COMMUNICATIONS INC. CL 'B' NV,TSX,Broadcast/Telecom
+RCI-B.TO,ROGERS COMMUNICATIONS INC. CL 'B' NV,TSX,Broadcast/Telecom
 PSK.TO,PRAIRIESKY ROYALTY LTD.,TSX,Oil/Gas Expl & Dev
 CNR.TO,CANADIAN NATIONAL RAILWAY CO.,TSX,Railroad
-ACO.X.TO,ATCO LTD. CL 'I' NV,TSX,Holding Company
+ACO-X.TO,ATCO LTD. CL 'I' NV,TSX,Holding Company
 SPB.TO,SUPERIOR PLUS CORP.,TSX,Investment Company
 ESI.TO,ENSIGN ENERGY SERVICES INC.,TSX,Oil/Gas Wells Serv
 ATH.TO,ATHABASCA OIL CORPORATION J,TSX,Oil Expl & Dev
 LNR.TO,LINAMAR CORPORATION,TSX,Machine Equip Mfg
 OVV.TO,Ovintiv Inc.,TSX,Oil/Gas Expl & Dev
-GIB.A.TO,CGI Inc.,TSX,Telecommunications
+GIB-A.TO,CGI Inc.,TSX,Telecommunications
 ACQ.TO,AUTOCANADA INC.,TSX,Automobile Sales
 FM.TO,FIRST QUANTUM MINERALS LTD. J,TSX,Mineral Expl & Dev
 PEY.TO,PEYTO EXPLORATION & DEVELOPMENT CORP.,TSX,Oil/Gas Expl & Dev
@@ -210,34 +210,34 @@ MRC.TO,MORGUARD CORPORATION,TSX,Investment Company
 CEU.TO,CES Energy Solutions Corp.,TSX,Energy Rsch & Dev
 MRD.TO,MELCOR DEVELOPMENTS LTD.,TSX,Real Estate
 GIL.TO,GILDAN ACTIVEWEAR INC.,TSX,Sportswr Mfg/Dstr
-AD.UN.TO,Alaris Equity Partners Income Trust,TSX,Investment Trust
+AD-UN.TO,Alaris Equity Partners Income Trust,TSX,Investment Trust
 MRE.TO,MARTINREA INTERNATIONAL INC.,TSX,Metal Products Mfg
 BDI.TO,BLACK DIAMOND GROUP LIMITED,TSX,Limited Partnership
 NWC.TO,NORTH WEST COMPANY INC. (THE) VV,TSX,Retail Food Chain
 BDT.TO,BIRD CONSTRUCTION INC.,TSX,Constr Contract/Serv
 AVTS.V,Aventus Capital Inc.,TSX.V,Financial Services
 CF.TO,CANACCORD GENUITY GROUP INC.,TSX,Invest Dealer Serv
-REI.UN.TO,RIOCAN REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
+REI-UN.TO,RIOCAN REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
 TWM.TO,Tidewater Midstream and Infrastructure Ltd.,TSX,Nat Gas Transport
 ADN.TO,ACADIAN TIMBER CORP.,TSX,Lumber Process/Mkt
 FNV.TO,FRANCO-NEVADA CORPORATION,TSX,Investment Company
-SRU.UN.TO,SmartCentres REIT Variable Voting,TSX,Investment Trust
-BEI.UN.TO,BOARDWALK REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
+SRU-UN.TO,SmartCentres REIT Variable Voting,TSX,Investment Trust
+BEI-UN.TO,BOARDWALK REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Trust
 CP.TO,Canadian Pacific Kansas City Limited,TSX,Transportation
 EDR.TO,ENDEAVOUR SILVER CORP. J,TSX,Precious Mtl Expl
 TIH.TO,TOROMONT INDUSTRIES LTD.,TSX,Construction Equip
 LUC.TO,LUCARA DIAMOND CORP. J,TSX,Diamond Expl & Dev
-D.UN.TO,DREAM OFFICE REAL ESTATE INVESTMENT TRUST UN,TSX,Investment Trust
-U.UN.TO,Sprott Physical Uranium Trust,TSX,Investment Trust
+D-UN.TO,DREAM OFFICE REAL ESTATE INVESTMENT TRUST UN,TSX,Investment Trust
+U-UN.TO,Sprott Physical Uranium Trust,TSX,Investment Trust
 LUN.TO,LUNDIN MINING CORPORATION,TSX,Mining Expl & Dev
 CFP.TO,CANFOR CORPORATION,TSX,Forest Products
 MRU.TO,METRO INC.,TSX,Food Services
 CFW.TO,CALFRAC WELL SERVICES LTD.,TSX,Uranium Expl & Dev
-BEP.UN.TO,BROOKFIELD RENEWABLE PARTNERS LP NV UN,TSX,Limited Partnership
+BEP-UN.TO,BROOKFIELD RENEWABLE PARTNERS LP NV UN,TSX,Limited Partnership
 CPH.TO,CIPHER PHARMACEUTICALS INC. J,TSX,Biopharmaceutical
 EXE.TO,EXTENDICARE INC.,TSX,Healthcare Facility
 EFN.TO,ELEMENT FLEET MANAGEMENT CORP.,TSX,Financial Services
-VITL.UN.TO,Vital Infrastructure Property Trust,TSX,Investment Trust
+VITL-UN.TO,Vital Infrastructure Property Trust,TSX,Investment Trust
 SSRM.TO,SSR Mining Inc.,TSX,Silver Mining & Expl
 CG.TO,CENTERRA GOLD INC.,TSX,Gold Expl & Dev
 AEM.TO,AGNICO EAGLE MINES LIMITED,TSX,Gld/Sil Expl & Dev
@@ -249,7 +249,7 @@ IVN.TO,IVANHOE MINES LTD. CL 'A' J,TSX,Mineral Expl & Dev
 FSZ.TO,FIERA CAPITAL CORPORATION CLASS 'A' SV,TSX,Investment Company
 JOY.TO,JOURNEY ENERGY INC.,TSX,Oil/Gas Expl & Dev
 DF.TO,DIVIDEND 15 SPLIT CORP. II CLASS 'A',TSX,Investment Company
-EIT.UN.TO,CANOE EIT INCOME FUND UNITS,TSX,Investment Fund
+EIT-UN.TO,CANOE EIT INCOME FUND UNITS,TSX,Investment Fund
 SXP.TO,SUPREMEX INC.,TSX,Stationery Prod Mfg
 TOY.TO,SPIN MASTER CORP. SV,TSX,Entertainment Prod
 MPH.V,Medicure Inc.,TSX.V,Manufacturing
@@ -258,11 +258,11 @@ PX.V,Pelangio Exploration Inc.,TSX.V,Mining
 ELEF.TO,Silver Elephant Mining Corp.,TSX,Coal Expl & Dev
 IMP.TO,INTERMAP TECHNOLOGIES CORPORATION,TSX,Geographic Data Tech
 TRAN.V,Clean Energy Transition Inc.,TSX.V,Mining
-RET.A.V,Reitmans (Canada) Limited A NV,TSX.V,Merchandising
+RET-A.V,Reitmans (Canada) Limited A NV,TSX.V,Merchandising
 TKO.TO,Trekor Metals Limited,TSX,Metal Expl & Prod
-DC.A.TO,DUNDEE CORPORATION CL 'A' SV,TSX,Management Co
+DC-A.TO,DUNDEE CORPORATION CL 'A' SV,TSX,Management Co
 MIR.V,MedMira Inc.,TSX.V,Technology
-PLZ.UN.TO,PLAZA RETAIL REIT TRUST UNITS,TSX,Investment Trust
+PLZ-UN.TO,PLAZA RETAIL REIT TRUST UNITS,TSX,Investment Trust
 SVRS.V,Silver Storm Mining Ltd.,TSX.V,Mining
 EKG.V,"CardioComm Solutions, Inc.",TSX.V,Medical & Health Care
 BRM.V,Biorem Inc.,TSX.V,Manufacturing
@@ -275,7 +275,7 @@ BR.TO,BIG ROCK BREWERY INC.,TSX,Brewery
 LUG.TO,LUNDIN GOLD INC. J,TSX,Mineral Expl & Dev
 QZM.V,Quartz Mountain Resources Ltd,TSX.V,Mining
 CDR.TO,Condor Energies Inc.,TSX,Oil/Gas Expl & Dev
-CRT.UN.TO,CT REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Fund
+CRT-UN.TO,CT REAL ESTATE INVESTMENT TRUST UNITS,TSX,Investment Fund
 LOT.V,TomaGold Corporation,TSX.V,Mining
 KXS.TO,KINAXIS INC. J,TSX,Software Dev/Mkt/Serv
 VPI.V,Vitality Products Inc.,TSX.V,Manufacturing
@@ -283,26 +283,26 @@ NOA.TO,North American Construction Group Ltd.,TSX,Oil Field Service
 GGD.TO,GOGOLD RESOURCES INC. J,TSX,Mineral Expl & Dev
 EDV.TO,Endeavour Mining plc,TSX,Merchant Banking
 EFR.TO,ENERGY FUELS INC. J,TSX,Uranium Expl & Dev
-PIC.A.TO,PREMIUM INCOME CORPORATION CL 'A',TSX,Mutual Funds
+PIC-A.TO,PREMIUM INCOME CORPORATION CL 'A',TSX,Mutual Funds
 RX.V,BioSyent Inc.,TSX.V,Manufacturing
-CSW.A.TO,CORBY SPIRIT AND WINE LIMITED CL 'A',TSX,Distillery
-CTF.UN.TO,CITADEL INCOME FUND TRANSFER UNITS,TSX,Investment Fund
-TPX.B.TO,MOLSON COORS CANADA INC. CLASS 'B' EXCH NV,TSX,Brewery/Divers Mfg
+CSW-A.TO,CORBY SPIRIT AND WINE LIMITED CL 'A',TSX,Distillery
+CTF-UN.TO,CITADEL INCOME FUND TRANSFER UNITS,TSX,Investment Fund
+TPX-B.TO,MOLSON COORS CANADA INC. CLASS 'B' EXCH NV,TSX,Brewery/Divers Mfg
 DML.TO,DENISON MINES CORP.,TSX,Uranium Expl & Dev
 VML.V,Viscount Mining Corp.,TSX.V,Mining
 FDI.V,Findev Inc.,TSX.V,Real Estate
 CKI.TO,CLARKE INC.,TSX,Transportation
-APR.UN.TO,AUTOMOTIVE PROPERTIES RL EST INVEST TRUST UN,TSX,Investment Trust
+APR-UN.TO,AUTOMOTIVE PROPERTIES RL EST INVEST TRUST UN,TSX,Investment Trust
 DAN.V,Arianne Phosphate Inc.,TSX.V,Mining
-MPCT.UN.TO,Dream Impact Trust,TSX,Investment Trust
+MPCT-UN.TO,Dream Impact Trust,TSX,Investment Trust
 RCH.TO,RICHELIEU HARDWARE LTD.,TSX,Hardware Products
 TVI.V,Tvi Pacific Inc.,TSX.V,Mining
-SGR.UN.TO,Slate Grocery REIT,TSX,Investment Trust
+SGR-UN.TO,Slate Grocery REIT,TSX,Investment Trust
 WDO.TO,WESDOME GOLD MINES LTD.,TSX,Mineral Expl & Dev
 BK.TO,CANADIAN BANC CORP. CL 'A',TSX,Mutual Funds
 ATY.V,Atico Mining Corporation,TSX.V,Mining
 SWLF.V,Silver Wolf Exploration Ltd.,TSX.V,Mining
-CUP.U.TO,"CARIBBEAN UTILITIES COMPANY, LTD. U.S. CL 'A'",TSX,Public Utility
+CUP-U.TO,"CARIBBEAN UTILITIES COMPANY, LTD. U.S. CL 'A'",TSX,Public Utility
 MBO.V,Mobio Technologies Inc.,TSX.V,Manufacturing
 EPL.V,Eagle Plains Resources Ltd.,TSX.V,Mining
 PLAN.V,Progressive Planet Solutions Inc.,TSX.V,Manufacturing
@@ -313,12 +313,12 @@ GORO.V,GOLDGROUP MINING INC.,TSX.V,Mining
 CXI.TO,"CURRENCY EXCHANGE INTERNATIONAL, CORP. J",TSX,Currency Exch/Serv
 SVM.TO,SILVERCORP METALS INC. J,TSX,Mineral Expl & Dev
 MCB.TO,MCCOY GLOBAL INC.,TSX,Truck Equipment
-MRG.UN.TO,MORGUARD NORTH AMERICAN RESIDENTIAL REIT UN,TSX,Investment Trust
+MRG-UN.TO,MORGUARD NORTH AMERICAN RESIDENTIAL REIT UN,TSX,Investment Trust
 QRC.TO,Queens Road Capital Investment Ltd.,TSX,Investment Company
 CRE.V,Critical Elements Lithium Corporation,TSX.V,Mining
 CGM.V,Canadian Goldfields Discovery Corp.,TSX.V,Mining
-BGI.UN.TO,BROOKFIELD GLBL INFRASTRUCTR SEC INCM FND UN,TSX,Investment Fund
-PGI.UN.TO,PIMCO GLOBAL INCOME OPPORTUNITIES FND CL A UN,TSX,Investment Fund
+BGI-UN.TO,BROOKFIELD GLBL INFRASTRUCTR SEC INCM FND UN,TSX,Investment Fund
+PGI-UN.TO,PIMCO GLOBAL INCOME OPPORTUNITIES FND CL A UN,TSX,Investment Fund
 EAM.V,East Africa Metals Inc.,TSX.V,Mining
 CEC.V,CanAsia Energy Corp.,TSX.V,Oil & Gas
 GCOM.V,Green Shift Commodities Ltd.,TSX.V,Mining
@@ -358,8 +358,8 @@ PRU.TO,PERSEUS MINING LIMITED ORDINARY J,TSX,Gold Expl & Dev
 PTM.TO,PLATINUM GROUP METALS LTD. J,TSX,Mineral Expl & Dev
 WEB.V,Westbridge Renewable Energy Corp.,TSX.V,Business Services
 FAP.TO,abrdn Asia-Pacific Income Fund VCC,TSX,Investment Company
-FCD.UN.TO,Firm Capital Property Trust,TSX,Investment Trust
-MDS.UN.TO,HEALTHCARE SPECIAL OPPORTUNITIES FND CL A UN,TSX,Investment Fund
+FCD-UN.TO,Firm Capital Property Trust,TSX,Investment Trust
+MDS-UN.TO,HEALTHCARE SPECIAL OPPORTUNITIES FND CL A UN,TSX,Investment Fund
 DGS.TO,DIVIDEND GROWTH SPLIT CORP. CL 'A',TSX,Investment Company
 OYL.V,CGX Energy Inc.,TSX.V,Oil & Gas
 VQS.V,VIQ Solutions Inc.,TSX.V,Technology
@@ -374,11 +374,11 @@ CRRX.TO,CareRx Corporation,TSX,Medical Services
 VGD.V,Visible Gold Mines Inc.,TSX.V,Mining
 KLS.TO,KELSO TECHNOLOGIES INC.,TSX,Trans Supplies/Serv
 MGA.TO,MEGA URANIUM LTD. J,TSX,Uranium Expl & Dev
-QSP.UN.TO,RESTAURANT BRANDS INTERNATIONAL LP EXCHNG UN,TSX,Limited Partnership
+QSP-UN.TO,RESTAURANT BRANDS INTERNATIONAL LP EXCHNG UN,TSX,Limited Partnership
 VCG.V,Visionary Copper and Gold Mines Inc.,TSX.V,Mining
 FF.TO,First Mining Gold Corp.,TSX,Mining Finance
 NOU.TO,Nouveau Monde Graphite Inc.,TSX,Mining
-RBN.UN.TO,BLUE RIBBON INCOME FUND TRUST UNITS,TSX,Investment Fund
+RBN-UN.TO,BLUE RIBBON INCOME FUND TRUST UNITS,TSX,Investment Fund
 NAM.V,New Age Metals Inc.,TSX.V,Mining
 MUX.TO,McEwen Inc,TSX,Gold Expl & Dev
 FTN.TO,FINANCIAL 15 SPLIT CORP. CL 'A',TSX,Investment Company
@@ -427,18 +427,18 @@ RTG.TO,RTG MINING INC. ORDINARY J,TSX,Gold Expl & Dev
 GRI.V,Galore Resources Inc.,TSX.V,Mining
 GRZ.V,Gold Reserve Ltd.,TSX.V,Mining
 IFOS.V,Itafos Inc.,TSX.V,Mining
-RCI.A.TO,ROGERS COMMUNICATIONS INC. CL 'A',TSX,Broadcast/Telecom
+RCI-A.TO,ROGERS COMMUNICATIONS INC. CL 'A',TSX,Broadcast/Telecom
 WLF.V,Wolfden Resources Corporation,TSX.V,Mining
 DIAM.TO,Star Diamond Corporation,TSX,Mineral Expl & Dev
-PRV.UN.TO,Pro Real Estate Investment Trust,TSX,Investment Trust
+PRV-UN.TO,Pro Real Estate Investment Trust,TSX,Investment Trust
 ERDA.V,Erda Resource Opportunities Inc.,TSX.V,Financial Services
 GGM.V,Granada Gold Mine Inc.,TSX.V,Mining
 GLO.TO,Global Atomic Corporation,TSX,Base Mtl Expl/Dev
 MXG.TO,MAXIM POWER CORP.,TSX,Power Prod/Dev & Mkt
 PME.TO,SENTRY SELECT PRIMARY METALS CORP. CL 'A',TSX,Investment Company
 IB.V,IBC Advanced Alloys Corp.,TSX.V,Manufacturing
-HPS.A.TO,HAMMOND POWER SOLUTIONS INC. CL 'A' SV,TSX,Elect Equip Mfg
-MMP.UN.TO,PRECIOUS METALS AND MINING TRUST TRANSFER UN,TSX,Investment Trust
+HPS-A.TO,HAMMOND POWER SOLUTIONS INC. CL 'A' SV,TSX,Elect Equip Mfg
+MMP-UN.TO,PRECIOUS METALS AND MINING TRUST TRANSFER UN,TSX,Investment Trust
 FMM.V,Full Metal Minerals Ltd.,TSX.V,Mining
 FUU.V,F3 Uranium Corp.,TSX.V,Mining
 OGN.V,Orogen Royalties Inc.,TSX.V,Mining
@@ -447,7 +447,7 @@ PPTA.TO,Perpetua Resources Corp.,TSX,Gold Expl & Dev
 YGR.TO,YANGARRA RESOURCES LTD.,TSX,Oil & Gas Expl
 VUL.V,Vulcan Minerals Inc,TSX.V,Oil & Gas
 E.TO,Evolution PowerX Corp.,TSX,Oil Field Service
-JFS.UN.TO,JFT STRATEGIES FUND TRANSFER CL A UNITS,TSX,Investment Fund
+JFS-UN.TO,JFT STRATEGIES FUND TRANSFER CL A UNITS,TSX,Investment Fund
 BIGT.V,Big Tree Carbon Inc.,TSX.V,Mining
 BRE.TO,Bridgemarq Real Estate Services Inc.,TSX,Real Estate
 CFF.TO,CONIFEX TIMBER INC.,TSX,Lumber Process/Mkt
@@ -455,7 +455,7 @@ KRN.TO,KARNALYTE RESOURCES INC. J,TSX,Potash Mine & Prod
 OCG.TO,Outcrop Silver & Gold Corporation,TSX,Investment Fund
 DEC.V,Decade Resources Ltd.,TSX.V,Mining
 ARG.TO,AMERIGO RESOURCES LTD. J,TSX,Copper Producer
-INC.UN.TO,INCOME FINANCIAL TRUST UNITS,TSX,Investment Trust
+INC-UN.TO,INCOME FINANCIAL TRUST UNITS,TSX,Investment Trust
 REKO.V,Reko International Group Inc.,TSX.V,Manufacturing
 LGD.TO,Liberty Gold Corp.,TSX,Mineral Expl & Dev
 TK.V,Tinka Resources Limited,TSX.V,Mining
@@ -467,8 +467,8 @@ CBI.V,Colibri Resource Corporation,TSX.V,Mining
 SDE.TO,Spartan Delta Corp.,TSX,Oil/Gas Expl & Dev
 MON.V,Montero Mining And Exploration Ltd.,TSX.V,Mining
 GBT.TO,BMTC GROUP INC.,TSX,Holding Company
-FIH.U.TO,FAIRFAX INDIA HOLDINGS CORPORATION SV USF,TSX,Investment Company
-SRV.UN.TO,SIR ROYALTY INCOME FUND TRANSFERABLE UNITS,TSX,Investment Fund
+FIH-U.TO,FAIRFAX INDIA HOLDINGS CORPORATION SV USF,TSX,Investment Company
+SRV-UN.TO,SIR ROYALTY INCOME FUND TRANSFERABLE UNITS,TSX,Investment Fund
 NCX.V,NorthIsle Copper and Gold Inc.,TSX.V,Mining
 BU.TO,BURCON NUTRASCIENCE CORPORATION J,TSX,Canola Mfg/Dstr
 FT.TO,FORTUNE MINERALS LIMITED J,TSX,Mineral Expl & Dev
@@ -492,7 +492,7 @@ ADZ.V,Adamera Minerals Corp.,TSX.V,Mining
 ZDC.V,Zedcor Inc.,TSX.V,Real Estate
 URZ.V,URZ3 Energy Corp.,TSX.V,Mining
 TLA.V,Titan Logix Corp,TSX.V,Manufacturing
-LAS.A.TO,LASSONDE INDUSTRIES INC. CL 'A' SV,TSX,Food & Bev Prod
+LAS-A.TO,LASSONDE INDUSTRIES INC. CL 'A' SV,TSX,Food & Bev Prod
 PHD.V,Providence Gold Mines Inc.,TSX.V,Mining
 HWX.TO,Headwater Exploration Inc.,TSX,Oil/Gas Expl & Dev
 CNO.V,California Nanotechnologies Corp.,TSX.V,Technology
@@ -500,7 +500,7 @@ NRN.V,Northern Shield Resources Inc.,TSX.V,Mining
 AFE.V,Africa Energy Corp.,TSX.V,Oil & Gas
 OGI.TO,Organigram Global Inc,TSX,Cannabis Prod/Mkt
 SPA.V,Spanish Mountain Gold Ltd.,TSX.V,Mining
-PNC.B.TO,POSTMEDIA NETWORK CDA CORP. CLASS NC VV J,TSX,Printing & Publish
+PNC-B.TO,POSTMEDIA NETWORK CDA CORP. CLASS NC VV J,TSX,Printing & Publish
 KNE.V,Kane Biotech Inc.,TSX.V,Technology
 BEX.V,Benton Resources Inc.,TSX.V,Mining
 SAG.V,Sterling Metals Corp.,TSX.V,Mining
@@ -553,7 +553,7 @@ NGC.V,Northern Graphite Corporation,TSX.V,Mining
 ORE.TO,Orezone Gold Corporation,TSX,Gold Expl & Dev
 MSCL.TO,Satellos Bioscience Inc,TSX,Biotechnology
 GMA.V,Geomega Resources Inc.,TSX.V,Mining
-TVA.B.TO,TVA GROUP INC. CL 'B' NV,TSX,Broadcasting
+TVA-B.TO,TVA GROUP INC. CL 'B' NV,TSX,Broadcasting
 BONE.V,Boron One Holdings Inc.,TSX.V,Mining
 MRZL.V,Mont Royal Resources Limited,TSX.V,Mining
 LRA.V,Lara Exploration Ltd.,TSX.V,Mining
@@ -607,7 +607,7 @@ IOT.V,Innovotech Inc.,TSX.V,Technology
 WVM.V,West Vault Mining Inc.,TSX.V,Mining
 TRZ.TO,TRANSAT A.T. INC. VOTING & VARIABLE VOTING,TSX,Air Transportation
 DRX.TO,ADF GROUP INC. SV,TSX,Struct Steel Fab
-INO.UN.TO,INOVALIS REAL ESTATE INVESTMENT TR UNITS,TSX,Investment Trust
+INO-UN.TO,INOVALIS REAL ESTATE INVESTMENT TR UNITS,TSX,Investment Trust
 FPX.V,FPX Nickel Corp.,TSX.V,Mining
 DLCG.TO,Dominion Lending Centres Inc.,TSX,Mortgage Broker
 CTC.TO,"CANADIAN TIRE CORPORATION, LIMITED",TSX,Retail Stores
@@ -632,7 +632,7 @@ XIM.V,Ximen Mining Corp.,TSX.V,Mining
 BBB.V,Brixton Metals Corporation,TSX.V,Mining
 MDX.V,Medx Health Corp.,TSX.V,Technology
 OMI.V,OROSUR MINING INC.,TSX.V,Mining
-ORC.B.V,Orca Energy Group Inc. B,TSX.V,Oil & Gas
+ORC-B.V,Orca Energy Group Inc. B,TSX.V,Oil & Gas
 NOB.V,Noble Mineral Exploration Inc.,TSX.V,Mining
 GZD.V,Grizzly Discoveries Inc.,TSX.V,Mining
 GG.V,Golconda Gold Ltd.,TSX.V,Mining
@@ -646,7 +646,7 @@ CCM.TO,Canagold Resources Ltd.,TSX,Precious Metals
 PBL.TO,POLLARD BANKNOTE LIMITED,TSX,Gaming Prod & Serv
 BRAG.TO,Bragg Gaming Group Inc.,TSX,Gaming Tech Platform
 BYL.TO,BAYLIN TECHNOLOGIES INC. J,TSX,Antenna Dsgn & Prod
-TNT.UN.TO,TRUE NORTH COMMERCIAL RL EST INVEST TR J UN,TSX,Investment Trust
+TNT-UN.TO,TRUE NORTH COMMERCIAL RL EST INVEST TR J UN,TSX,Investment Trust
 FVL.TO,Freegold Limited,TSX,Mineral Expl & Dev
 LAM.TO,LARAMIDE RESOURCES LTD. J,TSX,Mining Expl & Dev
 OCO.V,Oroco Resource Corp.,TSX.V,Mining
@@ -660,7 +660,7 @@ VLE.TO,VALEURA ENERGY INC. J,TSX,Oil/Gas Expl & Dev
 VLN.TO,VELAN INC. SV,TSX,Valve Mfg
 CUCU.V,Global Copper Corp.,TSX.V,Mining
 TGX.V,TGX Energy & Resources Inc.,TSX.V,Mining
-KMP.UN.TO,KILLAM APARTMENT RL ESTATE INVESTMENT TR UN J,TSX,Investment Trust
+KMP-UN.TO,KILLAM APARTMENT RL ESTATE INVESTMENT TR UN J,TSX,Investment Trust
 FFN.TO,NORTH AMERICAN FINANCIAL 15 SPLIT CORP CL 'A',TSX,Investment Company
 LPK.V,Lupaka Gold Corp.,TSX.V,Mining
 QTWO.V,Q2 Metals Corp.,TSX.V,Mining
@@ -684,9 +684,9 @@ TWC.TO,TWC ENTERPRISES LIMITED,TSX,Transportation
 HMT.V,Halmont Properties Corporation,TSX.V,Real Estate
 MARI.TO,Marimaca Copper Corp.,TSX,Mineral Expl & Dev
 PLY.V,Playfair Mining Ltd.,TSX.V,Mining
-QBR.A.TO,QUEBECOR INC. CL 'A' MV,TSX,Holding Company
+QBR-A.TO,QUEBECOR INC. CL 'A' MV,TSX,Holding Company
 WRR.V,Walker River Resources Corp.,TSX.V,Mining
-MID.UN.TO,MINT INCOME FUND TRUST UNITS,TSX,Investment Trust
+MID-UN.TO,MINT INCOME FUND TRUST UNITS,TSX,Investment Trust
 AAB.TO,ABERDEEN INTERNATIONAL INC. J,TSX,Investment Company
 RPX.V,RPX Gold Inc.,TSX.V,Mining
 CGNT.V,Copper Giant Resources Corp.,TSX.V,Mining
@@ -738,7 +738,7 @@ LAR.TO,Lithium Argentina AG,TSX,Lithium/Potassium Dev
 PRQ.TO,PETRUS RESOURCES LTD. J,TSX,Crude Oil/Gas Expl
 MJS.V,Majestic Gold Corp.,TSX.V,Mining
 AUMN.TO,GOLDEN MINERALS COMPANY J,TSX,Mineral Expl & Dev
-BEK.B.TO,BECKER MILK CO. LTD. (THE) CL 'B' NV SPECIAL,TSX,Real Estate
+BEK-B.TO,BECKER MILK CO. LTD. (THE) CL 'B' NV SPECIAL,TSX,Real Estate
 CCD.V,Cascadero Copper Corporation,TSX.V,Mining
 ITH.TO,INTERNATIONAL TOWER HILL MINES LTD. J,TSX,Mineral Expl & Dev
 MAPS.V,ProStar Holdings Inc.,TSX.V,Technology
@@ -750,7 +750,7 @@ BARU.V,Baru Gold Corp,TSX.V,Mining
 GGO.V,Galleon Gold Corp.,TSX.V,Mining
 AMM.V,ALMADEN MINERALS LTD.,TSX.V,Mining
 RDU.V,Radius Gold Inc.,TSX.V,Financial Services
-SGR.U.TO,Slate Grocery REIT USD,TSX,Investment Trust
+SGR-U.TO,Slate Grocery REIT USD,TSX,Investment Trust
 MSV.TO,MINCO SILVER CORPORATION J,TSX,Mineral Expl & Dev
 NDM.TO,NORTHERN DYNASTY MINERALS LTD. J,TSX,Mineral Expl & Dev
 BGD.V,Bullion Gold Discoveries Corp.,TSX.V,Mining
@@ -784,7 +784,7 @@ OCI.V,Orecap Invest Corp.,TSX.V,Mining
 BEW.V,BeWhere Holdings Inc.,TSX.V,Technology
 SILV.V,Silver Valley Metals Corp,TSX.V,Mining
 MKR.V,Melkior Resources Inc,TSX.V,Mining
-NXR.UN.TO,Nexus Industrial REIT,TSX,Investment Trust
+NXR-UN.TO,Nexus Industrial REIT,TSX,Investment Trust
 CHR.TO,CHORUS AVIATION INC. VOTING & VARIABLE VOTING,TSX,Airline
 RAK.V,Rackla Metals Inc.,TSX.V,Mining
 VVTM.V,VVT Med Inc.,TSX.V,Technology
@@ -800,7 +800,7 @@ WCN.TO,"WASTE CONNECTIONS, INC.",TSX,Investment Company
 DYG.V,Dynasty Gold Corp.,TSX.V,Mining
 GDL.TO,GOODFELLOW INC.,TSX,Forest Products
 MGMA.V,Magma Silver Corp.,TSX.V,Mining
-RJX.A.V,RJK Explorations Ltd.,TSX.V,Mining
+RJX-A.V,RJK Explorations Ltd.,TSX.V,Mining
 DFR.V,DFR Gold Inc.,TSX.V,Mining
 LTX.V,Labrador Resources Inc.,TSX.V,Oil & Gas
 ESK.V,Eskay Mining Corp.,TSX.V,Mining
@@ -820,11 +820,11 @@ PPM.V,Pacific Imperial Mines Inc.,TSX.V,Mining
 CPI.V,Carlton Precious Inc.,TSX.V,Mining
 RNCH.V,Ranchero Gold Corp.,TSX.V,Mining
 GNG.V,Golden Goliath Resources Ltd.,TSX.V,Mining
-CSW.B.TO,CORBY SPIRIT AND WINE LIMITED 'B' NV,TSX,Distillery
+CSW-B.TO,CORBY SPIRIT AND WINE LIMITED 'B' NV,TSX,Distillery
 ICM.V,Iconic Minerals Ltd.,TSX.V,Mining
 NRM.V,Noram Lithium Corp,TSX.V,Mining
 SLVR.TO,Silver Tiger Metals Inc.,TSX,Mineral Expl & Dev
-TECK.A.TO,TECK RESOURCES LIMITED CL 'A' MV,TSX,Mineral Expl & Dev
+TECK-A.TO,TECK RESOURCES LIMITED CL 'A' MV,TSX,Mineral Expl & Dev
 RMO.V,Rainy Mountain Royalty Corp.,TSX.V,Mining
 OTMC.V,ORETERRA METALS CORP.,TSX.V,Mining
 VRB.V,Vanadiumcorp Resources Inc.,TSX.V,Mining
@@ -842,7 +842,7 @@ LMS.V,LATIN METALS INC.,TSX.V,Mining
 NIO.V,Nio Strategic Metals Inc.,TSX.V,Mining
 EDDY.V,Edison Lithium Corp.,TSX.V,Mining
 LXM.V,Lux Metals Corp.,TSX.V,Mining
-HMM.A.TO,HAMMOND MANUFACTURING CO. LTD. CL 'A' SV,TSX,Elect Equip Mfg
+HMM-A.TO,HAMMOND MANUFACTURING CO. LTD. CL 'A' SV,TSX,Elect Equip Mfg
 MAI.TO,Mining Americas Inc.,TSX,Mining
 MDP.TO,Medexus Pharmaceuticals Inc.,TSX,Pharm Prod/Dstr
 AIVC.V,AI Artificial Intelligence Ventures Inc.,TSX.V,Financial Services
@@ -858,20 +858,20 @@ BRON.V,Bronco Resources Corp.,TSX.V,Mining
 EDM.V,EDM Resources Inc,TSX.V,Mining
 HAN.V,Hannan Metals Ltd.,TSX.V,Mining
 WIL.V,Wilton Resources Inc.,TSX.V,Oil & Gas
-WCM.A.TO,WILMINGTON CAPITAL MANAGEMENT INC. CL 'A' NV,TSX,Investment Company
+WCM-A.TO,WILMINGTON CAPITAL MANAGEMENT INC. CL 'A' NV,TSX,Investment Company
 XGC.V,Xali Gold Corp.,TSX.V,Mining
 CPAU.V,CopAur Minerals Inc.,TSX.V,Mining
 HAWK.V,Hawkeye Gold & Diamond Inc.,TSX.V,Mining
 FTZ.V,Fitzroy Minerals Inc.,TSX.V,Mining
 INTR.V,Intrepid Metals Corp.,TSX.V,Oil & Gas
-WCM.B.TO,WILMINGTON CAPITAL MANAGEMENT INC. CL 'B',TSX,Investment Company
+WCM-B.TO,WILMINGTON CAPITAL MANAGEMENT INC. CL 'B',TSX,Investment Company
 TAJ.V,Tajiri Resources Corp.,TSX.V,Mining
 HI.V,Highland Copper Company Inc.,TSX.V,Mining
 ARU.V,Aurania Resources Ltd.,TSX.V,Mining
 FA.V,Fountain Asset Corp.,TSX.V,Financial Services
 AUTO.V,Agereh Technologies Inc.,TSX.V,Technology
 SMY.V,Search Minerals Inc.,TSX.V,Mining
-XMF.A.TO,M SPLIT CORP. (2014) CAPITAL,TSX,Investment Company
+XMF-A.TO,M SPLIT CORP. (2014) CAPITAL,TSX,Investment Company
 AEC.V,Anfield Energy Inc.,TSX.V,Mining
 REVX.V,Rev Exploration Corp.,TSX.V,Mining
 UFC.V,Urbanfund Corp.,TSX.V,Real Estate
@@ -909,7 +909,7 @@ ABC.V,Absolutely Critical Resources Corp.,TSX.V,Mining
 SMRV.V,SMOOTH ROCK VENTURES CORP,TSX.V,Mining
 GIGA.V,Giga Metals Corporation,TSX.V,Mining
 ILLM.TO,illumin Holdings Inc.,TSX,Technology
-FCA.U.V,Firm Capital Apartment REIT USD,TSX.V,Real Estate
+FCA-U.V,Firm Capital Apartment REIT USD,TSX.V,Real Estate
 NOBL.V,Noble Plains Uranium Corp.,TSX.V,Mining
 BLM.V,BluMetric Environmental Inc.,TSX.V,Business Services
 WP.V,Western Pacific Trust Company,TSX.V,Financial Services
@@ -928,7 +928,7 @@ CFY.V,CF Energy Corp.,TSX.V,Utilities
 COCO.V,Coast Copper Corp.,TSX.V,Mining
 BM.V,BC Moly Ltd.,TSX.V,Mining
 AGX.V,Silver X Mining Corp,TSX.V,Mining
-JUN.A.V,Juno International Corporation,TSX.V,Financial Services
+JUN-A.V,Juno International Corporation,TSX.V,Financial Services
 HPL.V,Horizon Petroleum Ltd.,TSX.V,Oil & Gas
 STMP.V,Stamper Oil & Gas Corp.,TSX.V,Mining
 CAI.V,Capitan Investment Ltd.,TSX.V,Financial Services
@@ -980,7 +980,7 @@ LCX.V,Lycos Energy Inc.,TSX.V,Oil & Gas
 TTG.V,Trans Canada Gold Corp,TSX.V,Oil & Gas
 NTB.V,New Tymbal Resources Ltd.,TSX.V,Mining
 JTC.V,Jemtec Inc.,TSX.V,Technology
-PNC.A.TO,POSTMEDIA NETWORK CDA CORP. CL C VOTING J,TSX,Printing & Publish
+PNC-A.TO,POSTMEDIA NETWORK CDA CORP. CL C VOTING J,TSX,Printing & Publish
 OM.TO,Osisko Metals Incorporated,TSX,Mineral Expl & Dev
 MLP.V,Millennial Potash Corp.,TSX.V,Mining
 XL.V,XXL Energy Corp.,TSX.V,Oil & Gas
@@ -991,18 +991,18 @@ AKT.TO,AKITA DRILLING LTD. CL,TSX,Drill Oil/Gas Wells
 EGR.V,EGR Exploration Ltd.,TSX.V,Mining
 VBNK.TO,VERSABANK J,TSX,Banking
 EGM.V,Engold Mines Ltd.,TSX.V,Mining
-DII.A.TO,DOREL INDUSTRIES INC. CL 'A' MV,TSX,Furniture Mfg
+DII-A.TO,DOREL INDUSTRIES INC. CL 'A' MV,TSX,Furniture Mfg
 CIO.V,Central Iron Ore Limited,TSX.V,Mining
 HVG.V,Harvest Gold Corp.,TSX.V,Mining
 FMN.V,Fidelity Minerals Corp.,TSX.V,Mining
 CCMC.V,Core Critical Metals Corp.,TSX.V,Mining
 VIZ.V,Visionary Metals Corp.,TSX.V,Mining
 FTU.TO,US FINANCIAL 15 SPLIT CORP. CLASS 'A',TSX,Mutual Funds
-TPX.A.TO,MOLSON COORS CANADA INC. CLASS 'A' EXCH LV,TSX,Brewery/Divers Mfg
+TPX-A.TO,MOLSON COORS CANADA INC. CLASS 'A' EXCH LV,TSX,Brewery/Divers Mfg
 JZR.V,JZR Gold Inc.,TSX.V,Mining
 BRC.V,Blackrock Silver Corp.,TSX.V,Mining
 BES.V,Braille Energy Systems Inc.,TSX.V,Technology
-ORC.A.V,Orca Energy Group Inc. A,TSX.V,Oil & Gas
+ORC-A.V,Orca Energy Group Inc. A,TSX.V,Oil & Gas
 VMXX.V,Valhalla Metals Inc.,TSX.V,Mining
 FL.V,Frontier Lithium Inc.,TSX.V,Mining
 HWY.V,Highway 50 Gold Corp.,TSX.V,Mining
@@ -1015,7 +1015,7 @@ ARO.V,ARC Mineral Royalties Ltd.,TSX.V,Manufacturing
 CLIC.V,Comet Lithium Corporation,TSX.V,Mining
 OGW.V,Ongwe Minerals Inc.,TSX.V,Mining
 VIO.V,Vior Gold Corporation Inc.,TSX.V,Mining
-TCL.B.TO,TRANSCONTINENTAL INC. CL 'B' MV,TSX,Printing & Publish
+TCL-B.TO,TRANSCONTINENTAL INC. CL 'B' MV,TSX,Printing & Publish
 ELC.V,Elysee Development Corp.,TSX.V,Financial Services
 VIS.V,Visionstate Corp.,TSX.V,Technology
 ELM.V,Element Lifestyle Retirement Inc.,TSX.V,Manufacturing
@@ -1066,7 +1066,7 @@ TORR.V,Torrent Capital Ltd.,TSX.V,Financial Services
 AZM.V,Azimut Exploration Inc.,TSX.V,Mining
 SURG.V,Surge Copper Corp.,TSX.V,Mining
 PDQ.V,Paradigm Gold Corporation,TSX.V,Mining
-CCL.A.TO,CCL INDUSTRIES INC. CL 'A',TSX,Diversified Oper
+CCL-A.TO,CCL INDUSTRIES INC. CL 'A',TSX,Diversified Oper
 PINN.V,Pinnacle Silver and Gold Corp.,TSX.V,Mining
 FRI.V,Freeport Resources Inc.,TSX.V,Mining
 KGC.V,Kestrel Gold Inc.,TSX.V,Mining
@@ -1089,8 +1089,8 @@ SKYG.V,Sky Gold Corp.,TSX.V,Mining
 SGE.V,Strategem Capital Corporation,TSX.V,Financial Services
 PNPN.V,Power Metallic Mines Inc.,TSX.V,Mining
 OGG.V,Osisko Gold Group Inc.,TSX.V,Mining
-MKZ.UN.TO,MACKENZIE MASTER LIMITED PARTNERSHIP UNITS,TSX,Mutual Funds
-PVF.UN.V,Partners Value Investments LP,TSX.V,Financial Services
+MKZ-UN.TO,MACKENZIE MASTER LIMITED PARTNERSHIP UNITS,TSX,Mutual Funds
+PVF-UN.V,Partners Value Investments LP,TSX.V,Financial Services
 ZFR.V,Zephyr Minerals Ltd.,TSX.V,Mining
 DAR.V,Darelle Online Solutions Inc.,TSX.V,Technology
 VRY.V,Petro-Victory Energy Corp.,TSX.V,Mining
@@ -1098,10 +1098,10 @@ CN.V,Condor Resources Inc.,TSX.V,Mining
 DAU.V,Desert Gold Ventures Inc.,TSX.V,Mining
 ZYUS.V,ZYUS Life Sciences Corporation,TSX.V,Manufacturing
 STC.TO,Sangoma Technologies Corporation,TSX,Telecommunications
-ENI.UN.TO,ENERGY INCOME FUND TRUST UNITS,TSX,Investment Fund
+ENI-UN.TO,ENERGY INCOME FUND TRUST UNITS,TSX,Investment Fund
 GSS.V,Gossan Resources Limited,TSX.V,Mining
 PCQ.V,Petrolympic Ltd.,TSX.V,Oil & Gas
-RAV.UN.TO,RAVENSOURCE FUND UNITS,TSX,Investment Trust
+RAV-UN.TO,RAVENSOURCE FUND UNITS,TSX,Investment Trust
 SCLT.V,Searchlight Resources Inc.,TSX.V,Mining
 BRW.V,BRUNSWICK EXPLORATION INC,TSX.V,Mining
 STE.V,Starr Peak Mining Ltd.,TSX.V,Mining
@@ -1128,13 +1128,13 @@ SGZ.V,Sego Resources Inc.,TSX.V,Mining
 MNO.TO,Meridian Mining PLC,TSX,Mineral Expl & Dev
 CWL.TO,CALDWELL PARTNERS INTERNATIONAL INC. (THE),TSX,Employee Recruit
 MNS.TO,ROYAL CANADIAN MINT-CDN SILVER RESERVES ETR,TSX,Investment Note
-MCM.A.V,"Matachewan Consolidated Mines, Limited",TSX.V,Financial Services
+MCM-A.V,"Matachewan Consolidated Mines, Limited",TSX.V,Financial Services
 BYN.V,Banyan Gold Corp.,TSX.V,Mining
 MTX.V,Metalex Ventures Ltd.,TSX.V,Mining
 BAG.V,Blende Silver Corp.,TSX.V,Mining
 GUF.V,Gulf & Pacific Equities Corp.,TSX.V,Real Estate
 SHL.V,Homeland Nickel Inc.,TSX.V,Mining
-NET.UN.V,Canadian Net Real Estate Investment Trust,TSX.V,Real Estate
+NET-UN.V,Canadian Net Real Estate Investment Trust,TSX.V,Real Estate
 LITH.V,Lithium Chile Inc.,TSX.V,Mining
 LUCA.V,Luca Mining Corp.,TSX.V,Mining
 MSC.V,Millennium Silver Corp,TSX.V,Mining
@@ -1164,7 +1164,7 @@ MPC.TO,MADISON PACIFIC PROPERTIES INC. CL 'B',TSX,Real Estate
 AML.V,Akwaaba Mining Ltd.,TSX.V,Mining
 PDV.TO,PRIME DIVIDEND CORP. CLASS 'A',TSX,Investment Company
 KNOX.V,Vault Strategic Mining Corp.,TSX.V,Mining
-MPC.C.TO,MADISON PACIFIC PROPERTIES INC. CL 'C' NV,TSX,Real Estate
+MPC-C.TO,MADISON PACIFIC PROPERTIES INC. CL 'C' NV,TSX,Real Estate
 MD.V,Midland Exploration Inc.,TSX.V,Mining
 KLDC.V,Kirkland Lake Discoveries Corp.,TSX.V,Mining
 MDNA.TO,Medicenna Therapeutics Corp.,TSX,Therapeutic Prod
@@ -1197,7 +1197,7 @@ ZOMD.V,Zoomd Technologies Ltd.,TSX.V,Technology
 APN.V,Altiplano Metals Inc.,TSX.V,Mining
 NVI.V,Novra Technologies Inc.,TSX.V,Technology
 WCE.V,Wescan Energy Corp.,TSX.V,Oil & Gas
-RRR.UN.V,R&R Real Estate Investment Trust,TSX.V,Financial Services
+RRR-UN.V,R&R Real Estate Investment Trust,TSX.V,Financial Services
 KORE.V,KORE MINING LTD,TSX.V,Mining
 BWR.V,BWR Exploration Inc.,TSX.V,Mining
 VZZ.V,Val-D'or Mining Corporation,TSX.V,Mining
@@ -1361,7 +1361,7 @@ CAG.V,Composite Alliance Group Inc.,TSX.V,Manufacturing
 AIS.V,A.I.S. Resources Limited,TSX.V,Financial Services
 STW.V,Stockworks Gold Inc.,TSX.V,Mining
 VAU.V,Viva Gold Corp.,TSX.V,Oil & Gas
-RII.K.V,Richco Investors Inc.,TSX.V,Financial Services
+RII-K.V,Richco Investors Inc.,TSX.V,Financial Services
 JSPX.V,JasperX Technologies Inc.,TSX.V,Technology
 SCAN.V,"Liberty Defense Holdings, Ltd.",TSX.V,Technology
 MENE.V,MENE INC,TSX.V,Manufacturing
@@ -1421,7 +1421,7 @@ WEED.TO,CANOPY GROWTH CORPORATION J,TSX,Biopharm Prod/Mkt
 YEG.V,Yorkton Equity Group Inc,TSX.V,Real Estate
 IMI.V,Ironman International Ltd.,TSX.V,Media
 GRSL.V,GR Silver Mining Ltd.,TSX.V,Oil & Gas
-HFPC.U.TO,Helios Fairfax Partners Corporation,TSX,Investment Company
+HFPC-U.TO,Helios Fairfax Partners Corporation,TSX,Investment Company
 GEMC.V,Global Energy Metals Corp.,TSX.V,Mining
 GOOS.TO,CANADA GOOSE HOLDINGS INC. SV,TSX,Clothing Dsgn/Retail
 SHLE.TO,SOURCE ENERGY SERVICES LTD. J,TSX,Mineral Expl & Dev
@@ -1433,16 +1433,16 @@ REAL.TO,Real Matters Inc.,TSX,Management Co
 CSTR.V,CryptoStar Corp.,TSX.V,Technology
 SFC.TO,Sagicor Financial Company Ltd.,TSX,Insurance 
 FWZ.V,Fireweed Metals Corp.,TSX.V,Mining
-FCA.UN.V,Firm Capital Apartment REIT,TSX.V,Real Estate
+FCA-UN.V,Firm Capital Apartment REIT,TSX.V,Real Estate
 TSU.TO,Trisura Group Ltd.,TSX,Insurance
 MCF.V,MCF Energy Ltd.,TSX.V,Oil & Gas
 TG.V,Trifecta Gold Ltd.,TSX.V,Mining
 NSCI.V,Nanalysis Scientific Corp.,TSX.V,Manufacturing
 JWEL.TO,Jamieson Wellness Inc.,TSX,Healthcare Prod
 BNZ.V,Bonanza Mining Corporation,TSX.V,Mining
-BUZ.P.V,Buzz Capital Inc.,TSX.V,Unclassified
+BUZ-P.V,Buzz Capital Inc.,TSX.V,Unclassified
 SPOT.V,EarthLabs Inc.,TSX.V,Financial Services
-TCG.P.V,Transcontinental Gold Corp.,TSX.V,Unclassified
+TCG-P.V,Transcontinental Gold Corp.,TSX.V,Unclassified
 VIPR.V,Silver Viper Minerals Corp.,TSX.V,Mining
 TI.TO,TITAN MINING CORPORATION,TSX,Mining Expl & Dev
 ERO.TO,ERO COPPER CORP,TSX,Mining Expl & Dev
@@ -1452,7 +1452,7 @@ XPLR.V,Xplore Resources Corp.,TSX.V,Mining
 ELEC.V,Electric Royalties Ltd.,TSX.V,Utilities
 ITR.V,Integra Resources Corp.,TSX.V,Mining
 NBVA.V,Nubeva Technologies Ltd.,TSX.V,Technology
-HOT.U.TO,AMERICAN HOTEL INCOME PROPERTIES REIT LP USD,TSX,Limited Partnership
+HOT-U.TO,AMERICAN HOTEL INCOME PROPERTIES REIT LP USD,TSX,Limited Partnership
 DMCU.V,Domestic Metals Corp.,TSX.V,Mining
 VMS.V,Vortex Metals Inc.,TSX.V,Mining
 PRM.TO,Big Pharma Split Corp. A,TSX,Mutual Funds
@@ -1491,13 +1491,13 @@ MUR.V,Murchison Minerals Ltd.,TSX.V,Mining
 HAM.V,Highwood Asset Management Ltd.,TSX.V,Oil & Gas
 RSS.V,RESAAS Services Inc.,TSX.V,Technology
 IN.V,Infield Minerals Corp.,TSX.V,Mining
-PINE.UN.V,Pine Trail REIT CAD,TSX.V,Real Estate
+PINE-UN.V,Pine Trail REIT CAD,TSX.V,Real Estate
 DLP.V,DLP Resources Inc,TSX.V,Mining
 LFST.V,Lifeist Wellness Inc.,TSX.V,Merchandising
-COLL.P.V,COLLINGWOOD RESOURCES CORP,TSX.V,Unclassified
+COLL-P.V,COLLINGWOOD RESOURCES CORP,TSX.V,Unclassified
 SGC.V,SOLSTICE GOLD CORP,TSX.V,Oil & Gas
 SLG.V,San Lorenzo Gold Corp.,TSX.V,Mining
-HOM.U.TO,BSR REAL ESTATE INVESTMENT TRUST,TSX,Investment Trust
+HOM-U.TO,BSR REAL ESTATE INVESTMENT TRUST,TSX,Investment Trust
 NOAL.V,NOA Lithium Brines Inc.,TSX.V,Mining
 BEEP.V,Geiger Energy Corporation,TSX.V,Mining
 SMP.V,Southern Empire Resources Corp.,TSX.V,Mining
@@ -1522,11 +1522,11 @@ AUEN.V,Golden Sky Minerals Corp. - Class A Shares,TSX.V,Mining
 CH.V,Charbone Corporation,TSX.V,Manufacturing
 BIG.V,Hercules Metals Corp.,TSX.V,Mining
 OTC.V,Ocumetics Technology Corp.,TSX.V,Technology
-CSOC.A.V,Canso Select Opportunities Corp. Cl. A M.V.,TSX.V,Financial Services
-CSOC.B.V,Canso Select Opportunities Corp. Cl. B S.V.,TSX.V,Financial Services
+CSOC-A.V,Canso Select Opportunities Corp. Cl. A M.V.,TSX.V,Financial Services
+CSOC-B.V,Canso Select Opportunities Corp. Cl. B S.V.,TSX.V,Financial Services
 WGLD.V,Western Gold Exploration Ltd.,TSX.V,Mining
-RCR.P.V,Canna 8 Investment Trust,TSX.V,Unclassified
-NAQ.P.V,Navigator Acquisition Corp.,TSX.V,Unclassified
+RCR-P.V,Canna 8 Investment Trust,TSX.V,Unclassified
+NAQ-P.V,Navigator Acquisition Corp.,TSX.V,Unclassified
 VZLA.TO,Vizsla Silver Corp,TSX,Investment Fund
 TDG.V,TDG Gold Corp,TSX.V,Mining
 SHRP.V,Sherpa II Holdings Corp.,TSX.V,Mining
@@ -1541,19 +1541,19 @@ KRI.V,Kobo Resources Inc.,TSX.V,Mining
 USHA.V,Usha Resources Ltd,TSX.V,Mining
 PGLD.V,P2 Gold Inc.,TSX.V,Mining
 ADCO.TO,ADCORE INC.,TSX,Advertising Tech
-TLC.P.V,TIMELESS CAPITAL CORP,TSX.V,Unclassified
+TLC-P.V,TIMELESS CAPITAL CORP,TSX.V,Unclassified
 GRN.TO,GREENLANE RENEWABLES INC.,TSX,Renewable Energy
 SBIO.V,Sabio Holdings Inc.,TSX.V,Business Services
 PTEC.V,Principal Technologies Inc.,TSX.V,Business Services
 ALYA.TO,Alithya Group Inc,TSX,Investment Fund
 ALDE.V,ALDEBARAN RESOURCES INC,TSX.V,Mining
 NAV.V,NAVCO Pharmaceuticals Inc.,TSX.V,Technology
-BUZH.P.V,BUZZ CAPITAL 2 INC,TSX.V,Unclassified
+BUZH-P.V,BUZZ CAPITAL 2 INC,TSX.V,Unclassified
 VOXR.TO,Vox Royalty Corp.,TSX,Investment Company
 GRID.TO,Tantalus Systems Holding Inc,TSX,Elec Power Serv
 RBZ.V,Arya Resources Ltd.,TSX.V,Mining
-CAC.P.V,"Cinaport Acquisition Corp, III",TSX.V,Unclassified
-PINE.U.V,Pine Trail REIT USD,TSX.V,Real Estate
+CAC-P.V,"Cinaport Acquisition Corp, III",TSX.V,Unclassified
+PINE-U.V,Pine Trail REIT USD,TSX.V,Real Estate
 GSPR.V,GSP Resources Corp.,TSX.V,Mining
 CERT.V,Cerrado Gold Inc,TSX.V,Mining
 MIM.V,MiMedia Holdings Inc.,TSX.V,Technology
@@ -1573,11 +1573,11 @@ BPAG.V,BP Silver Corp.,TSX.V,Mining
 MRVL.V,Marvel Biosciences Corp.,TSX.V,Technology
 ESPN.V,Hispania Resources Inc.,TSX.V,Mining
 LSPD.TO,Lightspeed Commerce Inc.,TSX,E-Commerce Software
-ALAB.P.V,A-Labs Capital II Corp.,TSX.V,Unclassified
+ALAB-P.V,A-Labs Capital II Corp.,TSX.V,Unclassified
 GMG.V,Graphene Manufacturing Group Ltd.,TSX.V,Manufacturing
 SPMC.V,South Pacific Metals Corp.,TSX.V,Mining
 ESAF.V,Syntholene Energy Corp.,TSX.V,Technology
-ASTN.P.V,Auston Capital Corp.,TSX.V,Unclassified
+ASTN-P.V,Auston Capital Corp.,TSX.V,Unclassified
 SBMI.V,Silver Bullet Mines Inc,TSX.V,Mining
 HPM.V,Halcones Precious Metals Corp.,TSX.V,Mining
 SUN.V,Stardust Solar Energy Inc.,TSX.V,Real Estate
@@ -1585,11 +1585,11 @@ CHS.V,Comprehensive Healthcare Systems Inc.,TSX.V,Technology
 TBIX.V,TrustBIX Inc.,TSX.V,Technology
 HANS.V,Hanstone Gold Corp.,TSX.V,Mining
 NOVA.V,EraNova Metals Inc.,TSX.V,Mining
-CSTL.P.V,CASTLECAP CAPITAL INC.,TSX.V,Unclassified
+CSTL-P.V,CASTLECAP CAPITAL INC.,TSX.V,Unclassified
 VITA.V,Vitalist Inc.,TSX.V,Technology
 CWEB.TO,"Charlotte's Web Holdings, Inc.",TSX,Cannabis Prod/Mkt
-XCAP.P.V,Exelerate Capital Corp.,TSX.V,Unclassified
-HOM.UN.TO,BSR REAL ESTATE INVESTMENT TRUST CAD,TSX,Investment Trust
+XCAP-P.V,Exelerate Capital Corp.,TSX.V,Unclassified
+HOM-UN.TO,BSR REAL ESTATE INVESTMENT TRUST CAD,TSX,Investment Trust
 APM.TO,Andean Precious Metals Corp,TSX,Mining Company
 MOGL.V,Mogul Mountain Ventures Corporation,TSX.V,Mining
 APLI.TO,Appili Therapeutics Inc.,TSX,Pharmaceutical
@@ -1605,13 +1605,13 @@ KLD.V,Kenorland Minerals Ltd,TSX.V,Mining
 OAM.V,OverActive Media Corp,TSX.V,Hospitality & Entertainment
 DGC.V,Daura Gold Corp.,TSX.V,Mining
 IVQ.TO,Invesque Inc. CAD,TSX,Healthcare Facility
-SHK.P.V,Sparrowhawk Opportunity Corp.,TSX.V,Unclassified
+SHK-P.V,Sparrowhawk Opportunity Corp.,TSX.V,Unclassified
 ARTG.V,Artemis Gold Inc.,TSX.V,Mining
 EVER.V,Evergold Corp.,TSX.V,Mining
 DCBO.TO,Docebo Inc.,TSX,Education/Info Tech
 INIK.V,Ionik Corporation,TSX.V,Technology
 GMIN.TO,G Mining Ventures Corp,TSX,Mineral Expl & Dev
-REBL.P.V,Genesis Acquisition Corp.,TSX.V,Unclassified
+REBL-P.V,Genesis Acquisition Corp.,TSX.V,Unclassified
 MLO.V,Metalero Mining Corp.,TSX.V,Mining
 NKL.V,Nickel 28 Capital Corp,TSX.V,Financial Services
 TECT.V,Tectonic Metals Inc.,TSX.V,Mining
@@ -1628,8 +1628,8 @@ CTRL.V,Edge Total Intelligence Inc.,TSX.V,Technology
 CNC.V,Canada Nickel Company Inc.,TSX.V,Mining
 KALO.V,Kalo Gold Corp,TSX.V,Mining
 GFL.TO,GFL Environmental Inc. W.I.,TSX,Environmental Serv
-ZENI.P.V,Zenith Capital Corporation,TSX.V,Unclassified
-BLTC.P.V,Baltic I Acquisition Corp.,TSX.V,Unclassified
+ZENI-P.V,Zenith Capital Corporation,TSX.V,Unclassified
+BLTC-P.V,Baltic I Acquisition Corp.,TSX.V,Unclassified
 ESBL.V,Eshbal Functional Food Inc.,TSX.V,Manufacturing
 BIPC.TO,Brookfield Infrastructure Corporation A Exch,TSX,Gas Transmissions
 MOO.V,Moon River Moly Ltd.,TSX.V,Mining
@@ -1647,14 +1647,14 @@ BEPC.TO,Brookfield Renewable Corporation A Exch,TSX,Hydro-Elect Power
 RIWI.V,RIWI Corp.,TSX.V,Technology
 NFGC.TO,New Found Gold Corp.,TSX,Mining
 RDG.V,Ridgeline Minerals Corp.,TSX.V,Mining
-SIH.UN.TO,Sustainable Innovation & Health Dividend Fund,TSX,Investment Fund
-VAL.P.V,Valencia Capital Inc.,TSX.V,Unclassified
+SIH-UN.TO,Sustainable Innovation & Health Dividend Fund,TSX,Investment Fund
+VAL-P.V,Valencia Capital Inc.,TSX.V,Unclassified
 PEAK.V,Sun Peak Metals Corp.,TSX.V,Mining
 CAPT.V,Capitan Silver Corp.,TSX.V,Mining
 ALTN.V,Aeonian Resources Corp.,TSX.V,Mining
-MAR.UN.V,Marwest Apartment REIT,TSX.V,Real Estate
+MAR-UN.V,Marwest Apartment REIT,TSX.V,Real Estate
 ROMJ.V,Rubicon Organics Inc.,TSX.V,Manufacturing
-MHC.U.TO,Flagship Communities Real Estate Investment Trust USD,TSX,Investment Trust
+MHC-U.TO,Flagship Communities Real Estate Investment Trust USD,TSX,Investment Trust
 TSK.TO,Talisker Resources Ltd.,TSX,Mineral Expl & Dev
 EPF.V,Everyday People Financial Corp.,TSX.V,Business Services
 TPZ.TO,Topaz Energy Corp,TSX,Investment Company
@@ -1663,28 +1663,28 @@ MAU.TO,MONTAGE GOLD CORP,TSX,Metals Exploration
 BILD.V,BuildDirect.com Technologies Inc.,TSX.V,Technology
 KDSX.V,Kadestone Capital Corp.,TSX.V,Real Estate
 PVT.V,Pivotree Inc.,TSX.V,Technology
-NRR.UN.TO,Northview Residential REIT,TSX,Investment Fund
-HMCC.P.V,HIGH MOUNTAIN 2 CAPITAL CORPORATION,TSX.V,Unclassified
+NRR-UN.TO,Northview Residential REIT,TSX,Investment Fund
+HMCC-P.V,HIGH MOUNTAIN 2 CAPITAL CORPORATION,TSX.V,Unclassified
 RS.TO,Real Estate Split Corp.,TSX,Investment Company
 HITI.V,High Tide Inc.,TSX.V,Manufacturing
-AIME.P.V,AIM5 Ventures Inc.,TSX.V,Unclassified
+AIME-P.V,AIM5 Ventures Inc.,TSX.V,Unclassified
 AURO.V,Auro Metals Inc.,TSX.V,Mining
 ECU.V,Element 29 Resources Inc.,TSX.V,Mining
-QETH.U.TO,The Ether Fund Class A Units USD,TSX,Investment Fund
+QETH-U.TO,The Ether Fund Class A Units USD,TSX,Investment Fund
 ICGH.V,IC Group Holdings Inc.,TSX.V,Technology
-JAB.P.V,Jabbo Capital Corp.,TSX.V,Unclassified
+JAB-P.V,Jabbo Capital Corp.,TSX.V,Unclassified
 HAI.TO,Haivision Systems Inc.,TSX,Video Stream Infras
 EMPR.V,Empress Royalty Corp.,TSX.V,Mining
 AIDX.TO,HealWELL AI Inc.,TSX,Healthcare Services
-QETH.UN.TO,The Ether Fund Class A units,TSX,Investment Fund
+QETH-UN.TO,The Ether Fund Class A units,TSX,Investment Fund
 KITS.TO,Kits Eyecare Ltd.,TSX,Digital Optical Serv
 TNGD.V,Tiernan Gold Corp.,TSX.V,Mining
 TOI.V,Topicus.com Inc.,TSX.V,Technology
 LVX.V,Leviathan Metals Corp.,TSX.V,Mining
-DHT.UN.TO,DRI Healthcare Trust,TSX,Investment Trust
-DHT.U.TO,DRI Healthcare Trust USD,TSX,Investment Trust
+DHT-UN.TO,DRI Healthcare Trust,TSX,Investment Trust
+DHT-U.TO,DRI Healthcare Trust USD,TSX,Investment Trust
 EDY.V,Eddy Smart Home Solutions Ltd.,TSX.V,Technology
-AROW.P.V,FOUR ARROWS CAPITAL CORP,TSX.V,Unclassified
+AROW-P.V,FOUR ARROWS CAPITAL CORP,TSX.V,Unclassified
 ZAC.V,Zacatecas Silver Corp.,TSX.V,Mining
 BAMI.TO,Blue Ant Media Corporation,TSX,Film Prod & Dstr
 FDR.V,Founders Metals Inc,TSX.V,Mining
@@ -1693,7 +1693,7 @@ EPRX.TO,Eupraxia Pharmaceuticals Inc,TSX,Biotechnology
 EK.V,Everkind Wellness Inc.,TSX.V,Manufacturing
 IS.TO,Infrastructure Dividend Split Corp.,TSX,Investment Fund
 MFG.V,Mayfair Gold Corp.,TSX.V,Mining
-AIV.P.V,Apolo IV Acquisition Corp.,TSX.V,Unclassified
+AIV-P.V,Apolo IV Acquisition Corp.,TSX.V,Unclassified
 MDA.TO,MDA Space Ltd.,TSX,Space Technology
 LTH.V,Lithium Ionic Corp.,TSX.V,Mining
 LOVE.TO,Cannara Biotech Inc.,TSX,Investment Fund
@@ -1713,12 +1713,12 @@ TLRY.TO,Tilray Brands Inc.,TSX,Cannabis Prod/Mkt
 HASH.V,Simply Solventless Concentrates Ltd.,TSX.V,Manufacturing
 TFPM.TO,Triple Flag Precious Metals Corp.,TSX,Finance Serv & Invest
 PWI.TO,Power Infrastructure Split Corp,TSX,Investment Company
-VCC.P.V,Veteran Capital Corp.,TSX.V,Unclassified
+VCC-P.V,Veteran Capital Corp.,TSX.V,Unclassified
 ACL.V,A.C.L. Construction Ltd.,TSX.V,Real Estate
 MNLX.V,MiniLuxe Holding Corp.,TSX.V,Merchandising
 WPR.V,CANPR Technology Ltd.,TSX.V,Technology
 KOVO.V,Kovo+ Holdings Inc.,TSX.V,Technology
-BRCB.P.V,Brachium2 Capital Corp.,TSX.V,Unclassified
+BRCB-P.V,Brachium2 Capital Corp.,TSX.V,Unclassified
 TSLV.V,Tier One Silver Inc.,TSX.V,Mining
 TIGR.V,Tiger Gold Corp.,TSX.V,Mining
 FORA.TO,VerticalScope Holdings Inc.,TSX,Digital Technology
@@ -1737,27 +1737,27 @@ YAY.V,THS Maple Holdings Ltd.,TSX.V,Merchandising
 JTWO.V,J2 METALS INC.,TSX.V,Mining
 HELI.V,First Helium Inc.,TSX.V,Oil & Gas
 ROOF.V,Northstar Clean Technologies Inc,TSX.V,Manufacturing
-MCCP.P.V,Michichi Capital Corp.,TSX.V,Unclassified
-FFC.P.V,Fife Capital Corp.,TSX.V,Unclassified
-U.U.TO,Sprott Physical Uranium Trust USD,TSX,Investment Trust
+MCCP-P.V,Michichi Capital Corp.,TSX.V,Unclassified
+FFC-P.V,Fife Capital Corp.,TSX.V,Unclassified
+U-U.TO,Sprott Physical Uranium Trust USD,TSX,Investment Trust
 NTLX.V,NeuroThera Labs Inc.,TSX.V,Technology
-SAWC.P.V,SAYWARD CAPITAL CORP,TSX.V,Unclassified
+SAWC-P.V,SAYWARD CAPITAL CORP,TSX.V,Unclassified
 RFX.V,Reeflex Solutions Inc.,TSX.V,Manufacturing
-WAT.P.V,WHATCOM CAPITAL II CORP,TSX.V,Unclassified
+WAT-P.V,WHATCOM CAPITAL II CORP,TSX.V,Unclassified
 EVGN.V,EVERGEN INFRASTRUCTURE CORP,TSX.V,Technology
-AVII.P.V,Antera Ventures II Corp.,TSX.V,Unclassified
+AVII-P.V,Antera Ventures II Corp.,TSX.V,Unclassified
 CYBE.V,"CyberCatch Holdings, Inc.",TSX.V,Technology
 LCFS.TO,Tidewater Renewables Ltd.,TSX,Renewable Energy
 CUEX.V,Copperex Resources Corporation,TSX.V,Mining
 JJJJ.V,J4 Ventures Resources Corp.,TSX.V,Mining
-ALTR.P.V,Alterego Ventures 24 Corp.,TSX.V,Unclassified
-AAA.P.V,FIRST TIDAL ACQUISITION CORP.,TSX.V,Unclassified
+ALTR-P.V,Alterego Ventures 24 Corp.,TSX.V,Unclassified
+AAA-P.V,FIRST TIDAL ACQUISITION CORP.,TSX.V,Unclassified
 IMPT.V,Impact Development Group Inc.,TSX.V,Real Estate
 HDRO.V,Primary Hydrogen Corp.,TSX.V,Mining
 TALA.TO,Talamore Mining Corp.,TSX,Mining
 MHUB.V,MINEHUB TECHNOLOGIES INC,TSX.V,Technology
 RBY.TO,Rubellite Energy Corp,TSX,Oil/Gas Expl & Dev
-ECAP.P.V,ENDURANCE CAPITAL CORP,TSX.V,Unclassified
+ECAP-P.V,ENDURANCE CAPITAL CORP,TSX.V,Unclassified
 FCLX.V,FCL-X Fire Safety Inc.,TSX.V,Technology
 VCU.V,Vizsla Copper Corp.,TSX.V,Mining
 MINK.V,MINK VENTURES CORPORATION,TSX.V,Mining
@@ -1765,69 +1765,69 @@ GEL.V,GRAPHANO ENERGY LTD,TSX.V,Mining
 MCC.V,Morocco Strategic Minerals Corporation,TSX.V,Mining
 AVR.V,Avaron Mining Corp.,TSX.V,Mining
 WMS.V,Western Metallica Resources Corp.,TSX.V,Mining
-LILL.P.V,LITTLE FISH ACQUISITION I CORP.,TSX.V,Unclassified
+LILL-P.V,LITTLE FISH ACQUISITION I CORP.,TSX.V,Unclassified
 AUUA.V,Aluula Composites Inc.,TSX.V,Manufacturing
 SICO.V,Silverco Mining Ltd.,TSX.V,Mining
 PRL.TO,Propel Holdings Inc,TSX,Financial Prod/Serv
-WWA.P.V,WHITEWATER ACQUISITION CORP,TSX.V,Unclassified
+WWA-P.V,WHITEWATER ACQUISITION CORP,TSX.V,Unclassified
 ASTL.TO,Algoma Steel Group Inc,TSX,Steel Production
 TGC.V,TooGood Gold Corp.,TSX.V,Mining
-TRV.P.V,TREVISO CAPITAL CORP.,TSX.V,Unclassified
+TRV-P.V,TREVISO CAPITAL CORP.,TSX.V,Unclassified
 UIG.V,Urban Infrastructure Group Inc.,TSX.V,Real Estate
 ALEX.V,ALPHA EXPLORATION LTD,TSX.V,Mining
 DTOL.TO,D2L Inc.,TSX,Education Softwr Tech
 TNX.V,TenX Protocols Inc.,TSX.V,Technology
 ALTU.V,Altura Energy Corp.,TSX.V,Mining
-SURF.UN.V,Starlight U.S. Residential Fund (Multi-Family) Investment LP,TSX.V,Real Estate
+SURF-UN.V,Starlight U.S. Residential Fund (Multi-Family) Investment LP,TSX.V,Real Estate
 WAM.V,Alaska Silver Corp.,TSX.V,Mining
 DFY.TO,Definity Financial Corporation,TSX,Insurance
 CVO.TO,Coveo Solutions Inc.,TSX,Information Tech
 MSA.TO,Mineros S.A.,TSX,Gold Expl & Dev
 TSAT.TO,Telesat Corporation,TSX,Satellite Commun Serv
 INFM.V,Infinico Metals Corp.,TSX.V,Mining
-SHLL.P.V,SHELLRON CAPITAL LTD.,TSX.V,Unclassified
-MONA.P.V,MONARCH WEST VENTURES INC.,TSX.V,Unclassified
+SHLL-P.V,SHELLRON CAPITAL LTD.,TSX.V,Unclassified
+MONA-P.V,MONARCH WEST VENTURES INC.,TSX.V,Unclassified
 FROG.V,Bullfrog Gold Corporation,TSX.V,Mining
-PCAA.P.V,PC 1 CORP,TSX.V,Unclassified
+PCAA-P.V,PC 1 CORP,TSX.V,Unclassified
 EVNI.V,EV NICKEL INC,TSX.V,Mining
 ATD.TO,Alimentation Couche-Tard Inc.,TSX,Retail Food Chain
 ARA.TO,Aclara Resources Inc.,TSX,Rare Earth Mining
 RMB.V,RUMBU HOLDINGS LTD.,TSX.V,Business Services
-FUN.P.V,FOUNTAINHALL CAPITAL CORP,TSX.V,Unclassified
+FUN-P.V,FOUNTAINHALL CAPITAL CORP,TSX.V,Unclassified
 GFTA.V,Grafta Nanotech Corp.,TSX.V,Manufacturing
 ATOI.V,Asiatel Outsourcing Inc.,TSX.V,Technology
-RUCC.P.V,RUPERTS CROSSING CAPITAL INC.,TSX.V,Unclassified
+RUCC-P.V,RUPERTS CROSSING CAPITAL INC.,TSX.V,Unclassified
 HCH.V,Hot Chili Limited,TSX.V,Mining
-PMZ.UN.TO,Primaris Real Estate Investment Trust Series A,TSX,Investment Trust
+PMZ-UN.TO,Primaris Real Estate Investment Trust Series A,TSX,Investment Trust
 OZ.V,Valkea Resources Corp.,TSX.V,Mining
 CPER.V,COPPERCORP RESOURCES INC,TSX.V,Mining
 CCMM.V,Coyote Copper Mines Inc.,TSX.V,Mining
-KPEN.P.V,KP3993 RESOURCES INC,TSX.V,Unclassified
+KPEN-P.V,KP3993 RESOURCES INC,TSX.V,Unclassified
 NPV.V,Next Phase Ventures Ltd.,TSX.V,Manufacturing
 EVI.V,Eastport Critical Metals Corp.,TSX.V,Mining
 AGMR.TO,Silver Mountain Resources Inc,TSX,Investment Fund
 FMAN.V,Freeman Gold Corp.,TSX.V,Mining
-HRC.P.V,HOSHI RESOURCE CORP,TSX.V,Unclassified
-DAQ.P.V,Dominus Acquisition Corp.,TSX.V,Unclassified
-XOX.P.V,Planet X Capital Corp.,TSX.V,Unclassified
-PLXX.P.V,Planet X II Capital Corp.,TSX.V,Unclassified
+HRC-P.V,HOSHI RESOURCE CORP,TSX.V,Unclassified
+DAQ-P.V,Dominus Acquisition Corp.,TSX.V,Unclassified
+XOX-P.V,Planet X Capital Corp.,TSX.V,Unclassified
+PLXX-P.V,Planet X II Capital Corp.,TSX.V,Unclassified
 SEGN.V,Seegnal Inc.,TSX.V,Medical & Health Care
-DRAX.P.V,DRAXOS CAPITAL CORP.,TSX.V,Unclassified
+DRAX-P.V,DRAXOS CAPITAL CORP.,TSX.V,Unclassified
 SRR.V,Source Rock Royalties Ltd.,TSX.V,Oil & Gas
 CTV.V,CleanTech Vanadium Mining Corp.,TSX.V,Mining
 FORT.V,Fort Technology Inc.,TSX.V,Technology
 ICRS.V,Icarus Capital Corp.,TSX.V,Hospitality & Entertainment
-TIDE.P.V,INTERTIDAL CAPITAL CORP,TSX.V,Unclassified
+TIDE-P.V,INTERTIDAL CAPITAL CORP,TSX.V,Unclassified
 NSU.V,North Shore Uranium Ltd.,TSX.V,Mining
 EVNT.V,Eventer Technologies Ltd.,TSX.V,Technology
 HEVI.V,HELIUM EVOLUTION INCORPORATED,TSX.V,Oil & Gas
 LBNK.V,LithiumBank Resources Corp,TSX.V,Mining
-MFA.P.V,Mayfair Acquisition Corporation,TSX.V,Unclassified
-OCAP.P.V,Ocean Shore Capital Corp.,TSX.V,Unclassified
+MFA-P.V,Mayfair Acquisition Corporation,TSX.V,Unclassified
+OCAP-P.V,Ocean Shore Capital Corp.,TSX.V,Unclassified
 CNRI.V,Canadian North Resources Inc.,TSX.V,Mining
-MEGO.P.V,Amego Capital Corp.,TSX.V,Unclassified
-EVOC.P.V,Evocati Capital Resources Inc.,TSX.V,Unclassified
-SOLI.P.V,Solid Impact Investments Corp.,TSX.V,Unclassified
+MEGO-P.V,Amego Capital Corp.,TSX.V,Unclassified
+EVOC-P.V,Evocati Capital Resources Inc.,TSX.V,Unclassified
+SOLI-P.V,Solid Impact Investments Corp.,TSX.V,Unclassified
 LGC.V,Lavras Gold Corp.,TSX.V,Mining
 LG.V,Lahontan Gold Corp.,TSX.V,Mining
 FRNT.V,FRNT Financial Inc.,TSX.V,Financial Services
@@ -1839,16 +1839,16 @@ BLCO.TO,Bausch Lomb Corporation,TSX,Optical Prod & Serv
 PCRX.V,PharmaCorp Rx Inc.,TSX.V,Merchandising
 NMC.V,Nuvau Minerals Inc.,TSX.V,Mining
 CLIP.V,Clip Money Inc.,TSX.V,Technology
-AMG.P.V,AMG Acquisition Corp.,TSX.V,Unclassified
+AMG-P.V,AMG Acquisition Corp.,TSX.V,Unclassified
 BRED.V,Purebread Brands Inc.,TSX.V,Manufacturing
-MHC.UN.TO,Flagship Communities Real Estate Investment Trust CAD,TSX,Investment Trust
-AAAJ.P.V,AAJ Capital 3 Corp.,TSX.V,Unclassified
+MHC-UN.TO,Flagship Communities Real Estate Investment Trust CAD,TSX,Investment Trust
+AAAJ-P.V,AAJ Capital 3 Corp.,TSX.V,Unclassified
 ARK.V,Arras Minerals Corp.,TSX.V,Mining
-RAC.P.V,Riverwalk Acquisition Corp.,TSX.V,Unclassified
+RAC-P.V,Riverwalk Acquisition Corp.,TSX.V,Unclassified
 CEI.V,Coelacanth Energy Inc.,TSX.V,Oil & Gas
-ATR.P.V,Aster Acquisition Corp.,TSX.V,Unclassified
+ATR-P.V,Aster Acquisition Corp.,TSX.V,Unclassified
 NTX.V,NeoTerrex Minerals Inc.,TSX.V,Mining
-AZC.P.V,A2ZCryptocap Inc.,TSX.V,Unclassified
+AZC-P.V,A2ZCryptocap Inc.,TSX.V,Unclassified
 IE.TO,Ivanhoe Electric Inc.,TSX,Mineral Expl & Dev
 REH.V,Responsible Energy Corporation,TSX.V,Waste Management
 KIB.V,Kiboko Gold Inc.,TSX.V,Mining
@@ -1863,39 +1863,39 @@ DNO.V,Dinero Ventures Ltd.,TSX.V,Mining
 OCAL.V,OCAL Financial Inc.,TSX.V,Technology
 QURI.V,Quri-Mayu Developments Ltd.,TSX.V,Mining
 HIDE.V,Hydaway Digital Corp.,TSX.V,Manufacturing
-FINV.P.V,Faction Investment Group Corp.,TSX.V,Unclassified
+FINV-P.V,Faction Investment Group Corp.,TSX.V,Unclassified
 TRCG.V,Thistle Resources Inc.,TSX.V,Mining
 CHER.V,Cheelcare Inc.,TSX.V,Manufacturing
 FDY.TO,Faraday Copper Corp.,TSX,Copper Expl & Dev
-CAPL.P.V,Caplink Ventures Inc.,TSX.V,Unclassified
+CAPL-P.V,Caplink Ventures Inc.,TSX.V,Unclassified
 GCV.V,GOLDEN STAR CAPITAL VENTURES INC.,TSX.V,Utilities
 GSTM.V,Goldstorm Metals Corp.,TSX.V,Mining
 MGRO.V,MustGrow Biologics Corp.,TSX.V,Waste Management
 V.V,Verdera Energy Corp.,TSX.V,Mining
-AXET.P.V,Axe2 Acquisitions Inc.,TSX.V,Unclassified
+AXET-P.V,Axe2 Acquisitions Inc.,TSX.V,Unclassified
 BN.TO,Brookfield Corporation,TSX,Diversified Oper
 BAM.TO,Brookfield Asset Management Ltd.,TSX,Asset Mgt/Advise Serv
 DPF.V,Dr. Phone Fix Canada Corporation,TSX.V,Business Services
-MCT.P.V,M3 Capital Corp.,TSX.V,Unclassified
+MCT-P.V,M3 Capital Corp.,TSX.V,Unclassified
 AGET.V,AGEDB Technology Ltd.,TSX.V,Technology
 EXCL.V,Excalibur Metals Corp.,TSX.V,Mining
-CES.P.V,Celestial Acquisition Corp.,TSX.V,Unclassified
+CES-P.V,Celestial Acquisition Corp.,TSX.V,Unclassified
 CCDS.V,Carrier Connect Data Solutions Inc.,TSX.V,Technology
 PALI.V,Palisades Goldcorp Ltd.,TSX.V,Financial Services
-MAN.P.V,Mandala Capital Inc.,TSX.V,Unclassified
+MAN-P.V,Mandala Capital Inc.,TSX.V,Unclassified
 MATA.V,Matador Technologies Inc.,TSX.V,Technology
 IDEX.V,IDEX Metals Corp.,TSX.V,Mining
-EBCD.P.V,Eureka Capital Corp.,TSX.V,Unclassified
+EBCD-P.V,Eureka Capital Corp.,TSX.V,Unclassified
 TOTC.V,Totec Resources Ltd.,TSX.V,Mining
 SAGE.V,Sage Potash Corp.,TSX.V,Mining
 LMN.V,Lumine Group Inc.,TSX.V,Technology
-SPSA.P.V,SP Strategic Acquisition Corp.,TSX.V,Unclassified
+SPSA-P.V,SP Strategic Acquisition Corp.,TSX.V,Unclassified
 DTEA.V,DAVIDsTEA Inc.,TSX.V,Merchandising
 SGD.TO,Snowline Gold Corp.,TSX,Mining Expl & Dev
-AROC.P.V,Argo Opportunity Corp.,TSX.V,Unclassified
-RRCC.P.V,Raging Rhino Capital Corp.,TSX.V,Unclassified
+AROC-P.V,Argo Opportunity Corp.,TSX.V,Unclassified
+RRCC-P.V,Raging Rhino Capital Corp.,TSX.V,Unclassified
 SCAI.V,SalesCloser Technologies Ltd.,TSX.V,Technology
-MDK.P.V,MDK Acquisition Inc.,TSX.V,Unclassified
+MDK-P.V,MDK Acquisition Inc.,TSX.V,Unclassified
 BIRD.V,Thunderbird Minerals Corp.,TSX.V,Mining
 TSND.TO,TerrAscend Corp.,TSX,Cannabis Prod/Mkt
 BCHT.TO,Birchtech Corp.,TSX,Environmental Service
@@ -1905,7 +1905,7 @@ CAM.V,Cascadia Minerals Ltd.,TSX.V,Mining
 ONYX.V,Onyx Gold Corp.,TSX.V,Mining
 EGLT.V,EGL Technology Inc.,TSX.V,Technology
 LEGY.V,Legacy Gold Mines Ltd.,TSX.V,Mining
-ALFA.UN.V,Margaux Real Estate Investment Trust,TSX.V,Real Estate
+ALFA-UN.V,Margaux Real Estate Investment Trust,TSX.V,Real Estate
 SHRX.V,Sharp Therapeutics Corp.,TSX.V,Technology
 RGC.V,Relevant Gold Corp.,TSX.V,Mining
 PLSR.V,Pulsar Helium Inc.,TSX.V,Oil & Gas
@@ -1921,14 +1921,14 @@ SUGR.V,Sucro Limited,TSX.V,Manufacturing
 LIFT.V,Li-FT Power Ltd.,TSX.V,Mining
 PUR.V,Premier American Uranium Inc.,TSX.V,Mining
 CURA.TO,"Curaleaf Holdings, Inc.",TSX,Cannabis Dev & Dstr
-RSC.P.V,Rockmount Capital Corporation,TSX.V,Unclassified
-IGBT.UN.TO,2028 Investment Grade Bond Trust  Class F units,TSX,Investment Fund
+RSC-P.V,Rockmount Capital Corporation,TSX.V,Unclassified
+IGBT-UN.TO,2028 Investment Grade Bond Trust  Class F units,TSX,Investment Fund
 DRY.V,Dryden Gold Corp.,TSX.V,Mining
-AOCC.P.V,Artrari One Capital Corp.,TSX.V,Unclassified
-OAC.P.V,Oa Capital Corp.,TSX.V,Unclassified
+AOCC-P.V,Artrari One Capital Corp.,TSX.V,Unclassified
+OAC-P.V,Oa Capital Corp.,TSX.V,Unclassified
 PWRO.V,Power One Resources Corp.,TSX.V,Mining
 ZAU.V,Zodiac Gold Inc.,TSX.V,Mining
-AMYA.P.V,Amaya Big Sky Capital Corp.,TSX.V,Unclassified
+AMYA-P.V,Amaya Big Sky Capital Corp.,TSX.V,Unclassified
 GFR.TO,Greenfire Resources Ltd.,TSX,Oil And Gas
 NPS.TO,Canadian Large Cap Leaders Split Corp.,TSX,Investment Fund
 SASK.V,ATHA Energy Corp.,TSX.V,Mining
@@ -1941,9 +1941,9 @@ HLU.V,Homeland Uranium Corp.,TSX.V,Mining
 ORCL.V,Oracle Commodity Holding Corp.,TSX.V,Financial Services
 KTRI.V,Kootenay Resources Inc.,TSX.V,Mining
 ONAU.V,OnGold Resources Ltd.,TSX.V,Mining
-CHII.P.V,Chicane Capital II Corp.,TSX.V,Unclassified
-COP.U.TO,Sprott Physical Copper Trust USF,TSX,Investment Fund
-COP.UN.TO,Sprott Physical Copper Trust,TSX,Investment Fund
+CHII-P.V,Chicane Capital II Corp.,TSX.V,Unclassified
+COP-U.TO,Sprott Physical Copper Trust USF,TSX,Investment Fund
+COP-UN.TO,Sprott Physical Copper Trust,TSX,Investment Fund
 MOG.V,Mogotes Metals Inc.,TSX.V,Oil & Gas
 NRC.V,Nations Royalty Corp.,TSX.V,Financial Services
 AUM.V,Aumega Metals Ltd,TSX.V,Mining
@@ -1970,7 +1970,7 @@ GRGD.TO,Groupe Dynamite Inc,TSX,Fashion
 ZCT.V,Zero Candida Technologies Inc.,TSX.V,Technology
 LAF.V,Lithium Africa Corp.,TSX.V,Mining
 FFM.TO,FireFly Metals Ltd,TSX,Copper-Gold Company
-PMEI.UN.TO,PIMCO Monthly Enhanced Income Fund,TSX,Investment Fund
+PMEI-UN.TO,PIMCO Monthly Enhanced Income Fund,TSX,Investment Fund
 PDN.TO,Paladin Energy Ltd,TSX,Mining
 NVLH.V,Nevada Lithium Resources Inc.,TSX.V,Mining
 ZEFI.NE,ZEFIRO METHANE CORP.,NEO,Unknown
@@ -1982,7 +1982,7 @@ VRNO.NE,VERANO HOLDINGS CORP.,NEO,Unknown
 BCBN.NE,BASE CARBON INC.,NEO,Unknown
 HELP.NE,CYBIN INC.,NEO,Unknown
 JPEG.NE,Pioneer AI Foundry Inc.,NEO,Unknown
-JET.B.NE,Global Crossing Airlines Group Inc. Class B,NEO,Unknown
+JET-B.NE,Global Crossing Airlines Group Inc. Class B,NEO,Unknown
 JET.NE,Global Crossing Airlines Group Inc.,NEO,Unknown
 ABXX.TO,ABAXX TECHNOLOGIES INC.,TSX,Tech
 MAXQ.NE,MARITIME LAUNCH SERVICES INC.,NEO,Unknown
@@ -1992,7 +1992,7 @@ KNR.NE,KONTROL TECHNOLOGIES CORP.,NEO,Unknown
 CZZL.NE,CIZZLE BRANDS CORPORATION,NEO,Unknown
 ALGO.NE,LIGHT AI INC.,NEO,Unknown
 DMET.NE,DENARIUS METALS CORP.,NEO,Unknown
-GLAS.A.U.NE,GLASS HOUSE BRANDS INC. SUBORDINATE VOTING EQUITY SHARES,NEO,Unknown
+GLAS-A-U.NE,GLASS HOUSE BRANDS INC. SUBORDINATE VOTING EQUITY SHARES,NEO,Unknown
 BTQ.NE,BTQ TECHNOLOGIES CORP.,NEO,Unknown
 NETZ.NE,CARBON STREAMING CORPORATION,NEO,Unknown
 MB.NE,Mercedes CDR (CAD Hedged),NEO,Unknown
@@ -2001,7 +2001,7 @@ TOYM.NE,Toyota CDR (CAD Hedged),NEO,Unknown
 HNDA.NE,Honda CDR (CAD Hedged),NEO,Unknown
 NTDO.NE,Nintendo CDR (CAD Hedged),NEO,Unknown
 LTC.V,Lotus Creek Exploration Inc.,TSX.V,Oil & Gas
-AMV.P.V,AMV II Capital Corporation,TSX.V,Unclassified
+AMV-P.V,AMV II Capital Corporation,TSX.V,Unclassified
 NVON.NE,Novo Nordisk CDR (CAD Hedged),NEO,Unknown
 ASMH.NE,ASML CDR (CAD Hedged),NEO,Unknown
 SAPG.NE,SAP CDR (CAD Hedged),NEO,Unknown
@@ -2032,7 +2032,7 @@ HART.V,Gold Hart Copper Corp.,TSX.V,Mining
 FFU.V,F4 Uranium Corp.,TSX.V,Mining
 GRL.V,Greenlight Metals Inc.,TSX.V,Mining
 BLU.V,Bluenergies Ltd.,TSX.V,Oil & Gas
-PVF.A.V,Partners Value Investments LP Exchangeable Shares,TSX.V,Financial Services
+PVF-A.V,Partners Value Investments LP Exchangeable Shares,TSX.V,Financial Services
 SLT.TO,Saltire Capital Ltd CAD,TSX,Private Equity
 AZEM.V,Arizona Eagle Mining Corp.,TSX.V,Mining
 UTWO.V,U92 Energy Corp.,TSX.V,Mining
@@ -2047,11 +2047,11 @@ ONCO.NE,Onco-Innovations Limited,NEO,Life Sciences
 VLD.V,Vinland Lithium Inc.,TSX.V,Mining
 LUXR.V,Luxor Metals Ltd.,TSX.V,Mining
 AXO.V,Axo Metals Corp.,TSX.V,Mining
-ADAD.P.V,Adagio 2 Capital Inc.,TSX.V,Unclassified
+ADAD-P.V,Adagio 2 Capital Inc.,TSX.V,Unclassified
 FINX.V,Finex Metals Ltd.,TSX.V,Mining
 BTCT.V,Bitcoin Treasury Corporation,TSX.V,Financial Services
-XTAO.U.V,XTAO Inc.,TSX.V,Technology
-GO.U.TO,GO Residential Real Estate Investment Trust USD,TSX,Reit In Lhrs Property
+XTAO-U.V,XTAO Inc.,TSX.V,Technology
+GO-U.TO,GO Residential Real Estate Investment Trust USD,TSX,Reit In Lhrs Property
 ALK.TO,Alkane Resources Limited,TSX,Gold Expl & Dev
 PCU.V,Pecoy Copper Corp.,TSX.V,Mining
 LV.NE,LVMH CDR (CAD Hedged),NEO,Unknown
@@ -2067,7 +2067,7 @@ SOCG.NE,SocGen CDR (CAD Hedged),NEO,Unknown
 HEIA.NE,Heineken CDR (CAD Hedged),NEO,Unknown
 ASE.V,Asante Gold Corporation,TSX.V,Mining
 CPKR.TO,Canada Packers Inc,TSX,Investment Fund
-RTO.P.V,Chrysalis 12 Inc.,TSX.V,Unclassified
+RTO-P.V,Chrysalis 12 Inc.,TSX.V,Unclassified
 RGSI.TO,Rockpoint Gas Storage Inc,TSX,Oil And Gas
 PMI.V,Perseverance Metals Inc.,TSX.V,Mining
 ZAMD.NE,Advanced Micro Devices (AMD) BMO CDR (CAD Hedged),NEO,Unknown
@@ -2075,7 +2075,7 @@ ZGOO.NE,Alphabet (GOOG) BMO CDR (CAD Hedged),NEO,Unknown
 ZAMZ.NE,Amazon (AMZN) BMO CDR (CAD Hedged),NEO,Unknown
 ZNVD.NE,NVIDIA (NVDA) BMO CDR (CAD Hedged),NEO,Unknown
 ZTSL.NE,Tesla (TSLA) BMO CDR (CAD Hedged),NEO,Unknown
-MPV.P.V,Matchpoint Ventures Corp.,TSX.V,Unclassified
+MPV-P.V,Matchpoint Ventures Corp.,TSX.V,Unclassified
 ZBRK.NE,Berkshire Hathaway (BRK/B) CDR (CAD Hedged),NEO,Unknown
 ZPLT.NE,Palantir (PLTR) BMO CDR (CAD Hedged),NEO,Unknown
 ZDIS.NE,Walt Disney (DIS) BMO CDR (CAD Hedged),NEO,Unknown
@@ -2094,7 +2094,7 @@ ZSMC.NE,Super Micro Computer (SMCI) BMO CDR (CAD Hedged),NEO,Unknown
 ZADB.NE,Adobe (ADBE) BMO CDR (CAD Hedged),NEO,Unknown
 ZBA.NE,Boeing (BA) BMO CDR (CAD Hedged),NEO,Unknown
 SUM.V,Summit Royalties Ltd.,TSX.V,Financial Services
-ATLH.P.V,Atlantic Horizon Capital Corp.,TSX.V,Unclassified
+ATLH-P.V,Atlantic Horizon Capital Corp.,TSX.V,Unclassified
 ZPYP.NE,PayPal (PYPL) BMO CDR (CAD Hedged),NEO,Unknown
 ZMCD.NE,McDonalds (MCD) BMO CDR (CAD Hedged),NEO,Unknown
 ZJPM.NE,JPMorgan (JPM) BMO CDR (CAD Hedged),NEO,Unknown
@@ -2117,7 +2117,7 @@ ZCOP.NE,ConocoPhillips (COP) BMO CDR (CAD Hedged),NEO,Unknown
 ZAPO.NE,Apollo (APO) BMO CDR (CAD Hedged),NEO,Unknown
 ZNOC.NE,Northrop Grumman (NOC) BMO CDR (CAD Hedged),NEO,Unknown
 ZVST.NE,Vistra (VST) BMO CDR (CAD Hedged),NEO,Unknown
-MAK.U.TO,MAK Acquisition Corp. Class A USD,TSX,Investment Fund
+MAK-U.TO,MAK Acquisition Corp. Class A USD,TSX,Investment Fund
 PALS.V,Paragon Advanced Labs Inc.,TSX.V,Medical & Health Care
 LUNR.TO,LunR Royalties Corp.,TSX,Mining
 STG.TO,STRACON Group Holding Inc,TSX,Investment Fund
@@ -2134,7 +2134,7 @@ CDE.TO,Coeur Mining Inc,TSX,Mining
 AURA.V,Auranova Resources Inc.,TSX.V,Mining
 MTEK.TO,Metatek Group Ltd,TSX,Investment Fund
 CLCH.TO,Clinch Resources Ltd,TSX,Investment Fund
-THY.P.V,Thermopylae Capital Inc.,TSX.V,Unclassified
+THY-P.V,Thermopylae Capital Inc.,TSX.V,Unclassified
 VENT.V,Ventra Metals Corp.,TSX.V,Mining
 KIRO.V,Kairos Gold Inc.,TSX.V,Mining
 XNDU.TO,Xanadu Quantum Technologies Limited,TSX,Tech
@@ -2146,15 +2146,15 @@ PDI.TO,PDI Gold Limited,TSX,Mining
 EM.V,Errington Metals Corp.,TSX.V,Mining
 MMET.V,Miata Metals Corp.,TSX.V,Mining
 LMCU.TO,Lumina Metals Corp,TSX,Mineral Expl & Dev
-SMCD.P.V,SCD Capital Corp.,TSX.V,Unclassified
-AFC.P.V,AF3 Capital Corp.,TSX.V,Unclassified
+SMCD-P.V,SCD Capital Corp.,TSX.V,Unclassified
+AFC-P.V,AF3 Capital Corp.,TSX.V,Unclassified
 TUNG.V,American Tungsten Corp.,TSX.V,Mining
 JAY.V,Blue Jay Gold Corp.,TSX.V,Mining
 VGC.TO,Valor Gold Corp,TSX,Mining
 ALZI.V,Alzai Health Corp.,TSX.V,Technology
 APTX.TO,Apotex Health Corp,TSX,Healthcare Services
 VLLC.V,Argentina Metals Corp.,TSX.V,Mining
-AEM.CV.TO,Agnico Eagle Mines Limited Rights,TSX,Gld/Sil Expl & Dev
+AEM-CV.TO,Agnico Eagle Mines Limited Rights,TSX,Gld/Sil Expl & Dev
 NAP.V,Napoleon Resources Inc.,TSX.V,Mining
 CHLT.TO,Custom Health Holdings Inc.,TSX,Healthcare Services
 MILE.V,Twenty Mile Metals Inc.,TSX.V,Mining
@@ -2164,17 +2164,17 @@ ALCH.V,Alchemy Labs Inc.,TSX.V,Manufacturing
 NICE.V,Ni-Co Energy inc.,TSX.V,Mining
 INXS.V,Goldinxs Mining Corp.,TSX.V,Mining
 CADY.TO,Cadillac Mines Corporation,TSX,Mineral Expl & Dev
-FSTV.P.V,Falconstar Ventures Inc.,TSX.V,Unclassified
+FSTV-P.V,Falconstar Ventures Inc.,TSX.V,Unclassified
 IRR.V,Irruptive Metals Corp.,TSX.V,Mining
 AMAP.TO,Amapa Minerals Holdings Inc.,TSX,Gold Mining
-BUSH.P.V,Bushido Capital Corp.,TSX.V,Unclassified
+BUSH-P.V,Bushido Capital Corp.,TSX.V,Unclassified
 GERA.V,Goldera Exploration Ltd.,TSX.V,Mining
-LUKA.P.V,Luka Capital Corp.,TSX.V,Unclassified
+LUKA-P.V,Luka Capital Corp.,TSX.V,Unclassified
 CENT.V,Centauri Minerals Inc.,TSX.V,Mining
 ZIGY.V,Stardust Metal Corp.,TSX.V,Mining
 GCUC.V,Green Canada Uranium Corp.,TSX.V,Mining
 NAIA.V,NAIA Relief Inc.,TSX.V,Technology
-URB.A.CN,Urbana Corporation A NV,CSE,Diversified Industries
+URB-A.CN,Urbana Corporation A NV,CSE,Diversified Industries
 URB.CN,Urbana Corporation,CSE,Diversified Industries
 CFE.CN,Cartier Silver Corporation,CSE,Mining
 APP.CN,Global Compliance Applications Corp.,CSE,Technology
@@ -2186,24 +2186,24 @@ CACR.CN,The Canadian Chrome Company Inc.,CSE,Mining
 URL.CN,NameSilo Technologies Corp.,CSE,Technology
 MYR.CN,Meryllion Resources Corporation,CSE,Mining
 EWG.CN,Eat Well Investment Group Inc.,CSE,Diversified Industries
-DCNN.X.CN,Digicann Ventures Inc.,CSE,Life Sciences
+DCNN-X.CN,Digicann Ventures Inc.,CSE,Life Sciences
 BLO.CN,Cannabix Technologies Inc.,CSE,Technology
 JJJ.CN,37 Capital Inc.,CSE,Mining
 NP.CN,NorthPalm Capital Corp.,CSE,Technology
-TLP.UN.CN,Tier One Capital Limited Partnership,CSE,Diversified Industries
+TLP-UN.CN,Tier One Capital Limited Partnership,CSE,Diversified Industries
 PDO.CN,PUDO Inc.,CSE,Diversified Industries
 TN.CN,Tartisan Nickel Corp.,CSE,Mining
 KCLI.CN,American Critical Minerals Corp.,CSE,Mining
 AFI.CN,Affinor Growers Inc.,CSE,Life Sciences
 JBR.CN,James Bay Resources Limited,CSE,Oil And Gas
 BUX.CN,BioMark Diagnostics Inc.,CSE,Life Sciences
-VFI.X.CN,New Frontier Ventures Inc.,CSE,Diversified Industries
+VFI-X.CN,New Frontier Ventures Inc.,CSE,Diversified Industries
 MRM.CN,Micromem Technologies Inc.,CSE,Technology
 IAI.CN,infinitii ai inc.,CSE,Technology
 FAT.CN,Foremost Clean Energy Ltd.,CSE,Mining
 HODL.CN,Sol Strategies Inc.,CSE,Diversified Industries
 GOR.CN,Goldrea Resources Corp.,CSE,Mining
-LAI.X.CN,La Imperial Resources Inc.,CSE,Mining
+LAI-X.CN,La Imperial Resources Inc.,CSE,Mining
 AGC.CN,Avanti Gold Corp.,CSE,Mining
 BAC.CN,BacTech Environmental Corporation,CSE,Cleantech
 SPRK.CN,Spark Energy Minerals Inc.,CSE,Mining
@@ -2230,7 +2230,7 @@ SHRC.CN,Sharc International Systems Inc.,CSE,Cleantech
 PKK.CN,Tenet Fintech Group Inc,CSE,Technology
 MCL.CN,McLaren Resources Inc.,CSE,Mining
 MY.CN,Montego Resources Inc.,CSE,Mining
-WSM.X.CN,WSM Ventures Corp.,CSE,Diversified Industries
+WSM-X.CN,WSM Ventures Corp.,CSE,Diversified Industries
 QBAT.CN,Quantum Battery Metals Corp,CSE,Mining
 IRV.CN,Irving Resources Inc.,CSE,Mining
 BKTS.CN,Beckett's Inc.,CSE,Diversified Industries
@@ -2245,7 +2245,7 @@ IDK.CN,ThreeD Capital Inc.,CSE,Diversified Industries
 PMC.CN,Peloton Minerals Corporation,CSE,Mining
 CAMP.CN,Canadian GoldCamps Corp.,CSE,Mining
 IAN.CN,iAnthus Capital Holdings Inc.,CSE,Life Sciences
-TMED.X.CN,EGF Theramed Health Corp.,CSE,Technology
+TMED-X.CN,EGF Theramed Health Corp.,CSE,Technology
 ARQ.CN,Argo Gold Inc.,CSE,Mining
 HEAL.CN,Restart Life Sciences Corp.,CSE,Life Sciences
 FNQ.CN,Fineqia International Inc.,CSE,Diversified Industries
@@ -2255,7 +2255,7 @@ OWLI.CN,One World Lithium Inc.,CSE,Mining
 ETI.CN,EnviroMetal Technologies Inc.,CSE,Technology
 SQX.CN,Squatex Energy and Ressources Inc.,CSE,Oil And Gas
 SNA.CN,Star Navigation Systems Group Ltd.,CSE,Technology
-CACR.A.CN,The Canadian Chrome Company Inc. Multiple Voting Shares,CSE,Mining
+CACR-A.CN,The Canadian Chrome Company Inc. Multiple Voting Shares,CSE,Mining
 PGOL.CN,Patriot Gold Corp.,CSE,Mining
 TGIF.CN,1933 Industries Inc.,CSE,Diversified Industries
 ASTI.CN,Aquarius Surgical Technologies Inc.,CSE,Technology
@@ -2276,7 +2276,7 @@ CEXY.CN,Copper One Resources Corp.,CSE,Mining
 NRDX.CN,NordX Metals Corp.,CSE,Mining
 EPIC.CN,1CM Inc,CSE,Life Sciences
 DWTZ.CN,Data Watts Partners Inc.,CSE,Technology
-SBD.X.CN,SBD Capital Corp.,CSE,Diversified Industries
+SBD-X.CN,SBD Capital Corp.,CSE,Diversified Industries
 AIG.CN,Genesis AI Corp.,CSE,Technology
 GGC.CN,Generic Gold Corp.,CSE,Mining
 USGD.CN,American Pacific Mining Corp.,CSE,Mining
@@ -2301,11 +2301,11 @@ RUU.CN,Refined Energy Corp.,CSE,Mining
 FRG.CN,Forge Resources Corp.,CSE,Mining
 CDVA.CN,CordovaCann Corp.,CSE,Life Sciences
 HERB.CN,Herbal Dispatch Inc.,CSE,Life Sciences
-LOAN.X.CN,Pegasus Mercantile Inc.,CSE,Diversified Industries
+LOAN-X.CN,Pegasus Mercantile Inc.,CSE,Diversified Industries
 PHRX.CN,Pharmadrug Inc.,CSE,Life Sciences
 ARMY.CN,Armory Mining Corp.,CSE,Mining
-MJRX.X.CN,Global Health Clinics Ltd.,CSE,Life Sciences
-WBG.X.CN,World Blockchain Corp.,CSE,Technology
+MJRX-X.CN,Global Health Clinics Ltd.,CSE,Life Sciences
+WBG-X.CN,World Blockchain Corp.,CSE,Technology
 VENI.CN,Vencanna Ventures Inc.,CSE,Life Sciences
 LTHM.CN,Champion Electric Metals Inc.,CSE,Mining
 ADDY.CN,Adelayde Exploration Inc.,CSE,Mining
@@ -2318,12 +2318,12 @@ TRG.CN,Tarachi Gold Corp.,CSE,Mining
 NLR.CN,Northern Lights Resources Corp.,CSE,Mining
 RAD.CN,Radial Research Corp,CSE,Technology
 NTAR.CN,Nextech3D.AI Corporation.,CSE,Technology
-AETH.X.CN,Aether Global Innovations Corp.,CSE,Technology
+AETH-X.CN,Aether Global Innovations Corp.,CSE,Technology
 SLZ.CN,Taltson Critical Minerals Corp.,CSE,Mining
 OVAT.CN,Ovation Science Inc,CSE,Life Sciences
 GRIN.CN,Grown Rogue International Inc.,CSE,Life Sciences
 NERD.CN,Nerds On Site Inc.,CSE,Technology
-SPFY.X.CN,Spacefy Inc.,CSE,Technology
+SPFY-X.CN,Spacefy Inc.,CSE,Technology
 GTCH.CN,Getchell Gold Corp.,CSE,Mining
 CL.CN,Cresco Labs Inc.,CSE,Life Sciences
 DOSE.CN,Rapid Dose Therapeutics Corp.,CSE,Life Sciences
@@ -2338,7 +2338,7 @@ TEMP.CN,Tempus Capital Inc.,CSE,Diversified Industries
 TOC.CN,Tocvan Ventures Corp.,CSE,Mining
 LINE.CN,Linear Minerals Corp.,CSE,Mining
 CVGR.CN,City View Green Holdings Inc.,CSE,Diversified Industries
-BLR.X.CN,Blackhawk Growth Corp.,CSE,Diversified Industries
+BLR-X.CN,Blackhawk Growth Corp.,CSE,Diversified Industries
 SONI.CN,SonicStrategy Inc.,CSE,Technology
 VREO.CN,Vireo Growth Inc.,CSE,Life Sciences
 INVR.CN,Inverite Insights Inc.,CSE,Diversified Industries
@@ -2366,7 +2366,7 @@ MEGA.CN,MegaWatt Lithium and Battery Metals Corp.,CSE,Mining
 BNXT.CN,BioNxt Solutions Inc.,CSE,Life Sciences
 CRUZ.CN,Cruz Battery Metals Corp.,CSE,Mining
 STCU.CN,Star Copper Corp.,CSE,Mining
-VC.X.CN,Volatus Capital Corp.,CSE,Mining
+VC-X.CN,Volatus Capital Corp.,CSE,Mining
 GRUN.CN,Gold Runner Exploration Inc.,CSE,Mining
 CQX.CN,Copper Quest Exploration Inc.,CSE,Mining
 GPO.CN,Gold Port Corporation,CSE,Mining
@@ -2421,7 +2421,7 @@ CLC.CN,Christina Lake Cannabis Corp,CSE,Life Sciences
 KUYA.CN,Kuya Silver Corporation,CSE,Mining
 PHRM.CN,PharmaTher Holdings Ltd.,CSE,Life Sciences
 PSYC.CN,Psyched Wellness Ltd,CSE,Life Sciences
-ENBI.X.CN,Entheon Biomedical Corp.,CSE,Life Sciences
+ENBI-X.CN,Entheon Biomedical Corp.,CSE,Life Sciences
 MOC.CN,Mosaic Minerals Corp.,CSE,Mining
 DATT.CN,Digital Asset Technologies Inc.,CSE,Diversified Industries
 SPAI.CN,Sparc AI Inc.,CSE,Technology
@@ -2447,7 +2447,7 @@ FFF.CN,55 North Gold Inc.,CSE,Mining
 QIMC.CN,Quebec Innovative Materials Corp.,CSE,Mining
 SUR.CN,Surface Metals Inc.,CSE,Mining
 HAMR.CN,Silver Hammer Mining Corp,CSE,Mining
-AAWH.U.CN,"Ascend Wellness Holdings, Inc.",CSE,Life Sciences
+AAWH-U.CN,"Ascend Wellness Holdings, Inc.",CSE,Life Sciences
 DTC.CN,Defence Therapeutics Inc,CSE,Life Sciences
 MARY.CN,Mary Agrotechnologies Inc,CSE,Life Sciences
 WDGY.CN,Wedgemount Resources Corp,CSE,Mining
@@ -2468,7 +2468,7 @@ AURR.CN,Aurbis Resources Corp.,CSE,Mining
 TYUM.CN,The Yumy Candy Company Inc,CSE,Diversified Industries
 BURY.CN,Burrell Resources Inc.,CSE,Mining
 AUOZ.CN,Emperor Metals Inc.,CSE,Mining
-ZOG.X.CN,Zoglos Food Corp.,CSE,Diversified Industries
+ZOG-X.CN,Zoglos Food Corp.,CSE,Diversified Industries
 ELEM.CN,Element79 Gold Corp.,CSE,Mining
 ARGO.CN,Argo Graphene Solutions Corp.,CSE,Diversified Industries
 NVR.CN,North Valley Resources Ltd.,CSE,Mining
@@ -2484,7 +2484,7 @@ NPRA.CN,Nepra Foods Inc.,CSE,Diversified Industries
 GWAY.CN,Greenway Greenhouse Cannabis Corporation,CSE,Life Sciences
 TELI.CN,Telescope Innovations Corp.,CSE,Technology
 METG.CN,Metaguest.AI Incorporated,CSE,Technology
-JOLT.X.CN,Jolt Health Inc.,CSE,Life Sciences
+JOLT-X.CN,Jolt Health Inc.,CSE,Life Sciences
 DIGI.CN,Digital Commodities Inc.,CSE,Diversified Industries
 ESAU.CN,ESGold Corp.,CSE,Mining
 ALMA.CN,Alma Gold Inc.,CSE,Mining
@@ -2512,7 +2512,7 @@ CRC.CN,Canter Resources Corp,CSE,Mining
 USLI.CN,American Salars Lithium Inc.,CSE,Mining
 NATN.CN,Nation Gold Corp,CSE,Mining
 STGX.CN,StrategX Elements Corp.,CSE,Mining
-MJEM.X.CN,Mijem Newcomm Tech Inc.,CSE,Technology
+MJEM-X.CN,Mijem Newcomm Tech Inc.,CSE,Technology
 MDMA.CN,Pharmala Biotech Holdings Inc.,CSE,Life Sciences
 GFT.CN,Grafton Resources Inc.,CSE,Mining
 CULT.CN,Cult Food Science Corp,CSE,Diversified Industries
@@ -2586,8 +2586,8 @@ DMED.CN,Diagnamed Holdings Corp.,CSE,Technology
 MERC.CN,Mercado Minerals Ltd.,CSE,Mining
 CYBT.CN,Cybeats Technologies Corp.,CSE,Technology
 EATH.CN,New Earth Resources Corp.,CSE,Mining
-BVOF.A.CN,B.E.S.T. Venture Opportunities Fund Inc. Class A Series I,CSE,Diversified Industries
-BVOF.B.CN,B.E.S.T. Venture Opportunities Fund Inc. Class A Series II,CSE,Diversified Industries
+BVOF-A.CN,B.E.S.T. Venture Opportunities Fund Inc. Class A Series I,CSE,Diversified Industries
+BVOF-B.CN,B.E.S.T. Venture Opportunities Fund Inc. Class A Series II,CSE,Diversified Industries
 NIX.CN,NorthX Nickel Corp.,CSE,Mining
 ZEUS.CN,Zeus North America Mining Corp.,CSE,Mining
 VRTX.CN,Vortex Energy Corp.,CSE,Mining
@@ -2711,7 +2711,7 @@ WISR.CN,WISR AI Systems Inc.,CSE,Technology
 SHLF.CN,Shelfie-Tech Ltd.,CSE,Technology
 HLND.CN,Highland Critical Minerals Corp.,CSE,Mining
 NEXX.CN,Nexcel Metals Corp.,CSE,Mining
-ALEN.U.CN,Aleen Inc.,CSE,Technology
+ALEN-U.CN,Aleen Inc.,CSE,Technology
 QB.CN,Quarterback Resources Inc.,CSE,Mining
 RGN.CN,Rush Gold Corp.,CSE,Mining
 UCM.CN,United Critical Minerals Corp.,CSE,Mining
@@ -2729,7 +2729,7 @@ VIVI.CN,TempraMed Technologies Ltd.,CSE,Life Sciences
 RESO.CN,ReSolve Energy Inc.,CSE,Cleantech
 SKNY.CN,LIR Life Sciences Corp.,CSE,Life Sciences
 STNG.CN,Stinger Resources Inc.,CSE,Mining
-AIBZ.U.CN,Bitzero Holdings Inc.,CSE,Technology
+AIBZ-U.CN,Bitzero Holdings Inc.,CSE,Technology
 ENCR.CN,Encore Technologies Corp.,CSE,Technology
 EVR.CN,Evolve Royalties Ltd.,CSE,Diversified Industries
 PAI.CN,Predictiv AI Inc.,CSE,Technology
