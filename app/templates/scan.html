@@ -91,6 +91,17 @@
     .disclaimer { margin: 28px 0 8px; padding: 12px 14px; border-left: 2px solid var(--border);
                   color: var(--muted); font-size: 12px; }
     .scroll { overflow-x: auto; }
+
+    /* At phone width six columns forces the date onto two lines and squeezes
+       everything else. Drop the two that are least useful at a glance: over-
+       threshold is a constant for a given universe size (it is a fixed
+       percentile of a rank transform), and max z is bounded by the ceiling.
+       Both stay visible on a wider screen and in the API. */
+    @media (max-width: 520px) {
+      th.opt, td.opt { display: none; }
+      th, td { padding: 6px 5px; }
+      td.date { white-space: nowrap; font-size: 11px; }
+    }
     button { font: inherit; background: var(--panel); color: var(--text);
              border: 1px solid var(--border); border-radius: 7px; padding: 7px 12px; }
     button:active { border-color: var(--accent); }
@@ -158,18 +169,18 @@
       <div class="scroll">
         <table>
           <thead><tr>
-            <th>session</th><th>eligible</th><th>over thr.</th><th>qualified</th>
-            <th>picks</th><th>max z</th>
+            <th>session</th><th>eligible</th><th class="opt">over thr.</th>
+            <th>qualified</th><th>picks</th><th class="opt">max z</th>
           </tr></thead>
           <tbody>
             {% for r in history %}
               <tr {% if r.empty_day %}class="none"{% endif %}>
-                <td><a href="/scan?as_of={{ r.as_of_date }}">{{ r.as_of_date }}</a></td>
+                <td class="date"><a href="/scan?as_of={{ r.as_of_date }}">{{ r.as_of_date }}</a></td>
                 <td>{{ r.n_eligible }}</td>
-                <td>{{ r.n_over_threshold }}</td>
+                <td class="opt">{{ r.n_over_threshold }}</td>
                 <td>{{ r.n_qualified }}</td>
                 <td>{{ r.n_picks if r.n_picks else '—' }}</td>
-                <td>{{ r.max_composite_z if r.max_composite_z is not none else '—' }}</td>
+                <td class="opt">{{ r.max_composite_z if r.max_composite_z is not none else '—' }}</td>
               </tr>
             {% endfor %}
           </tbody>

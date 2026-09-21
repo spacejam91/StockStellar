@@ -37,15 +37,21 @@ are honoured below. Set SEC_CONTACT to change the address.
 from __future__ import annotations
 
 import argparse
+import io
+import logging
 import json
 import sys
 import time
 import urllib.error
+import struct
 import urllib.request
 import zipfile
+import zlib
 from pathlib import Path
 
 import pandas as pd
+
+log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).parent.parent
 if str(ROOT) not in sys.path:
@@ -67,7 +73,10 @@ TICKERS_URL = "https://www.sec.gov/files/company_tickers_exchange.json"
 FSDS = "https://www.sec.gov/files/dera/data/financial-statement-data-sets/{q}.zip"
 SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik:010d}.json"
 
-QUARTERS = ("2026q2", "2026q1")
+# Nine quarters costs ~4.9 MB via Range (below) and lifts coverage from 82% to
+# ~90% before the API top-up. Annual-only filers need the wider window.
+QUARTERS = ("2026q2", "2026q1", "2025q4", "2025q3", "2025q2",
+            "2025q1", "2024q4", "2024q3", "2024q2")
 RATE = 9.0          # requests/sec, just under SEC's published 10
 TIMEOUT = 30
 
@@ -97,19 +106,85 @@ def ticker_to_cik() -> pd.DataFrame:
     return df[["ticker", "cik"]].drop_duplicates("ticker")
 
 
+def _range(url: str, start: int, length: int, timeout: int = 60) -> bytes:
+    req = urllib.request.Request(url, headers={**UA, "Range": f"bytes={start}-{start+length-1}"})
+    return urllib.request.urlopen(req, timeout=timeout).read()
+
+
+def fetch_sub_txt(url: str) -> bytes:
+    """Pull ONLY sub.txt out of a remote quarterly zip, via HTTP Range.
+
+    The archive is 58-122 MB but sub.txt is ~580 KB compressed, and the other
+    members include a ~600 MB num.txt nobody here wants. Reading the zip's
+    central directory over Range and then fetching just this member's bytes
+    turns a 145 MB job into a 5 MB one -- which matters on a machine that is
+    already swapping, and matters again in CI where it runs every weekday.
+
+    Reads the End Of Central Directory from the file's tail, walks the central
+    directory to find sub.txt's local-header offset and compressed size, then
+    range-fetches exactly that span and raw-inflates it.
+    """
+    with urllib.request.urlopen(urllib.request.Request(url, method="HEAD", headers=UA),
+                                timeout=30) as r:
+        total = int(r.headers["Content-Length"])
+        if r.headers.get("Accept-Ranges", "").lower() != "bytes":
+            raise RuntimeError("server will not serve ranges")
+
+    tail = _range(url, max(0, total - 65_536), min(65_536, total))
+    eocd = tail.rfind(b"PK\x05\x06")
+    if eocd < 0:
+        raise RuntimeError("no EOCD found")
+    cd_size, cd_off = struct.unpack("<II", tail[eocd + 12:eocd + 20])
+    cd = tail[eocd - cd_size:eocd] if cd_size <= eocd else _range(url, cd_off, cd_size)
+
+    pos, target = 0, None
+    while pos + 46 <= len(cd) and cd[pos:pos + 4] == b"PK\x01\x02":
+        comp_size, = struct.unpack("<I", cd[pos + 20:pos + 24])
+        nlen, elen, clen = struct.unpack("<HHH", cd[pos + 28:pos + 34])
+        lho, = struct.unpack("<I", cd[pos + 42:pos + 46])
+        name = cd[pos + 46:pos + 46 + nlen].decode("utf-8", "replace")
+        if name == "sub.txt":
+            target = (lho, comp_size)
+            break
+        pos += 46 + nlen + elen + clen
+    if target is None:
+        raise RuntimeError("sub.txt not in central directory")
+
+    lho, comp_size = target
+    head = _range(url, lho, 30)
+    nlen, elen = struct.unpack("<HH", head[26:30])
+    raw = _range(url, lho + 30 + nlen + elen, comp_size)
+    return zlib.decompress(raw, -15)
+
+
 def sic_from_quarterlies(quarters=QUARTERS) -> pd.DataFrame:
-    """cik -> sic from sub.txt, streamed out of each quarterly zip."""
-    frames = []
+    """cik -> sic from sub.txt across several quarters, newest wins."""
+    frames, bytes_in = [], 0
     for q in quarters:
-        z = _download(FSDS.format(q=q), CACHE / f"{q}.zip")
-        with zipfile.ZipFile(z) as zf:
-            # Only sub.txt is read. num.txt in the same archive is ~600 MB and
-            # is never decompressed.
-            s = pd.read_csv(zf.open("sub.txt"), sep="\t",
-                            usecols=["cik", "sic", "name"], dtype={"cik": "Int64"})
+        url = FSDS.format(q=q)
+        try:
+            blob = fetch_sub_txt(url)
+            bytes_in += len(blob)
+            s = pd.read_csv(io.BytesIO(blob), sep="\t",
+                            usecols=["cik", "sic"], dtype={"cik": "Int64"})
+        except Exception as e:                                   # noqa: BLE001
+            # Fall back to the whole archive rather than losing the quarter.
+            log.warning("range fetch failed for %s (%s); downloading archive", q, e)
+            try:
+                z = _download(url, CACHE / f"{q}.zip")
+                with zipfile.ZipFile(z) as zf:
+                    s = pd.read_csv(zf.open("sub.txt"), sep="\t",
+                                    usecols=["cik", "sic"], dtype={"cik": "Int64"})
+            except Exception as e2:                              # noqa: BLE001
+                log.warning("quarter %s unavailable: %s", q, e2)
+                continue
         frames.append(s.dropna(subset=["sic"]))
+    if not frames:
+        raise SystemExit("no quarterly data could be fetched")
     out = pd.concat(frames, ignore_index=True).drop_duplicates("cik", keep="first")
     out["sic"] = out["sic"].astype("Int64")
+    print(f"    {len(quarters)} quarters, {bytes_in/1e6:.1f} MB decompressed, "
+          f"{len(out):,} filers with a SIC")
     return out[["cik", "sic"]]
 
 
