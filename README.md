@@ -1,4 +1,4 @@
-# StockSteller
+# StockStellar
 
 Personal Interactive Brokers trading app — portfolio dashboard, watchlist with
 alerts, manual trade entry with safeguards, and a simple algo strategy. Talks
@@ -23,7 +23,7 @@ to IB Gateway via `ib_async`.
 ### 2. Run the app
 
 ```bash
-cd ~/Documents/Claude/Projects/stocksteller
+cd ~/Documents/Claude/Projects/stockstellar
 cp .env.example .env       # tweak if you used a non-default port
 uv run uvicorn app.main:app --reload
 ```

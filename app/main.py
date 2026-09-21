@@ -4,7 +4,7 @@ Phase 1: read-only portfolio dashboard.
 Phase 2: watchlist + live quote streaming over WebSocket.
 
 Run:
-    cd ~/Documents/Claude/Projects/stocksteller
+    cd ~/Documents/Claude/Projects/stockstellar
     uv run uvicorn app.main:app --reload
 
 Then open http://localhost:8000
@@ -36,7 +36,7 @@ from app.quotes import hub
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-log = logging.getLogger("stocksteller")
+log = logging.getLogger("stockstellar")
 
 TEMPLATES = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 
@@ -71,7 +71,7 @@ async def lifespan(_: FastAPI):
     await client.disconnect()
 
 
-app = FastAPI(title="StockSteller", lifespan=lifespan)
+app = FastAPI(title="StockStellar", lifespan=lifespan)
 
 
 # ---- Health + account + positions ----------------------------------------------

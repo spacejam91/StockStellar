@@ -1,6 +1,6 @@
 """SQLite persistence for app-owned state (watchlist, alerts, trade log).
 
-Lives in stocksteller.db at the project root. Schema is created lazily on first
+Lives in stockstellar.db at the project root. Schema is created lazily on first
 connect, so there's no migration step yet.
 """
 
@@ -10,7 +10,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent.parent / "stocksteller.db"
+DB_PATH = Path(__file__).parent.parent / "stockstellar.db"
 
 
 def _conn() -> sqlite3.Connection:

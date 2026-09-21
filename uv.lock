@@ -856,7 +856,7 @@ wheels = [
 ]
 
 [[package]]
-name = "stocksteller"
+name = "stockstellar"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
