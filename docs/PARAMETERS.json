@@ -1,0 +1,157 @@
+{
+  "spec_version": "1.0",
+  "spec_date": "2026-09-21",
+  "purpose": "Daily cross-sectional screen for statistically unusual equities across a CA+US universe, producing a max-3 watchlist with honest empty days.",
+  "output_semantics": {
+    "score_pct": "0-100 percentile rank of criteria strength within the same session's eligible universe.",
+    "composite_z": "Standard-normal score of that percentile. Sigma vs today's universe, not vs history.",
+    "n_qualifiers": "Count of absolute own-history conditions met (0-4).",
+    "side": "long = criteria fired to the upside, short = to the downside.",
+    "is_not": [
+      "not a probability of gain",
+      "not a forecast",
+      "not a recommendation",
+      "not comparable across dates in absolute terms unless universe size is stable"
+    ],
+    "probability_shaped_numbers": "Only legitimate source is a measured base rate from a point-in-time log, reported with n and standard error. See tests.score_band_base_rate."
+  },
+  "universe": {
+    "markets": ["CA", "US"],
+    "rank_separately_by": ["date", "market"],
+    "reason": "Different liquidity regimes; a shared ranking lets US megacaps set the scale for TSXV names."
+  },
+  "gates": [
+    {"id": "liquidity", "formula": "median(close * volume, 20d)", "op": ">=", "value": {"CA": 2000000, "US": 5000000}, "unit": "currency", "note": "Below this your own order moves the print."},
+    {"id": "price", "formula": "close", "op": ">=", "value": 1.0, "unit": "currency", "note": "Spreads consume the move."},
+    {"id": "history", "formula": "count(sessions)", "op": ">=", "value": 250, "unit": "sessions", "note": "Cannot z-score without a distribution."},
+    {"id": "continuity", "formula": "max(calendar_days_between_consecutive_bars)", "op": "<=", "value": 3, "unit": "days", "note": "Prevents fake gaps and fake RVOL."},
+    {"id": "completeness", "formula": "notnull(atr14, ret_std60, median_volume_20d)", "op": "==", "value": true, "note": "No silent NaN propagation into the composite."}
+  ],
+  "inputs": [
+    {"id": "rvol", "pillar": "volume", "formula": "volume / median(volume, 20d)", "type": "magnitude", "unit": "ratio", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "dollar_vol_z", "pillar": "volume", "formula": "(close*volume - mean(close*volume, 60d)) / stdev(close*volume, 60d)", "type": "magnitude", "unit": "sigma", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "ret_z", "pillar": "displacement", "formula": "(close/prev_close - 1) / stdev(daily_return, 60d)", "type": "signed", "unit": "sigma", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "gap_atr", "pillar": "displacement", "formula": "(open - prev_close) / atr14", "type": "signed", "unit": "atr", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "range_ratio", "pillar": "range", "formula": "true_range / atr14", "type": "magnitude", "unit": "atr", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "bb_width_pct", "pillar": "range", "formula": "percentile_rank(4*stdev(close,20d)/mean(close,20d), trailing 252d)", "type": "magnitude", "unit": "percentile", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "donchian_dir", "pillar": "structure", "formula": "1[close>max(high,20d).shift(1)] + 1[close>max(high,55d).shift(1)] - 1[close<min(low,20d).shift(1)] - 1[close<min(low,55d).shift(1)]", "type": "signed", "unit": "count", "range": [-2, 2], "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "pct_52w_centered", "pillar": "structure", "formula": "(close - min(low,252d))/(max(high,252d) - min(low,252d)) - 0.5", "type": "signed", "unit": "fraction", "source": "OHLCV", "availability": {"US": "full", "CA": "full"}},
+    {"id": "ma_dist_atr", "pillar": "structure", "formula": "(close - mean(close,50d)) / atr14", "type": "signed", "unit": "atr", "source": "OHLCV", "note": "Distance from trend in volatility units, not percent.", "availability": {"US": "full", "CA": "full"}},
+    {"id": "rs_5d", "pillar": "relstrength", "formula": "(close/close.shift(5) - 1) - (bench_close/bench_close.shift(5) - 1)", "type": "signed", "unit": "fraction", "source": "OHLCV + index", "availability": {"US": "full", "CA": "full"}},
+    {"id": "rs_20d", "pillar": "relstrength", "formula": "(close/close.shift(20) - 1) - (bench_close/bench_close.shift(20) - 1)", "type": "signed", "unit": "fraction", "source": "OHLCV + index", "availability": {"US": "full", "CA": "full"}},
+    {"id": "rs_sector_20d", "pillar": "relstrength", "formula": "own_20d_return - median(20d_return of same sector, same date, same market)", "type": "signed", "unit": "fraction", "source": "OHLCV + sector map", "note": "Separates 'the sector moved' from 'this name moved'. Highest-value single input on this list.", "availability": {"US": "full", "CA": "full"}},
+    {"id": "vp_thrust", "pillar": "confirmation", "formula": "((close - low)/(high - low) - 0.5) * 2 * log1p(max(rvol - 1, 0))", "type": "signed", "unit": "index", "source": "OHLCV", "note": "Signed in market direction, scaled by volume excess. Strips out reversal-wick names that score well on volume and range alone: a heavy up-day closing on its low scores NEGATIVE for the long side.", "availability": {"US": "full", "CA": "full"}},
+    {"id": "gross_margin", "pillar": "quality", "formula": "gross_profit / revenue (trailing 12m)", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "gross_margin_delta_yoy", "pillar": "quality", "formula": "gross_margin - gross_margin 4 quarters prior", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "fcf_margin", "pillar": "quality", "formula": "(cfo - capex) / revenue (trailing 12m)", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "roic", "pillar": "quality", "formula": "nopat / (total_debt + equity - cash)", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "net_debt_ebitda", "pillar": "quality", "formula": "(total_debt - cash) / ebitda (trailing 12m)", "type": "signed", "direction": -1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "interest_coverage", "pillar": "quality", "formula": "ebit / interest_expense", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "pe_forward", "pillar": "value", "formula": "price / consensus_fy1_eps", "type": "signed", "direction": -1, "source": "estimates vendor", "note": "Direction is a reading convention, NOT a claim that cheap outperforms.", "availability": {"US": "full", "CA": "sparse below mid-cap"}},
+    {"id": "ev_ebitda", "pillar": "value", "formula": "enterprise_value / ebitda (trailing 12m)", "type": "signed", "direction": -1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "ev_sales", "pillar": "value", "formula": "enterprise_value / revenue (trailing 12m)", "type": "signed", "direction": -1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "pb", "pillar": "value", "formula": "price / book_value_per_share", "type": "signed", "direction": -1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "fcf_yield", "pillar": "value", "formula": "(cfo - capex) / market_cap", "type": "signed", "direction": 1, "source": "filings or vendor", "availability": {"US": "full", "CA": "good"}},
+    {"id": "eps_rev_1m", "pillar": "revisions", "formula": "pct_change(consensus_fy1_eps, 21 sessions)", "type": "signed", "direction": 1, "source": "estimates vendor (IBES/FactSet/FMP/Finnhub)", "note": "Most-watched item on a real desk; also the most expensive data.", "availability": {"US": "full", "CA": "often absent below mid-cap"}},
+    {"id": "eps_rev_3m", "pillar": "revisions", "formula": "pct_change(consensus_fy1_eps, 63 sessions)", "type": "signed", "direction": 1, "source": "estimates vendor", "availability": {"US": "full", "CA": "often absent below mid-cap"}},
+    {"id": "target_px_rev_1m", "pillar": "revisions", "formula": "pct_change(mean_analyst_target_price, 21 sessions)", "type": "signed", "direction": 1, "source": "estimates vendor", "availability": {"US": "full", "CA": "sparse"}},
+    {"id": "net_upgrades_1m", "pillar": "revisions", "formula": "count(upgrades, 21 sessions) - count(downgrades, 21 sessions)", "type": "signed", "direction": 1, "source": "estimates vendor", "availability": {"US": "full", "CA": "sparse"}},
+    {"id": "last_surprise_pct", "pillar": "revisions", "formula": "(reported_eps - consensus_eps) / abs(consensus_eps), most recent report", "type": "signed", "direction": 1, "source": "estimates vendor", "availability": {"US": "full", "CA": "sparse"}}
+  ],
+  "unscored_flags": [
+    {"id": "earnings_in_2d", "formula": "abs(sessions_to_next_or_last_earnings) <= 2", "why": "Explains the unusualness; hiding it would be worse than flagging it."},
+    {"id": "macro_print_day", "formula": "date in economic_calendar(CPI, payrolls, FOMC, BoC, StatCan)", "why": "RVOL spikes market-wide; without this the scanner 'discovers' that everything is unusual on CPI day."},
+    {"id": "short_pct_float", "why": "Crowding cuts both ways. A signed weight on it would be a directional claim rather than a measurement."},
+    {"id": "days_to_cover", "why": "Same."},
+    {"id": "borrow_fee_pct", "why": "Same."},
+    {"id": "recent_filing", "formula": "8-K/6-K, Form 4 / SEDI insider, 13D/G, index add-delete, lockup expiry within 3 sessions", "why": "Cause, not signal."},
+    {"id": "suspect_unadjusted_split", "formula": "abs(daily_return) > 0.35 AND rvol < 1.5", "why": "Signature of an unadjusted split or consolidation. Looks identical to a genuine 2-sigma move and the scanner will find it every time."}
+  ],
+  "normalization": {
+    "method": "cross_sectional_rank_to_normal",
+    "group_by": ["date", "market"],
+    "steps": [
+      "magnitude inputs: rank abs(x); signed inputs: rank x",
+      "percentile = (rank - 0.5) / n, so the result is never 0 or 1 and never maps to +/-inf",
+      "value = inverse_standard_normal_cdf(percentile)",
+      "fundamental inputs are multiplied by their `direction` after normalization"
+    ],
+    "winsorization": "none in the rank path. Clipping at the 1st/99th percentile preserves order, so it cannot change a rank. Only needed for raw-z variants.",
+    "why_ranks": "One halted name with RVOL 90 hijacks a raw-z composite, and daily equity data is full of them."
+  },
+  "pillars": [
+    {"id": "volume", "weight": 1.0, "members": ["rvol", "dollar_vol_z"], "side_behavior": "neutral"},
+    {"id": "displacement", "weight": 1.0, "members": ["ret_z", "gap_atr"], "side_behavior": "flips"},
+    {"id": "range", "weight": 1.0, "members": ["range_ratio", "bb_width_pct"], "side_behavior": "neutral"},
+    {"id": "structure", "weight": 1.0, "members": ["donchian_dir", "pct_52w_centered", "ma_dist_atr"], "side_behavior": "flips"},
+    {"id": "relstrength", "weight": 1.0, "members": ["rs_5d", "rs_20d", "rs_sector_20d"], "side_behavior": "flips"},
+    {"id": "confirmation", "weight": 1.0, "members": ["vp_thrust"], "side_behavior": "flips"},
+    {"id": "quality", "weight": 1.0, "members": ["gross_margin", "gross_margin_delta_yoy", "fcf_margin", "roic", "net_debt_ebitda", "interest_coverage"], "side_behavior": "neutral"},
+    {"id": "value", "weight": 1.0, "members": ["pe_forward", "ev_ebitda", "ev_sales", "pb", "fcf_yield"], "side_behavior": "neutral"},
+    {"id": "revisions", "weight": 1.0, "members": ["eps_rev_1m", "eps_rev_3m", "target_px_rev_1m", "net_upgrades_1m", "last_surprise_pct"], "side_behavior": "flips"}
+  ],
+  "composite": {
+    "pillar_score": "mean of that pillar's available normalized members (skip missing)",
+    "raw_long": "weighted mean of all pillar scores, directional pillars taken as-is",
+    "raw_short": "weighted mean with directional pillars sign-flipped; neutral pillars unchanged",
+    "side": "long if raw_long >= raw_short else short",
+    "missing_pillar_handling": "drop from both numerator and denominator, so weights renormalize instead of scoring a blank as neutral",
+    "restandardize": {
+      "required": true,
+      "how": "composite_z = inverse_normal((rank(raw within date,market) - 0.5)/n); score_pct = that percentile * 100",
+      "why": "A weighted mean of k pillars has sd about 1/sqrt(k). Thresholding the raw mean in 'sigma' is wrong by a factor of sqrt(k) -- with 9 pillars a nominal 2.0 threshold is really ~6 sigma, which in testing produced 3 picks in 150 sessions."
+    },
+    "ceiling": {
+      "formula": "max_attainable_composite_z = inverse_normal((n - 0.5)/n)",
+      "table": {"20": 1.96, "40": 2.16, "100": 2.58, "500": 3.09, "1000": 3.24, "5000": 3.66},
+      "why": "A threshold above the ceiling returns nothing forever and looks exactly like a quiet market. Verify feasibility against universe size before blaming the criteria."
+    }
+  },
+  "selection": {
+    "relative_floor": {"field": "composite_z", "op": ">=", "value": 2.0},
+    "absolute_floor": {
+      "min_qualifiers": 2,
+      "qualifiers": [
+        {"id": "rvol", "op": ">=", "value": 2.0},
+        {"id": "abs_ret_z", "op": ">=", "value": 2.0},
+        {"id": "range_ratio", "op": ">=", "value": 1.5},
+        {"id": "abs_gap_atr", "op": ">=", "value": 0.75}
+      ],
+      "why": "composite_z is relative, so about 2.3% of ANY universe clears 2.0 every single session -- on 10,000 names that is 230 candidates and a top-3 list always fills. The absolute qualifiers are in own-history units, so on a quiet session nothing fires and the honest output is 'no names cleared'."
+    },
+    "quality_filter": {"field": "pillar_confirmation", "op": ">=", "value": 0.0},
+    "max_picks": 3,
+    "max_per_sector": 1,
+    "max_per_sector_why": "On a sector-wide move day an uncapped list returns three copies of one bet, formatted to look like three independent signals.",
+    "empty_day_target": {"min_pct_of_sessions": 20, "note": "Below 20% the threshold is too loose and the score has stopped meaning 'unusual'. Tighten, never loosen."}
+  },
+  "weights_policy": {
+    "default": "equal across all pillars",
+    "rationale": [
+      "Dawes (1979), improper linear models: unit weights routinely beat regression-fitted weights out of sample because fitted weights absorb estimation error.",
+      "DeMiguel, Garlappi & Uppal (2009): naive 1/N beat optimized mean-variance out of sample across 14 datasets."
+    ],
+    "before_tuning": "Run the sensitivity test. Perturb every weight by U(0.75, 1.25) 200 times and measure mean Jaccard overlap of the top-3 plus % of sessions where the list changed. Low overlap means the ranking is noise, and the fix is fewer pillars, not tuned weights.",
+    "bar_for_changing_a_weight": "Must beat equal weight out-of-sample on walk-forward data, at the multiple-testing-adjusted t bar below."
+  },
+  "tests": [
+    {"id": "information_coefficient", "what": "Spearman rank correlation between composite and forward return, per session, on the FULL cross-section (not just picks)", "horizons_days": [1, 5, 20], "expected_range": [0.02, 0.05], "fail_meaning": "Mean IC around 0.30 means a lookahead bug, not an edge: verify forward returns start the session AFTER the score."},
+    {"id": "ic_t_stat", "what": "mean(daily IC) / (sd(daily IC)/sqrt(n_sessions))", "pass_criteria": "abs(t) >= 3.0", "source": "Harvey, Liu & Zhu (2016): ~3.0 is the credible bar for a new predictor given how many have been tested. 2.0 is not enough.", "fail_meaning": "Raise the bar further for every variant tried, and count the variants."},
+    {"id": "hit_rate_vs_base_rate", "what": "pick up-rate minus the eligible universe's up-rate on the SAME sessions", "pass_criteria": "edge > 2 standard errors", "fail_meaning": "Absolute hit rate alone is meaningless: in an up year everything hits."},
+    {"id": "decile_monotonicity", "what": "mean forward return by score decile; rank correlation of decile index vs mean return", "pass_criteria": "correlation > 0.6", "fail_meaning": "Top-bucket-only effects with a flat middle are usually curve-fit."},
+    {"id": "score_band_base_rate", "what": "up-rate and mean forward return by 10-point score band, with n and binomial SE", "purpose": "This is the only legitimate probability-shaped output: a measured base rate, never an asserted one.", "pass_criteria": "report n and SE alongside every band; a band with few observations is not a finding"},
+    {"id": "cost_drag", "what": "gross minus round-trip cost (spread/2 + slippage, charged in and out)", "default_assumption_bps": 35, "fail_meaning": "A daily-turnover 3-name list is cost-heavy. In testing, 35bps ate 80% of the gross."},
+    {"id": "weight_sensitivity", "what": "perturb weights +/-25%, 200 trials, measure top-3 stability", "pass_criteria": "mean Jaccard overlap > 0.8", "fail_meaning": "Ranking is noise; reduce pillar count."},
+    {"id": "walk_forward", "what": "expanding window, report only on sessions after each training window", "pass_criteria": "never quote an in-sample number"},
+    {"id": "empty_day_share", "what": "% of sessions producing zero picks", "pass_criteria": ">= 20%"},
+    {"id": "null_data_control", "what": "run the whole pipeline on synthetic random-walk prices", "pass_criteria": "mean IC ~ 0, abs(t) < 2, edge inside 2 SE, deciles non-monotone", "purpose": "Proves the harness does not manufacture an edge. Run this before trusting any positive result."}
+  ],
+  "known_limits": [
+    "Horizon mismatch: documented factor premia (value, momentum, quality, low-vol) are measured on diversified, long-short, monthly-rebalanced portfolios over decades, and McLean & Pontiff (2016) found published anomaly returns decay materially post-publication. A 3-name daily list is a different statistical object -- idiosyncratic variance dominates, so even a genuine premium is invisible at that concentration and horizon. Factor literature is not support for this tool.",
+    "Small universes cannot produce large composite_z: see composite.ceiling. In a 40-name test every pick printed the same 1.96-2.16z because the top rank maps to a fixed percentile.",
+    "Regime dependence: bb_width_pct and ret_z both use trailing vol, so they misread for roughly 60 sessions after a volatility regime shift.",
+    "CA data gaps are real, not a wiring bug: effectively no usable options data, thin-to-absent analyst coverage, lagged short interest. Check pillar null rates per market before comparing a CA score to a US one.",
+    "Unadjusted corporate actions produce textbook 2-sigma moves with volume spikes. Audit before scoring.",
+    "Point-in-time discipline: a log built from back-adjusted history (e.g. yfinance) is not point-in-time and will overstate any measured edge."
+  ]
+}

@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -300,7 +301,14 @@ class YahooMarketData:
     """
 
     name = "yahoo"
-    BATCH = 150
+    # 150 back-to-back threaded batches trips Yahoo's limiter even from a
+    # residential IP: a full 8,700-name sweep produced 13 YFRateLimitErrors,
+    # and a rate-limited chunk is DROPPED, so the scan quietly scores a
+    # universe with holes in it. Smaller batches, a pause between them, and
+    # explicit backoff-and-retry on a limit error.
+    BATCH = 80
+    PAUSE = 1.2          # seconds between batches
+    MAX_RETRIES = 4
 
     def universe(self) -> pd.DataFrame:
         frames = []
@@ -339,16 +347,31 @@ class YahooMarketData:
         tickers = [str(t).upper() for t in tickers]
         start = start or (date.today() - timedelta(days=500))
 
-        frames = []
+        frames, dropped = [], 0
         for i in range(0, len(tickers), self.BATCH):
             chunk = tickers[i:i + self.BATCH]
-            try:
-                raw = yf.download(chunk, start=str(start), end=str(end) if end else None,
-                                  auto_adjust=True, progress=False, group_by="ticker",
-                                  threads=True)
-            except Exception as e:
-                log.warning("yfinance batch %d failed: %s", i // self.BATCH, e)
+            raw = None
+            for attempt in range(self.MAX_RETRIES):
+                try:
+                    raw = yf.download(chunk, start=str(start), end=str(end) if end else None,
+                                      auto_adjust=True, progress=False, group_by="ticker",
+                                      threads=True)
+                    break
+                except Exception as e:                            # noqa: BLE001
+                    limited = "rate" in str(e).lower() or "too many" in str(e).lower()
+                    if attempt == self.MAX_RETRIES - 1:
+                        log.warning("yfinance batch %d gave up after %d tries: %s",
+                                    i // self.BATCH, self.MAX_RETRIES, e)
+                        break
+                    wait = (4 ** attempt if limited else 2 ** attempt) + 1
+                    log.warning("yfinance batch %d %s, retrying in %ds",
+                                i // self.BATCH, "rate-limited" if limited else "failed", wait)
+                    time.sleep(wait)
+            if raw is None:
+                dropped += len(chunk)
                 continue
+            if i + self.BATCH < len(tickers):
+                time.sleep(self.PAUSE)
             for t in chunk:
                 try:
                     d = (raw[t] if isinstance(raw.columns, pd.MultiIndex) else raw).dropna(how="all")
@@ -370,6 +393,12 @@ class YahooMarketData:
                 d["ticker"] = t
                 frames.append(d[["date", "ticker", "open", "high", "low", "close", "volume"]])
 
+        if dropped:
+            # Loud on purpose. A silently shortened universe changes every
+            # cross-sectional rank in the scan, and the output still looks fine.
+            log.warning("DROPPED %d of %d tickers to fetch failures (%.1f%%) -- "
+                        "cross-sectional ranks are computed on the survivors",
+                        dropped, len(tickers), 100 * dropped / max(len(tickers), 1))
         if not frames:
             raise RuntimeError("yfinance returned no bars for any ticker")
         bars = pd.concat(frames, ignore_index=True)
