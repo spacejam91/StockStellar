@@ -83,8 +83,13 @@ def build_us() -> pd.DataFrame:
     # suffix rules (e.g. "…8.50% Notes due 2031", "First Mortgage Bonds"). The
     # security name is unreliable for classification generally, but these
     # instrument words are unambiguous.
+    # Instrument words only. Do NOT filter on "Depositary": American
+    # Depositary Shares are how BABA, BIDU, BHP, NatWest and ~88 other real
+    # common-equity names are listed, and excluding them silently removes some
+    # of the most liquid tickers on the tape. A depositary share standing in
+    # for preferred stock always says "Preferred" and is still caught below.
     debt = df["Security Name"].str.contains(
-        r"\b(?:Note|Notes|Bond|Bonds|Debenture|Debentures|Preferred|Depositary|Trust Preferred)\b",
+        r"\b(?:Notes?|Bonds?|Debentures?|Preferred)\b",
         case=False, regex=True, na=False)
     df = df[~(suffix5 | dotted | debt)]
 
@@ -96,6 +101,7 @@ def build_us() -> pd.DataFrame:
         # E delinquent, Q bankrupt, N normal.
         "financial_status": df["Financial Status"],
     })
+    out = out.drop_duplicates("ticker")
     print(f"  US: {before:,} rows -> {len(out):,} common equities "
           f"({out.exchange.value_counts().to_dict()})")
     return out.reset_index(drop=True)
