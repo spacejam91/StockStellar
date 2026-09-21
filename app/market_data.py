@@ -14,7 +14,14 @@ Toggle with the MARKET_DATA env var:
     MARKET_DATA=signal  → null plus a deliberately strong planted signal.
                           The positive control: proves the measuring apparatus
                           can detect an edge, so a clean null means something.
-    MARKET_DATA=yahoo   → real daily bars via yfinance, free, unofficial
+    MARKET_DATA=yahoo   → real daily bars via yfinance. Free and unofficial,
+                          and it CANNOT serve a full 8,700-name universe: a
+                          sweep that size rate-limits even from a residential
+                          IP. Fine for the ~2,800-name Canadian half.
+    MARKET_DATA=polygon → the entire US market per request, end-of-day, free
+                          tier, works from a datacenter IP. Needs
+                          POLYGON_API_KEY. US only; Canada is unavailable at
+                          any Polygon tier.
 
 Everything in `scanner/` imports `provider` from here and doesn't care which
 implementation it gets. A paid bulk provider drops in as a third branch.
@@ -509,6 +516,9 @@ def get_provider(name: str | None = None):
     name = name.lower()
     impls = {"yahoo": YahooMarketData, "mock": MockMarketData,
              "null": NullMarketData, "signal": SignalMarketData}
+    if name == "polygon":
+        from app.polygon_data import PolygonMarketData
+        return _Validated(PolygonMarketData())
     if name not in impls:
         raise ValueError(
             f"unknown market data provider: {name!r} (have: {'|'.join(sorted(impls))})")

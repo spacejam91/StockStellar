@@ -24,14 +24,26 @@ from app import market_data as md
 
 # Providers that read real market data. Everything else must be declared
 # synthetic. Update this deliberately when a real provider is added.
-REAL_PROVIDERS = {"yahoo"}
+REAL_PROVIDERS = {"yahoo", "polygon"}
+
+# Modules that may define providers. A provider defined outside this list is
+# invisible to the checks below -- which already happened once: PolygonMarketData
+# was added in app/polygon_data.py and slipped past unclassified because
+# discovery only looked at app/market_data.py.
+PROVIDER_MODULES = ("app.market_data", "app.polygon_data")
 
 
 def _provider_classes() -> dict[str, type]:
+    import importlib
     out = {}
-    for _name, obj in inspect.getmembers(md, inspect.isclass):
-        if obj.__module__ == md.__name__ and isinstance(getattr(obj, "name", None), str):
-            out[obj.name] = obj
+    for modname in PROVIDER_MODULES:
+        try:
+            mod = importlib.import_module(modname)
+        except ImportError:
+            continue
+        for _n, obj in inspect.getmembers(mod, inspect.isclass):
+            if obj.__module__ == mod.__name__ and isinstance(getattr(obj, "name", None), str):
+                out[obj.name] = obj
     return out
 
 
