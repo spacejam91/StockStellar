@@ -14,3 +14,4 @@ wheels/
 *.db
 *.sqlite
 site/
+data/.sec_cache/
