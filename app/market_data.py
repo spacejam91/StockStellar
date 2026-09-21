@@ -349,7 +349,15 @@ class YahooMarketData:
                     continue
                 d = d.reset_index()
                 d.columns = [str(c).strip().lower().replace(" ", "_") for c in d.columns]
-                d = d.rename(columns={"adj_close": "close"})
+                # yfinance is inconsistent about the index name across versions:
+                # 1.4.0 leaves it UNNAMED, so reset_index() yields "index", not
+                # "date". Older builds give "Date"; intraday gives "Datetime".
+                # Normalise all three rather than assuming one.
+                d = d.rename(columns={"adj_close": "close", "index": "date", "datetime": "date"})
+                if "date" not in d.columns:
+                    log.warning("yfinance frame for %s has no date column (%s) — skipping",
+                                t, list(d.columns))
+                    continue
                 d["ticker"] = t
                 frames.append(d[["date", "ticker", "open", "high", "low", "close", "volume"]])
 
@@ -360,8 +368,13 @@ class YahooMarketData:
 
         u = self.universe()
         bars = bars.merge(u, on="ticker", how="left")
-        bars["market"] = bars["market"].fillna(
-            np.where(bars["ticker"].str.endswith((".TO", ".V", ".CN", ".NE")), "CA", "US"))
+        # pandas 3.0 rejects a bare ndarray as a fillna value, so wrap it in a
+        # Series aligned to the frame.
+        inferred = pd.Series(
+            np.where(bars["ticker"].str.endswith((".TO", ".V", ".CN", ".NE")), "CA", "US"),
+            index=bars.index,
+        )
+        bars["market"] = bars["market"].fillna(inferred) if "market" in bars.columns else inferred
         return bars
 
     def benchmarks(self, start=None, end=None) -> pd.DataFrame:
@@ -380,6 +393,9 @@ class YahooMarketData:
                 continue
             d = d.reset_index()
             d.columns = [str(c[0] if isinstance(c, tuple) else c).strip().lower() for c in d.columns]
+            # Same unnamed-index trap as daily_bars(): yfinance 1.4.0 leaves the
+            # index unnamed, so reset_index() gives "index", not "date".
+            d = d.rename(columns={"index": "date", "datetime": "date"})
             frames.append(pd.DataFrame({
                 "date": pd.to_datetime(d["date"]).dt.tz_localize(None).dt.normalize(),
                 "market": market, "bench_close": d["close"].astype(float)}))
