@@ -6,12 +6,10 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.136.3",
-    "ib-async>=2.1.0",
     "jinja2>=3.1.6",
     "numpy>=2.0",
     "pandas>=2.2",
     "python-dotenv>=1.2.2",
-    "python-multipart>=0.0.29",
     "uvicorn[standard]>=0.48.0",
     "yfinance>=1.4.0",
 ]
