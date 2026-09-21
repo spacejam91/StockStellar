@@ -1,4 +1,6 @@
-"""SQLite persistence for app-owned state (watchlist, alerts, trade log).
+"""SQLite persistence for app-owned state (the manual watchlist).
+
+The scanner keeps its own point-in-time log separately, in scanner/store.py.
 
 Lives in stockstellar.db at the project root. Schema is created lazily on first
 connect, so there's no migration step yet.
@@ -19,21 +21,6 @@ def _conn() -> sqlite3.Connection:
         """CREATE TABLE IF NOT EXISTS watchlist (
             symbol    TEXT PRIMARY KEY,
             added_at  REAL NOT NULL
-        )"""
-    )
-    c.execute(
-        """CREATE TABLE IF NOT EXISTS orders (
-            id                INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp         REAL NOT NULL,
-            symbol            TEXT NOT NULL,
-            side              TEXT NOT NULL,
-            quantity          REAL NOT NULL,
-            order_type        TEXT NOT NULL,
-            limit_price       REAL,
-            status            TEXT NOT NULL,
-            fill_price        REAL,
-            realized_pnl      REAL NOT NULL DEFAULT 0,
-            rejection_reason  TEXT
         )"""
     )
     c.execute(
@@ -66,53 +53,7 @@ def remove_symbol(symbol: str) -> None:
         c.execute("DELETE FROM watchlist WHERE symbol = ?", (symbol.strip().upper(),))
 
 
-# ---- Order log ----------------------------------------------------------------
-
-def log_order(
-    *,
-    symbol: str,
-    side: str,
-    quantity: float,
-    order_type: str,
-    limit_price: float | None,
-    status: str,
-    fill_price: float | None,
-    realized_pnl: float = 0.0,
-    rejection_reason: str | None = None,
-) -> int:
-    with _conn() as c:
-        cur = c.execute(
-            """INSERT INTO orders
-               (timestamp, symbol, side, quantity, order_type, limit_price,
-                status, fill_price, realized_pnl, rejection_reason)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",
-            (
-                time.time(), symbol, side, quantity, order_type, limit_price,
-                status, fill_price, realized_pnl, rejection_reason,
-            ),
-        )
-        return int(cur.lastrowid or 0)
-
-
-def list_orders(limit: int = 50) -> list[dict]:
-    with _conn() as c:
-        c.row_factory = sqlite3.Row
-        rows = c.execute(
-            "SELECT * FROM orders ORDER BY timestamp DESC LIMIT ?", (limit,)
-        ).fetchall()
-        return [dict(r) for r in rows]
-
-
-def daily_realized_pnl(since_ts: float) -> float:
-    with _conn() as c:
-        row = c.execute(
-            "SELECT COALESCE(SUM(realized_pnl), 0) FROM orders WHERE timestamp >= ? AND status='filled'",
-            (since_ts,),
-        ).fetchone()
-        return float(row[0] or 0)
-
-
-# ---- App state (key/value, used for kill switch) ------------------------------
+# ---- App state (key/value) ----------------------------------------------------
 
 def get_state(key: str, default: str = "") -> str:
     with _conn() as c:
@@ -127,11 +68,3 @@ def set_state(key: str, value: str) -> None:
             "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
             (key, value),
         )
-
-
-def halted() -> bool:
-    return get_state("halted", "0") == "1"
-
-
-def set_halted(value: bool) -> None:
-    set_state("halted", "1" if value else "0")

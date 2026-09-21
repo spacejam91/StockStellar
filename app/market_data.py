@@ -1,10 +1,9 @@
 """Bulk market-data selector — READ ONLY, separate from the broker backend.
 
-`app.backend.client` is a *broker* abstraction (account, positions, place_order)
-with a per-symbol `get_quote()` bolted on. It cannot do universe-scale work: at
-~10k symbols, per-symbol REST polling on a retail tier (60 req/min) is ~2.8
-hours per sweep. The scanner needs whole-universe daily bars in a handful of
-calls, so it gets its own seam.
+The scanner's primitive is "give me every name at once". At ~10k symbols,
+per-symbol REST polling on a retail tier (60 req/min) is ~2.8 hours for a
+single sweep, so a provider that can only answer one symbol at a time does not
+belong behind this interface. Bulk by construction.
 
 Toggle with the MARKET_DATA env var:
     MARKET_DATA=mock    → deterministic synthetic bars, no network (default).
