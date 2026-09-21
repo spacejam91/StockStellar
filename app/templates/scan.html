@@ -53,6 +53,29 @@
           gap: 6px 14px; font-size: 12px; color: var(--muted); margin-top: 6px; }
     .kv b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
     .drivers { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+    /* Parameter meters: one ratio against its limit, per the 'meter' form.
+       Single data hue plus a deliberate gray for 'did not clear' -- not a
+       categorical set. The numeric value is always printed, so the state is
+       never carried by colour alone. */
+    .meters { margin-top: 12px; display: grid; gap: 7px; }
+    .meter { display: grid; grid-template-columns: 78px 1fr 62px; align-items: center;
+             gap: 10px; font-size: 11px; }
+    .mlabel { color: var(--muted); letter-spacing: 0.02em; }
+    .mtrack { position: relative; height: 8px; border-radius: 4px;
+              background: #222a35; overflow: visible; }
+    .mfill { position: absolute; left: 0; top: 0; height: 100%;
+             border-radius: 0 4px 4px 0; }          /* square at baseline, 4px data-end */
+    .mfill.fired { background: var(--accent); }
+    .mfill.under { background: #4a5462; }
+    .mtick { position: absolute; top: -3px; width: 1px; height: 14px;
+             background: var(--muted); opacity: 0.85; }
+    .mval { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+    .mval.under { color: var(--muted); }
+    .mkey { font-size: 11px; color: var(--muted); margin-top: 9px; }
+    .tkr a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+    .tkr a:hover { border-bottom-color: var(--accent); }
+    .newslink { font-size: 11px; }
     .flags { margin-top: 8px; font-size: 12px; color: var(--amber); }
     .empty { background: var(--panel); border: 1px dashed var(--border); border-radius: 10px;
              padding: 22px 16px; text-align: center; }
@@ -72,6 +95,26 @@
     button:active { border-color: var(--accent); }
   </style>
 </head>
+{#- One ratio against its limit. `floor` keeps a small value from filling the
+    track and looking maximal; the tick marks the threshold the value must clear. -#}
+{% macro meter(label, value, threshold, floor, fmt, suffix) %}
+  {%- if value is not none -%}
+    {%- set v = (value | abs) -%}
+    {%- set scale = [floor, v * 1.15] | max -%}
+    {%- set fired = v >= threshold -%}
+    <div class="meter">
+      <span class="mlabel">{{ label }}</span>
+      <span class="mtrack">
+        <span class="mfill {{ 'fired' if fired else 'under' }}"
+              style="width: {{ (100 * v / scale) | round(1) }}%"></span>
+        <span class="mtick" style="left: {{ (100 * threshold / scale) | round(1) }}%"
+              title="threshold {{ threshold }}"></span>
+      </span>
+      <span class="mval {{ '' if fired else 'under' }}">{{ fmt | format(value) }}{{ suffix }}</span>
+    </div>
+  {%- endif -%}
+{% endmacro %}
+
 <body>
   <header>
     <h1>StockStellar</h1>
@@ -91,7 +134,9 @@
         {% for p in picks %}
           <div class="pick">
             <div class="pick-top">
-              <span class="tkr">{{ p.ticker }}</span>
+              <span class="tkr"><a href="{{ company_url(p.ticker, p.market) }}"
+                 target="_blank" rel="noopener noreferrer"
+                 title="Open {{ p.ticker }} on Google">{{ p.ticker }}</a></span>
               <span class="side {{ p.side }}">{{ p.side|upper }}</span>
               <span class="meta">{{ p.market }}{% if p.sector %} · {{ p.sector }}{% endif %}</span>
               <span class="score">{{ p.score_pct|round(0)|int }}<small>/100</small></span>
@@ -105,6 +150,17 @@
               {% if p.ret_z %}<span>move <b>{{ '%+.1f'|format(p.ret_z) }}σ</b></span>{% endif %}
               {% if p.atr14 %}<span>ATR14 <b>{{ '%.2f'|format(p.atr14) }}</b></span>{% endif %}
             </div>
+            <div class="meters">
+              {{ meter('composite',  p.composite_z,  th.composite,  3.2,  '%+.2f', 'z') }}
+              {{ meter('RVOL',       p.rvol,         th.rvol,       4.0,  '%.1f',  '×') }}
+              {{ meter('move',       p.ret_z,        th.ret_z,      3.0,  '%+.1f', 'σ') }}
+              {{ meter('range/ATR',  p.range_ratio,  th.range_ratio, 2.5, '%.2f',  '') }}
+              {{ meter('gap/ATR',    p.gap_atr,      th.gap_atr,    1.5,  '%+.2f', '') }}
+            </div>
+            <div class="mkey">Bar shows the value; the tick is the threshold it must clear.
+              {{ p.n_qualifiers }} of 4 absolute qualifiers fired.
+              <a class="newslink" href="{{ news_url(p.ticker, p.market) }}"
+                 target="_blank" rel="noopener noreferrer">news &rarr;</a></div>
             {% if p.drivers %}<div class="drivers">drivers: {{ p.drivers }}</div>{% endif %}
             {% if p.flags %}<div class="flags">⚠ {{ p.flags }}</div>{% endif %}
           </div>
