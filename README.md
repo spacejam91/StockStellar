@@ -37,10 +37,39 @@ Set `MARKET_DATA` (see `.env.example`):
 | `mock` | Deterministic offline bars. **Plants events** — dev data and a smoke test, *not* a null case. |
 | `null` | Driftless random walk, volume independent of returns. Nothing to find. The Test 10 harness. |
 | `signal` | Null plus a strong planted signal. The positive control. |
-| `yahoo` | Real daily bars via yfinance. Free, unofficial, back-adjusted. |
+| `yahoo` | Real daily bars via yfinance. Free, unofficial, back-adjusted. **Cannot serve a full 8,700-name universe** — rate-limits even from a residential IP. Fine for the ~2,800-name Canadian half. |
+| `polygon` | Whole US market per request, end-of-day, free tier, works from a datacenter IP. Needs `POLYGON_API_KEY`. US only. |
 
 Back-adjusted history is not point-in-time and will overstate any measured
 edge. Fine for building; not for a calibration log you intend to trust.
+
+## What the back-test says
+
+Measured on 85 sessions of real data, 258,651 logged rows, 3,318 names:
+
+| horizon | signed IC | \|t\| | decile monotonicity | edge vs universe |
+|---|---|---|---|---|
+| 1d | −0.0110 | 1.32 | −0.53 | −1.36 pp (inside 2 SE) |
+| 5d | −0.0231 | 3.04 | −0.85 | **−2.70 pp (outside 2 SE)** |
+| 20d | −0.0309 | 4.25 | −0.88 | **−3.75 pp (outside 2 SE)** |
+
+The selected names **underperform** the same sessions' universe in the direction
+`side` calls, and more so the longer the horizon. The decile table is monotone
+across all 258k rows. Measured base rates say the same thing: the 90–100 score
+band closed higher 47.4% of the time (n=26,156, SE 0.3pp) against 49.6% for the
+0–10 band.
+
+This is not a harness bug — the null control returns IC ≈ 0 on random walks
+across five seeds, and the positive control detects a planted signal at t=+7.4.
+The likeliest reading is that the criteria select the population the literature
+says underperforms (extreme move, extreme volume, high attention) and `side`
+then follows the move into its reversal.
+
+**Read `side` as which tail the move was in, not as a direction to trade.** And
+do not invert it on this evidence: one 85-session window, back-adjusted data
+that is not point-in-time, and a |t| inflated by overlapping forward windows.
+
+    uv run python scripts/backtest.py --horizon 5
 
 ## Before trusting any output
 
