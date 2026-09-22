@@ -20,6 +20,7 @@ Two things differ from the served version:
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import shutil
 import sys
@@ -87,13 +88,26 @@ def build(out: Path) -> int:
         page = (page.replace('href="/static/', f'href="{up}static/')
                     .replace('src="/static/', f'src="{up}static/'))
         page = re.sub(r'href="/scan\?as_of=([0-9-]+)"', rf'href="{up}s/\1.html"', page)
-        page = page.replace('href="/name/', f'href="{up}name/')
+        # /name/XENE -> name/XENE.html. Without the extension this resolved to
+        # a directory that was never written, so every ticker link and every
+        # "details, news & filings" link on the published site was a 404. The
+        # route exists in the FastAPI app; the static build simply never
+        # rendered it.
+        page = re.sub(r'href="/name/([^"]+)"', rf'href="{up}name/\1.html"', page)
         page = page.replace('href="/guide"', f'href="{up}guide.html"')
+        page = page.replace('href="/api/scan/base-rates"', f'href="{up}base-rates.json"')
         page = page.replace('href="/"', f'href="{up}index.html"')
         return page
 
     out.mkdir(parents=True, exist_ok=True)
     (out / "index.html").write_text(localise(html, 0), encoding="utf-8")
+
+    # One page per ticker that appears in any published session, so the links
+    # above resolve. News is fetched at build time under a wall-clock budget:
+    # the newest session's names are done first and always get headlines, and
+    # if the feeds are slow the older pages fall back to criteria plus outbound
+    # links rather than stalling the build.
+    write_name_pages(env, out, localise, scan_store, c, hist, picks)
 
     # The reading guide. Static, and deliberately reachable even when no scan
     # has ever run -- it is the page that explains every other one.
@@ -133,6 +147,24 @@ def build(out: Path) -> int:
             d["start_url"] = "../"
             d["scope"] = "../"
             mf.write_text(json.dumps(d, indent=2))
+    # The base rates the disclaimer points at. A static host has no /api, and
+    # the link went nowhere -- it is the one measured, probability-shaped output
+    # this project has, so it has to resolve.
+    try:
+        import json as _json
+        br = scan_store.score_band_base_rates(horizon=5)
+        (out / "base-rates.json").write_text(_json.dumps({
+            "horizon_days": 5,
+            "note": "Measured from the point-in-time log: what actually followed each "
+                    "score band, in the direction the scanner called. Read n and se_pp "
+                    "before the headline number. Not a prediction.",
+            "providers_logged": scan_store.provider_breakdown(),
+            "bands": [] if br.empty else br.to_dict(orient="records"),
+        }, indent=2, default=str))
+    except Exception as e:                                       # noqa: BLE001
+        print(f"  base rates unavailable ({e}) — writing an empty file")
+        (out / "base-rates.json").write_text('{"bands": []}')
+
     # Pages runs Jekyll by default, which ignores files beginning with an
     # underscore and can mangle output. This opts out.
     (out / ".nojekyll").write_text("")
@@ -144,6 +176,70 @@ def build(out: Path) -> int:
     if not day:
         print("  WARNING: no scan logged — the page will say so rather than showing stale data")
     return 0
+
+
+# How long the whole build may spend waiting on news and filings feeds. Past
+# this the remaining pages are still written, just without headlines -- a page
+# that renders the criteria and links out is far better than a build that hangs
+# on a slow RSS endpoint and publishes nothing.
+NEWS_BUDGET_SECONDS = float(os.getenv("NEWS_BUDGET_SECONDS", "240"))
+
+
+def write_name_pages(env, out: Path, localise, scan_store, cfg, hist, latest_picks) -> int:
+    """A page per flagged ticker: criteria verdict, meters, base rates, news."""
+    import time
+
+    from app.main import _thresholds, _verdict
+    from scanner import news as news_mod
+
+    # Newest first, so the names on the front page are the ones that always get
+    # live headlines if the budget runs out.
+    seen: dict[str, dict] = {}
+    for row in hist:
+        for p in scan_store.picks_for(row["as_of_date"]):
+            seen.setdefault(str(p["ticker"]).upper(), p)
+    for p in latest_picks:
+        seen[str(p["ticker"]).upper()] = p
+    if not seen:
+        return 0
+
+    ordered = [t for t in (str(p["ticker"]).upper() for p in latest_picks) if t in seen]
+    ordered += [t for t in seen if t not in ordered]
+
+    try:
+        bands = scan_store.score_band_base_rates(horizon=5)
+    except Exception:                                            # noqa: BLE001
+        bands = None
+
+    ndir = out / "name"
+    ndir.mkdir(exist_ok=True)
+    th = _thresholds()
+    started, with_news = time.time(), 0
+    for ticker in ordered:
+        pick = seen[ticker]
+        band = None
+        if bands is not None and not bands.empty and pick.get("score_pct") is not None:
+            hit = bands[bands["score_band"] == min(int(pick["score_pct"] // 10 * 10), 90)]
+            if not hit.empty:
+                band = hit.iloc[0].to_dict() | {"horizon": 5}
+
+        news = filings = []
+        if time.time() - started < NEWS_BUDGET_SECONDS:
+            try:
+                news = news_mod.fetch_news(ticker, pick.get("market"), limit=8)
+                filings = news_mod.fetch_filings(news_mod.cik_for(ticker), limit=6)
+                with_news += 1 if news else 0
+            except Exception as e:                               # noqa: BLE001
+                print(f"    {ticker}: news unavailable ({e})")
+
+        page = env.get_template("name.html").render(
+            request=None, ticker=ticker, pick=pick, market=pick.get("market"),
+            sector=pick.get("sector"), th=th, verdict=_verdict(pick, th),
+            band=band, news=news, filings=filings, static_build=True)
+        (ndir / f"{ticker}.html").write_text(localise(page, 1), encoding="utf-8")
+    print(f"  wrote {len(ordered)} name pages to {ndir} "
+          f"({with_news} with live headlines, {time.time() - started:.0f}s)")
+    return len(ordered)
 
 
 def main() -> int:

@@ -1,4 +1,13 @@
 {% from "_macros.html" import meter %}
+{%- set form_names = {
+  "8-K": "Material event (8-K)", "6-K": "Foreign issuer report (6-K)",
+  "4": "Insider transaction", "SC 13D": "Activist stake (13D)",
+  "SC 13D/A": "Activist stake, amended", "SC 13G": "Passive 5%+ stake (13G)",
+  "SC 13G/A": "Passive stake, amended", "424B5": "Offering pricing (424B5)",
+  "424B4": "Offering pricing (424B4)", "S-1": "Registration (S-1)",
+  "S-3": "Shelf registration (S-3)", "10-Q": "Quarterly report",
+  "10-K": "Annual report", "20-F": "Annual report (foreign)",
+  "40-F": "Annual report (Canada)" } -%}
 <!doctype html>
 <html lang="en">
 <head>
@@ -138,12 +147,14 @@
         <table>
           <thead><tr><th>band</th><th>n</th><th>closed higher</th><th>± SE</th><th>mean return</th></tr></thead>
           <tbody>
+            {# Every one of these arrives from pandas as a float, so an
+               untouched template prints "90.0–100.0" and "n 24279.0". #}
             <tr>
-              <td>{{ band.score_band }}–{{ band.score_band + 10 }}</td>
-              <td>{{ band.n }}</td>
-              <td>{{ band.up_rate_pct }}%</td>
-              <td>{{ band.se_pp }} pp</td>
-              <td>{{ band.mean_ret_pct }}%</td>
+              <td>{{ band.score_band|int }}–{{ (band.score_band|int) + 10 }}</td>
+              <td>{{ '{:,}'.format(band.n|int) }}</td>
+              <td>{{ '%.1f'|format(band.up_rate_pct) }}%</td>
+              <td>{{ '%.1f'|format(band.se_pp) }} pp</td>
+              <td>{{ '%+.3f'|format(band.mean_ret_pct) }}%</td>
             </tr>
           </tbody>
         </table>
@@ -179,9 +190,15 @@
       <h2>Recent SEC filings</h2>
       <div class="card">
         {% for f in filings %}
+          {# SEC's primaryDocDescription for a form 4 is the string "4", so a
+             plain `desc or form` still printed the form code as both the link
+             text and the tag. Treat a description that merely repeats the form
+             as no description at all. #}
+          {%- set label = form_names.get(f.form, f.form) -%}
+          {%- if f.desc and f.desc|trim != f.form %}{% set label = f.desc %}{% endif -%}
           <div class="row">
             <a href="{{ f.url }}" target="_blank" rel="noopener noreferrer">
-              {{ f.desc or f.form }}</a>
+              {{ label }}</a>
             <span class="tag">{{ f.form }} · {{ f.date }}</span>
           </div>
         {% endfor %}
