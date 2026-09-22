@@ -33,6 +33,15 @@ class ScanResult:
     health: dict
     run_ids: list[int]
     fetch: dict | None = None
+    # The bars this scan was computed from. Carried so the forward-return
+    # backfill measures outcomes against the SAME snapshot that produced the
+    # scores: the CLI used to call provider.daily_bars() a second time, which
+    # on a real provider is another full download minutes later, of a universe
+    # that may have gained or lost names in between. Outcomes were then joined
+    # to a different snapshot than the one scored, which is precisely the
+    # mismatch the point-in-time log exists to prevent -- and it doubled the
+    # slowest step of the nightly run to get it.
+    bars: pd.DataFrame | None = None
 
     @property
     def is_empty_day(self) -> bool:
@@ -137,7 +146,8 @@ def run_scan(*, provider=None, cfg: ScanConfig | None = None, as_of=None,
                 config=cfg_dict, universe_size=universe_size, provider=provider.name))
 
     return ScanResult(as_of=target, provider=provider.name, picks=picks, summary=summary,
-                      scored=scored, health=hlth, run_ids=run_ids, fetch=fetch_stats)
+                      scored=scored, health=hlth, run_ids=run_ids, fetch=fetch_stats,
+                      bars=bars)
 
 
 def format_watchlist(result: ScanResult) -> str:

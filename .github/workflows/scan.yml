@@ -61,6 +61,8 @@ jobs:
         run: |
           uv run python -m tests.test_null_control
           uv run python -m tests.test_provider_hygiene
+          uv run python -m tests.test_empty_day
+          uv run python -m tests.test_log_integrity
 
       - name: Refresh universe and sectors
         # Cheap and keeps listings/sectors current. Never fail the run on it --
@@ -118,16 +120,27 @@ jobs:
           #
           # Instead: take origin/main's history, keep this runner's files, and
           # commit them on top. "Ours wins" is correct for generated output.
+          #
+          # --mixed, NOT --soft. `reset --soft` moves HEAD and leaves the INDEX
+          # holding the tree this runner checked out 20 minutes ago, so the
+          # commit built on top of it reverts every file that changed on main in
+          # the meantime -- silently, because `git diff --staged` is not
+          # consulted for those paths and the push succeeds. Any code pushed
+          # while a scan was running would be undone by the scan's own log
+          # commit. --mixed resets the index to origin/main and leaves the
+          # working tree, so re-adding only data/log gives exactly "origin/main
+          # plus this runner's log".
           uv run python -m scanner.logexport export
-          # Every session in scan_day must have a score partition. The commit
-          # previously staged only data/log/*.csv, so data/log/scores/ was never
-          # added and every cross-section the scheduled scan produced died with
-          # the runner.
+          # Every session in scan_day must have a score partition, and every
+          # partition must be from the newest run that produced scores. The
+          # commit previously staged only data/log/*.csv, so data/log/scores/
+          # was never added and every cross-section the scheduled scan produced
+          # died with the runner.
           uv run python -m scanner.logexport verify
 
           for i in 1 2 3; do
             git fetch origin main
-            git reset --soft origin/main
+            git reset --mixed origin/main
             git add -f data/log data/universe_us.csv data/universe_ca.csv
             if git diff --staged --quiet; then
               echo "nothing to commit"; exit 0

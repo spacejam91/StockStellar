@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import threading
 import time
+import uuid
 from pathlib import Path
 
 import numpy as np
@@ -34,10 +36,46 @@ PICK_COLS = ["rank", "ticker", "market", "sector", "side", "composite_z", "score
              "gap_atr", "drivers", "flags"]
 
 
+# run_id identifies a run ACROSS MACHINES, because that is how it is used: the
+# CSV mirror merges rows from this laptop and from CI into one database, and
+# every read joins scan_score/scan_pick/scan_day to scan_run on it.
+#
+# It used to be AUTOINCREMENT, which is a per-database rowid. Two machines each
+# produce run_id 1, 2, 3..., so after an import a CI cross-section joins to
+# whichever scan_run row happened to land on that integer -- relabelling a real
+# session with another machine's provider and universe size. A mock run
+# imported from a laptop could silently mark a live CI session synthetic, and
+# `MAX(run_id)` -- which every "newest run" query uses -- could return an older
+# run from the other machine.
+#
+# So: millisecond epoch in the high digits, a stable per-machine salt in the low
+# three. Unique across machines, and still monotonic, which is what MAX(run_id)
+# needs to mean "newest". Legacy small ids stay valid and always sort older.
+_MACHINE_SALT = uuid.getnode() % 1000
+_ID_LOCK = threading.Lock()
+_last_run_id = 0
+
+
+def _new_run_id(c: sqlite3.Connection) -> int:
+    global _last_run_id
+    with _ID_LOCK:
+        if not _last_run_id:
+            row = c.execute("SELECT MAX(run_id) FROM scan_run").fetchone()
+            _last_run_id = int(row[0] or 0)
+        rid = int(time.time() * 1000) * 1000 + _MACHINE_SALT
+        if rid <= _last_run_id:
+            # Same millisecond (write_scan runs once per session in a loop), or
+            # a clock that went backwards. Step by a full 1000 so the low three
+            # digits stay this machine's salt.
+            rid = _last_run_id + 1000
+        _last_run_id = rid
+        return rid
+
+
 def _conn() -> sqlite3.Connection:
     c = sqlite3.connect(DB_PATH)
     c.execute("""CREATE TABLE IF NOT EXISTS scan_run (
-        run_id        INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id        INTEGER PRIMARY KEY,
         run_ts        REAL NOT NULL,
         as_of_date    TEXT NOT NULL,
         provider      TEXT NOT NULL,
@@ -124,13 +162,13 @@ def write_scan(*, as_of, scored: pd.DataFrame, picks: pd.DataFrame, summary: pd.
     day_picks = picks[picks["date"] == pd.Timestamp(as_of)] if len(picks) else picks
 
     with _conn() as c:
-        cur = c.execute(
-            """INSERT INTO scan_run (run_ts, as_of_date, provider, universe_size,
+        run_id = _new_run_id(c)
+        c.execute(
+            """INSERT INTO scan_run (run_id, run_ts, as_of_date, provider, universe_size,
                                      n_eligible, config_json, code_version)
-               VALUES (?,?,?,?,?,?,?)""",
-            (time.time(), as_of_str, provider, int(universe_size), int(len(day)),
+               VALUES (?,?,?,?,?,?,?,?)""",
+            (run_id, time.time(), as_of_str, provider, int(universe_size), int(len(day)),
              json.dumps(config, default=str, sort_keys=True), code_version()))
-        run_id = int(cur.lastrowid or 0)
 
         if len(day):
             c.executemany(
@@ -181,11 +219,46 @@ def backfill_forward_returns(bars: pd.DataFrame, horizons=(1, 5, 20)) -> int:
     rows = [(r.as_of_date, r.ticker,
              *[None if pd.isna(getattr(r, c)) else float(getattr(r, c)) for c in cols], now)
             for r in m.itertuples(index=False)]
-    with _conn() as c:
-        c.executemany(
-            f"INSERT OR REPLACE INTO forward_return (as_of_date, ticker, {','.join(cols)}, filled_at)"
-            f" VALUES ({','.join('?' * (len(cols) + 3))})", rows)
+    # COALESCE, not REPLACE. A row survives the dropna above if ANY horizon is
+    # present, so a name whose 1d outcome exists but whose 20d bar is missing --
+    # a shallower refetch, a delisting, a provider gap -- used to REPLACE a row
+    # that already held a measured 20d return with NULL. The log's whole value
+    # is that a matured outcome is final, and this quietly unmatured them.
+    sets = ", ".join(f"{h} = COALESCE(excluded.{h}, forward_return.{h})" for h in cols)
+    with _conn() as conn:
+        conn.executemany(
+            f"""INSERT INTO forward_return (as_of_date, ticker, {','.join(cols)}, filled_at)
+                VALUES ({','.join('?' * (len(cols) + 3))})
+                ON CONFLICT(as_of_date, ticker) DO UPDATE SET {sets},
+                    filled_at = excluded.filled_at""", rows)
     return len(rows)
+
+
+CA_SUFFIXES = (".TO", ".V", ".CN", ".NE")
+
+
+def backfill_market() -> int:
+    """Set scan_score.market from the ticker suffix where it is NULL.
+
+    Not a rescore and not a lookahead: which exchange a symbol trades on is a
+    property of the STRING, decided the same way the provider decides it, and
+    it does not depend on anything that happened after the session.
+
+    It is needed because the CSV mirror used to drop market and sector from
+    scan_score on the theory that data/universe_*.csv could supply them later.
+    A database rebuilt from git -- which is what this one is -- therefore came
+    back with both columns NULL for every session ever logged. market is
+    recoverable; sector is not, and joining today's listing file to a two-year
+    old cross-section would be survivorship bias, so those stay NULL and
+    honest.
+    """
+    marks = " OR ".join("ticker LIKE ?" for _ in CA_SUFFIXES)
+    params = [f"%{sfx}" for sfx in CA_SUFFIXES]
+    with _conn() as c:
+        cur = c.execute(
+            f"UPDATE scan_score SET market = CASE WHEN {marks} THEN 'CA' ELSE 'US' END "
+            f"WHERE market IS NULL", params)
+        return int(cur.rowcount or 0)
 
 
 # ---- read-back ---------------------------------------------------------------

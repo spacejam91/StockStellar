@@ -78,8 +78,8 @@ def main(argv=None) -> int:
         print(df[pillars].notna().mean().mul(100).round(1).to_string())
 
     if args.backfill:
-        bars = provider.daily_bars()
-        bars["date"] = pd.to_datetime(bars["date"])
+        # The scan's own bars, not a second download. See ScanResult.bars.
+        bars = result.bars if result.bars is not None else provider.daily_bars()
         n = store.backfill_forward_returns(bars)
         print(f"\nforward returns filled/updated: {n:,} rows")
 
