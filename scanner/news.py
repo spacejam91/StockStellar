@@ -162,17 +162,6 @@ def fetch_filings(cik: int | None, limit: int = 6) -> list[dict]:
     return out[:limit]
 
 
-# pandas' default na_values include "NA", "NULL", "NaN", "None" and "nan" --
-# every one of which is a plausible ticker. NA.TO is National Bank of Canada.
-# Reading a universe file without keep_default_na=False silently turns such a
-# ticker into a float NaN, and .astype(str).str.upper() then resurrects it as
-# the literal string "NAN" -- which is exactly how a phantom "NAN" ticker with
-# 343 duplicate rows got into the bars.
-def read_universe(path, **kw):
-    import pandas as _pd
-    return _pd.read_csv(path, keep_default_na=False, na_values=[""], **kw)
-
-
 def cik_for(ticker: str) -> int | None:
     """Look up a CIK from the universe file the scanner already maintains."""
     import pandas as pd

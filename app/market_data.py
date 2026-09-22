@@ -459,6 +459,12 @@ class YahooMarketData:
 
 _PROVIDER = os.getenv("MARKET_DATA", "mock").lower()
 
+if _PROVIDER == "yahoo":
+    provider = YahooMarketData()
+    log.info("Market data: YAHOO (free daily bars, back-adjusted, not point-in-time)")
+else:
+    provider = MockMarketData()
+    log.info("Market data: MOCK (deterministic synthetic bars, offline)")
 
 
 BARS_CONTRACT = ["date", "ticker", "open", "high", "low", "close", "volume"]
@@ -508,17 +514,6 @@ class _Validated:
         return validate_bars(self._inner.daily_bars(*a, **kw), getattr(self._inner, "name", "?"))
 
 
-# pandas' default na_values include "NA", "NULL", "NaN", "None" and "nan" --
-# every one of which is a plausible ticker. NA.TO is National Bank of Canada.
-# Reading a universe file without keep_default_na=False silently turns such a
-# ticker into a float NaN, and .astype(str).str.upper() then resurrects it as
-# the literal string "NAN" -- which is exactly how a phantom "NAN" ticker with
-# 343 duplicate rows got into the bars.
-def read_universe(path, **kw):
-    import pandas as _pd
-    return _pd.read_csv(path, keep_default_na=False, na_values=[""], **kw)
-
-
 def get_provider(name: str | None = None):
     """Explicit provider lookup, for tests and for the CLI's --provider flag."""
     if name is None:
@@ -533,14 +528,3 @@ def get_provider(name: str | None = None):
         raise ValueError(
             f"unknown market data provider: {name!r} (have: {'|'.join(sorted(impls))})")
     return _Validated(impls[name]())
-
-
-# Built through get_provider() so the module-level singleton is WRAPPED. It was
-# not, and that mattered: run_scan() defaults to this object, so every scheduled
-# scan and every default local run bypassed validate_bars completely. The guard
-# existed, was documented as "structural rather than conventional", and was
-# inert on the one path production actually uses. It caught nothing -- including
-# 343 duplicate (ticker, date) rows from a phantom "NAN" ticker.
-provider = get_provider(_PROVIDER if _PROVIDER in
-                        ("mock", "null", "signal", "yahoo", "polygon") else "mock")
-log.info("Market data: %s", getattr(provider, "name", _PROVIDER).upper())
