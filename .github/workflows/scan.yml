@@ -37,8 +37,8 @@ on:
         description: "Also score this many prior sessions"
         default: "0"
       provider:
-        description: "mock | yahoo"
-        default: "yahoo"
+        description: "hybrid | yahoo | polygon | mock"
+        default: "hybrid"
 
 concurrency:
   group: daily-scan
@@ -104,7 +104,20 @@ jobs:
         # being replaced by a degraded one or by nothing.
         continue-on-error: true
         env:
-          MARKET_DATA: ${{ github.event.inputs.provider || 'yahoo' }}
+          # hybrid = Polygon for the US half, Yahoo for Canada. Yahoo alone
+          # cannot serve 8,700 names from a GitHub runner: it returned a third
+          # of them at 22:30 UTC and a tenth on the next run, silently, because
+          # yf.download stores an empty frame per failed ticker rather than
+          # raising. Polygon's grouped-daily endpoint is one request for the
+          # whole US market and is free from a datacenter IP -- but has no
+          # Canadian data at any tier, so Canada stays on Yahoo, where ~2,800
+          # names is well inside what it will serve.
+          #
+          # Falls back to yahoo when POLYGON_API_KEY is not configured, so the
+          # scan still runs -- just with the coverage problem this replaces.
+          MARKET_DATA: ${{ github.event.inputs.provider
+            || (secrets.POLYGON_API_KEY && 'hybrid' || 'yahoo') }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
           set -o pipefail
           # Three attempts with a long gap. Yahoo's throttling is stochastic,

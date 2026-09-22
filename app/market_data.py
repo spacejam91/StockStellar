@@ -555,13 +555,110 @@ def read_universe(path, **kw):
     return _pd.read_csv(path, keep_default_na=False, na_values=[""], **kw)
 
 
+class HybridMarketData:
+    """Polygon for the US, Yahoo for Canada — which is the only combination
+    that can actually fetch this universe from a datacenter IP.
+
+    Neither provider alone works. Polygon's grouped-daily endpoint returns
+    every US ticker for a session in ONE request, so there is nothing to rate
+    limit, and it is free and datacenter-friendly -- but Polygon has no
+    Canadian coverage at any tier. Yahoo has Canada, but cannot serve 8,700
+    names from GitHub Actions: measured on the same session and the same code,
+    an off-peak run returned all 8,701 tickers while the 22:30 UTC run returned
+    about a third and the next a tenth, silently, because yf.download stores an
+    empty frame per failed ticker instead of raising.
+
+    Split the job and both halves are inside what their provider will serve:
+    one grouped call for ~5,900 US names, and ~2,800 Canadian names through
+    Yahoo, which is a third of the sweep that was tripping its limiter.
+
+    Coverage is computed across the COMBINED universe, so a collapse in either
+    half still trips the guard in validate_bars. A US-only or CA-only frame is
+    not a smaller market, it is a different one.
+    """
+
+    name = "hybrid"
+
+    def __init__(self):
+        from app.polygon_data import PolygonMarketData
+        self._us = PolygonMarketData()
+        self._ca = YahooMarketData()
+
+    def universe(self) -> pd.DataFrame:
+        return self._ca.universe()          # reads both listing files
+
+    def daily_bars(self, tickers=None, start=None, end=None) -> pd.DataFrame:
+        u = self.universe()
+        if tickers is not None:
+            want = {str(t).upper() for t in tickers}
+            u = u[u["ticker"].isin(want)]
+        ca_tickers = u.loc[u["market"] == "CA", "ticker"].tolist()
+        us_tickers = u.loc[u["market"] == "US", "ticker"].tolist()
+
+        frames = []
+        for label, fetch in (("US", lambda: self._us.daily_bars(
+                                 tickers=us_tickers, start=start, end=end)),
+                             ("CA", lambda: self._ca.daily_bars(
+                                 tickers=ca_tickers, start=start, end=end))):
+            try:
+                d = fetch()
+            except SystemExit as e:
+                # A missing or rejected API key is a configuration error, and it
+                # must not arrive dressed as a market condition. Letting it fall
+                # through to the coverage guard would report "only 32% of
+                # tickers returned bars" -- true, useless, and pointing at the
+                # wrong thing entirely.
+                raise RuntimeError(f"hybrid: the {label} half cannot run -- {e}") from e
+            except Exception as e:                               # noqa: BLE001
+                # Loud, and NOT fatal here -- the coverage guard downstream is
+                # what decides whether what did arrive is enough to score. One
+                # half failing is exactly the case that guard exists for.
+                log.error("hybrid: the %s half failed (%s); coverage will reflect it",
+                          label, e)
+                continue
+            if d is not None and len(d):
+                frames.append(d[BARS_CONTRACT])
+
+        if not frames:
+            raise RuntimeError("hybrid: neither provider returned bars")
+        bars = pd.concat(frames, ignore_index=True)
+        bars["date"] = pd.to_datetime(bars["date"]).dt.tz_localize(None).dt.normalize()
+        bars["ticker"] = bars["ticker"].astype(str).str.upper()
+        # Attach market/sector the same way the Yahoo path does, so the two
+        # halves cannot disagree about what market a name is in.
+        bars = bars.drop(columns=[c for c in ("market", "sector") if c in bars.columns])
+        bars = bars.merge(u, on="ticker", how="left")
+        inferred = pd.Series(
+            np.where(bars["ticker"].str.endswith((".TO", ".V", ".CN", ".NE")), "CA", "US"),
+            index=bars.index)
+        bars["market"] = bars["market"].fillna(inferred)
+
+        returned = bars["ticker"].nunique()
+        requested = len(u)
+        bars.attrs["coverage"] = returned / max(requested, 1)
+        bars.attrs["requested"] = requested
+        bars.attrs["returned"] = returned
+        per = bars.groupby("market", observed=True)["ticker"].nunique().to_dict()
+        want = u["market"].value_counts().to_dict()
+        log.info("hybrid: %s of %s tickers (%s)", returned, requested,
+                 ", ".join(f"{m} {per.get(m, 0)}/{want.get(m, 0)}" for m in sorted(want)))
+        return bars
+
+    def benchmarks(self, start=None, end=None) -> pd.DataFrame:
+        # Two tickers. Taken from Yahoo for both markets rather than mixing
+        # sources, because a relative-strength number computed against two
+        # differently adjusted benchmark series is not comparable.
+        return self._ca.benchmarks(start=start, end=end)
+
+
 def get_provider(name: str | None = None):
     """Explicit provider lookup, for tests and for the CLI's --provider flag."""
     if name is None:
         return provider
     name = name.lower()
     impls = {"yahoo": YahooMarketData, "mock": MockMarketData,
-             "null": NullMarketData, "signal": SignalMarketData}
+             "null": NullMarketData, "signal": SignalMarketData,
+             "hybrid": HybridMarketData}
     if name == "polygon":
         from app.polygon_data import PolygonMarketData
         return _Validated(PolygonMarketData())

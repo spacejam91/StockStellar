@@ -24,7 +24,7 @@ from app import market_data as md
 
 # Providers that read real market data. Everything else must be declared
 # synthetic. Update this deliberately when a real provider is added.
-REAL_PROVIDERS = {"yahoo", "polygon"}
+REAL_PROVIDERS = {"yahoo", "polygon", "hybrid"}
 
 # Modules that may define providers. A provider defined outside this list is
 # invisible to the checks below -- which already happened once: PolygonMarketData
@@ -129,12 +129,70 @@ def test_display_surfaces_exclude_synthetic():
             "history_providers": sorted({h.get("provider") for h in hist})}
 
 
+def test_hybrid_counts_coverage_across_both_halves():
+    """One half dying is a DIFFERENT market, not a smaller one.
+
+    The hybrid exists because neither provider can serve this universe alone:
+    Polygon has no Canadian data at any tier, and Yahoo silently returned a
+    third of the names from a datacenter IP at the post-close peak. Splitting
+    the fetch only helps if a collapse in either half still trips the coverage
+    guard -- otherwise the scan scores US names against a cross-section that
+    was supposed to include Canada, and every percentile in it is wrong.
+    """
+    import pandas as pd
+
+    from app.market_data import HybridMarketData, MIN_COVERAGE, validate_bars
+
+    h = HybridMarketData.__new__(HybridMarketData)       # no network, no key
+    u = pd.DataFrame({"ticker": [f"US{i}" for i in range(80)] + [f"CA{i}.TO" for i in range(20)],
+                      "market": ["US"] * 80 + ["CA"] * 20, "sector": None})
+    h.universe = lambda: u
+
+    def half(tickers):
+        dates = pd.bdate_range("2026-01-01", periods=3)
+        return pd.DataFrame([{"date": d, "ticker": t, "open": 1.0, "high": 1.0,
+                              "low": 1.0, "close": 1.0, "volume": 100}
+                             for t in tickers for d in dates])
+
+    class _Half:
+        def __init__(self, serve): self.serve = serve
+        def daily_bars(self, tickers=None, **kw): return half(self.serve(tickers or []))
+
+    # Both halves healthy.
+    h._us = _Half(lambda t: t)
+    h._ca = _Half(lambda t: t)
+    bars = h.daily_bars()
+    assert bars.attrs["coverage"] == 1.0, bars.attrs
+    validate_bars(bars, "hybrid")                        # must not raise
+
+    # Canada gone entirely: 80% coverage, and 80% of the names are US.
+    h._ca = _Half(lambda t: [])
+    bars = h.daily_bars()
+    assert abs(bars.attrs["coverage"] - 0.80) < 1e-9, bars.attrs
+    assert set(bars["market"]) == {"US"}, "CA rows appeared from nowhere"
+
+    # The US half thinned to a third, as Yahoo actually did.
+    h._us = _Half(lambda t: t[: len(t) // 3])
+    h._ca = _Half(lambda t: t)
+    bars = h.daily_bars()
+    cov = bars.attrs["coverage"]
+    assert cov < MIN_COVERAGE, f"coverage {cov:.2f} should be under the {MIN_COVERAGE} floor"
+    try:
+        validate_bars(bars, "hybrid")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("a two-thirds US collapse was accepted as a quiet market")
+    return {"floor": MIN_COVERAGE, "ca_dead": 0.80, "us_thinned": round(cov, 3)}
+
+
 def main() -> int:
     checks = [
         ("every provider is classified", test_every_provider_is_classified),
         ("no phantom names in the list", test_synthetic_list_has_no_phantoms),
         ("base-rate SQL excludes all synthetic", test_base_rate_query_excludes_every_synthetic_provider),
         ("display surfaces exclude synthetic", test_display_surfaces_exclude_synthetic),
+        ("hybrid coverage spans both halves", test_hybrid_counts_coverage_across_both_halves),
     ]
     print("=" * 72)
     print("  Provider hygiene — can generated data reach a measurement?")
