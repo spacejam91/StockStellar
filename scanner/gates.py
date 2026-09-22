@@ -106,6 +106,17 @@ def add_qualifiers(out: pd.DataFrame, cfg: ScanConfig) -> pd.DataFrame:
         return out
 
     thr = scaled_thresholds(out, cfg)
+    if thr.empty:
+        # No eligible names in the whole frame, so there is no distribution to
+        # take a quantile from. Fall back to the fixed levels and let selection
+        # return nothing. Crashing here would turn "everything was gated out"
+        # -- which is a legitimate, if alarming, empty day -- into a dead scan,
+        # and an empty day is the one output this project must always be able
+        # to produce.
+        for name, _col, _absolute, fallback in QUALIFIERS:
+            out[f"thr_{name}"] = float(getattr(cfg, fallback))
+        out["n_qualifiers"] = np.int8(0)
+        return out
     out = out.merge(thr.rename(columns={n: f"thr_{n}" for n, _c, _a, _f in QUALIFIERS})
                        .drop(columns=["n_eligible"]), on="date", how="left")
     fired = sum(

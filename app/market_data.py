@@ -104,7 +104,12 @@ class MockMarketData:
             ticker = f"{'CA' if market == 'CA' else 'US'}{i:03d}" + (".TO" if market == "CA" else "")
             px = float(rng.uniform(4, 180)) * np.exp(np.cumsum(rng.normal(0.0002, rng.uniform(0.012, 0.035), self.n_sessions)))
             vol = rng.lognormal(rng.uniform(11.5, 14.0), 0.5, self.n_sessions)
-            for d in rng.choice(np.arange(60, self.n_sessions), size=rng.integers(2, 6), replace=False):
+            # Events are planted after a 60-session warm-up so the rolling
+            # inputs exist. With <=60 sessions there is no room, and
+            # rng.choice on an empty range raises -- so plant nothing.
+            room = np.arange(60, self.n_sessions)
+            n_ev = int(min(rng.integers(2, 6), len(room)))
+            for d in (rng.choice(room, size=n_ev, replace=False) if n_ev else []):
                 px[d:] *= 1 + rng.choice([-1, 1]) * rng.uniform(0.05, 0.16)
                 vol[d] *= rng.uniform(3.5, 9.0)
             o = px * (1 + rng.normal(0, 0.006, self.n_sessions))
