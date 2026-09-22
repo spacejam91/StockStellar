@@ -274,6 +274,13 @@ async def name_page(request: Request, ticker: str):
 
 # ---- Pages ---------------------------------------------------------------------
 
+@app.get("/guide", response_class=HTMLResponse)
+async def guide_page(request: Request):
+    """How to read a card. Static -- no log access, so it renders before any scan."""
+    return TEMPLATES.TemplateResponse(request, "guide.html", {})
+
+
+
 @app.get("/", response_class=HTMLResponse)
 @app.get("/scan", response_class=HTMLResponse)
 async def scan_page(request: Request, as_of: str | None = None):

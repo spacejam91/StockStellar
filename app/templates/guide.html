@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to read this — StockStellar</title>
+  <meta name="theme-color" content="#0e1116" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/icon-180.png" />
+  <link rel="manifest" href="/static/manifest.webmanifest" />
+  <style>
+    :root { --bg:#0e1116; --panel:#161b22; --border:#2a313c; --text:#e6edf3;
+            --muted:#8b949e; --green:#3fb950; --red:#f85149; --accent:#58a6ff; --amber:#d29922; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background:var(--bg); color:var(--text); }
+    header { padding:16px; border-bottom:1px solid var(--border); display:flex;
+             align-items:center; gap:12px; }
+    header a.back { color:var(--accent); text-decoration:none; font-size:13px; }
+    h1 { margin:0; font-size:17px; }
+    main { padding:16px; max-width:760px; margin:0 auto; }
+    h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);
+         margin:30px 0 10px; }
+    p { margin:0 0 12px; }
+    .lede { color:var(--muted); font-size:13px; }
+    .param { background:var(--panel); border:1px solid var(--border); border-radius:10px;
+             padding:14px; margin-bottom:10px; }
+    .pname { font-size:15px; font-weight:600; display:flex; align-items:baseline;
+             gap:10px; flex-wrap:wrap; }
+    .pname code { font-size:11px; color:var(--muted); font-weight:400; }
+    .what { margin:8px 0 0; font-size:13px; }
+    .look { margin-top:10px; padding-top:10px; border-top:1px solid var(--border);
+            font-size:13px; }
+    .look b { color:var(--accent); font-weight:600; }
+    .warn { margin-top:8px; font-size:12.5px; color:var(--amber); }
+    .demo { margin:10px 0 2px; display:grid; gap:7px; }
+    .meter { display:grid; grid-template-columns:78px 1fr 62px; align-items:center;
+             gap:10px; font-size:11px; }
+    .mlabel { color:var(--muted); }
+    .mtrack { position:relative; height:8px; border-radius:4px; background:#222a35; }
+    .mfill { position:absolute; left:0; top:0; height:100%; border-radius:0 4px 4px 0; }
+    .mfill.fired { background:var(--accent); }
+    .mfill.under { background:#4a5462; }
+    .mfill.over { border-radius:0; box-shadow:inset -4px 0 0 var(--bg); }
+    .mtick { position:absolute; top:-3px; width:1px; height:14px; background:var(--muted); }
+    .mval { text-align:right; font-variant-numeric:tabular-nums; }
+    .mval.under { color:var(--muted); }
+    .cap { font-size:11.5px; color:var(--muted); margin-top:4px; }
+    .callout { border-left:2px solid var(--border); padding:10px 14px; color:var(--muted);
+               font-size:12.5px; margin:16px 0; }
+    .callout.hard { border-left-color:var(--amber); color:var(--text); }
+    .callout.hard b { color:var(--amber); }
+    table { width:100%; border-collapse:collapse; font-size:12.5px; margin:6px 0 4px; }
+    th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--border);
+             vertical-align:top; }
+    th { color:var(--muted); font-weight:500; }
+    td.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    code { background:#1c232c; padding:1px 5px; border-radius:4px; font-size:12px; }
+    a { color:var(--accent); }
+    .scroll { overflow-x:auto; }
+
+    /* At phone width a two-column table puts the description in ~20 characters
+       and the reader scrolls sideways to finish every sentence. Stack instead:
+       the field name becomes a heading over its own paragraph. */
+    @media (max-width: 560px) {
+      table, tbody, tr, td, th { display:block; width:100%; }
+      thead { display:none; }
+      tr { border-bottom:1px solid var(--border); padding:10px 0; }
+      tr:last-child { border-bottom:0; }
+      td { border:0; padding:0; }
+      td.n { text-align:left; margin-bottom:4px; }
+      td.n code { font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" href="/">&larr; back</a>
+    <h1>How to read this</h1>
+  </header>
+  <main>
+    <p class="lede">Every number on a card answers one question: <b>is this name behaving
+      unusually today, measured against its own history and against the other names in its
+      own market?</b> Nothing here answers what happens next. Read this page once and the
+      cards stop needing explanation.</p>
+
+    <h2>The bar, and the tick</h2>
+    <div class="param">
+      <div class="demo">
+        <div class="meter"><span class="mlabel">under</span>
+          <span class="mtrack"><span class="mfill under" style="width:20%"></span>
+            <span class="mtick" style="left:40%"></span></span>
+          <span class="mval under">1.0×</span></div>
+        <div class="meter"><span class="mlabel">cleared</span>
+          <span class="mtrack"><span class="mfill fired" style="width:52%"></span>
+            <span class="mtick" style="left:40%"></span></span>
+          <span class="mval">2.6×</span></div>
+        <div class="meter"><span class="mlabel">off the scale</span>
+          <span class="mtrack"><span class="mfill fired over" style="width:100%"></span>
+            <span class="mtick" style="left:40%"></span></span>
+          <span class="mval">9.0×</span></div>
+      </div>
+      <p class="cap">The thin vertical tick is always at 40% of the track, and it is the
+        level this name had to clear <em>that session</em>. Grey means it did not; blue
+        means it did. A squared-off end with a notch means the value ran past the end of
+        the scale — the bar stops, the number beside it does not.</p>
+      <p class="what">The scale runs to 2.5× the tick. So a bar at the tick is exactly at
+        the bar; a full bar is 2.5× it or more. Because the tick never moves, you can
+        compare two rows, or two names, by eye.</p>
+      <div class="warn">The tick is not a fixed number. Four of the five levels are set
+        from each market's own trailing 60 sessions, so they rise in a violent week and
+        fall in a quiet one. The card always prints the level it actually used.</div>
+    </div>
+
+    <h2>The five meters</h2>
+
+    <div class="param">
+      <div class="pname">composite <code>composite_z</code></div>
+      <p class="what">Where this name ranks against every other eligible name in its own
+        market today, expressed in standard deviations. Nine pillars are averaged, then
+        the result is re-ranked across the cross-section, so <code>+3.0z</code> means
+        roughly the top 1 in 700.</p>
+      <div class="look"><b>Look for:</b> the number, not the bar. The threshold is a flat
+        2.0z and never moves. Above 3.0z is the top handful of a 3,000-name market;
+        2.0–2.5z is ordinary for the day's most active names.</div>
+      <div class="warn">It has a ceiling set by how many names are in the market — about
+        3.57z for ~2,800 US names, 2.93z for ~300 Canadian ones. A Canadian 2.8z is
+        therefore nearer its ceiling than a US 2.8z. That is exactly why the two markets
+        are selected separately and never sorted into one list.</div>
+    </div>
+
+    <div class="param">
+      <div class="pname">RVOL <code>volume ÷ 20-day median volume</code></div>
+      <p class="what">How much more it traded than usual. 4.0× means four times its own
+        median session.</p>
+      <div class="look"><b>Look for:</b> volume is the parameter hardest to fake. A large
+        price move on ordinary volume is usually one desk or a data artifact; the same
+        move on 5× volume is a crowd. When only one meter is blue, this is the one you
+        want it to be.</div>
+      <div class="warn">A thinly traded name has a small denominator, so 6× can be three
+        trades. Check <code>close</code> and the liquidity floor ($5M US / $2M CA of daily
+        dollar volume) before reading much into it.</div>
+    </div>
+
+    <div class="param">
+      <div class="pname">move <code>today's return ÷ its own 60-day return sd</code></div>
+      <p class="what">The day's move in units of this stock's own normal daily wobble.
+        <code>+3.4σ</code> is a move 3.4 times its typical daily range of outcomes — and
+        the sign is the direction.</p>
+      <div class="look"><b>Look for:</b> the sign next to the <span style="color:var(--green)">LONG</span>
+        / <span style="color:var(--red)">SHORT</span> tag. The scanner flags unusualness in
+        both directions; a SHORT tag with a −4σ move is a name that fell hard, not a
+        recommendation to sell it.</div>
+      <div class="warn">A quiet stock has a small denominator too. A utility that moves
+        0.3% a day can print 3σ on a 1% move. Cross-check against RVOL: a real event moves
+        volume as well as price.</div>
+    </div>
+
+    <div class="param">
+      <div class="pname">range/ATR <code>today's true range ÷ 14-day ATR</code></div>
+      <p class="what">How wide the day was against its own recent average width. 3.0 means
+        the high-to-low span was three normal days wide.</p>
+      <div class="look"><b>Look for:</b> this separates a gap that then sat still from a
+        day that actually traded through a range. High range with high RVOL is a fight;
+        high range with low RVOL is a thin book.</div>
+    </div>
+
+    <div class="param">
+      <div class="pname">gap/ATR <code>(open − previous close) ÷ 14-day ATR</code></div>
+      <p class="what">How much of the move happened overnight, in normal-day units. This
+        is the closest thing here to a pre-market signal: it is where earnings, guidance
+        and press releases land.</p>
+      <div class="look"><b>Look for:</b> a large gap with a smaller range means the market
+        repriced it before the open and then agreed — the news was the event. A large gap
+        with a large range means it was still being argued over all day.</div>
+      <div class="warn">Every ATR-divided number breaks when ATR is near zero. Names whose
+        ATR is under 0.5% or over 50% of their price are now excluded outright, because
+        those ratios measure the denominator rather than the stock.</div>
+    </div>
+
+    <h2>The rest of the card</h2>
+    <div class="param">
+      <div class="scroll"><table>
+        <thead><tr><th>field</th><th>what it means</th></tr></thead>
+        <tbody>
+        <tr><td class="n"><code>qualifiers n/4</code></td>
+            <td>How many of RVOL, move, range/ATR and gap/ATR cleared their bar. A name
+              needs <b>at least 2</b> plus composite ≥ 2.0z. Never all four — that would
+              only ever surface halted stocks.</td></tr>
+        <tr><td class="n"><code>#1 of 2,770</code></td>
+            <td>Its rank among the eligible names <em>in its own market</em>. Three US
+              slots and three Canadian slots are filled independently.</td></tr>
+        <tr><td class="n"><code>scale tops out</code></td>
+            <td>The highest composite score attainable in that market today. If a name is
+              near it, nothing could have scored higher.</td></tr>
+        <tr><td class="n"><code>drivers</code></td>
+            <td>The three pillars contributing most, signed in the direction the name was
+              flagged. <code>displacement</code> = the move itself,
+              <code>confirmation</code> = where it closed within its range on volume,
+              <code>structure</code> = breakouts and distance from the 50-day,
+              <code>relstrength</code> = versus the index and its sector.</td></tr>
+        <tr><td class="n"><code>LONG / SHORT</code></td>
+            <td>Which direction the unusualness points, <b>not</b> an instruction. It is
+              the side whose pillar arithmetic scored higher.</td></tr>
+        <tr><td class="n">⚠ <code>flags</code></td>
+            <td><code>suspect_unadjusted_split</code> means a &gt;35% move on under 1.5×
+              volume — almost always a corporate action the data did not adjust. Ignore
+              those.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <h2>When the list is empty</h2>
+    <p>That is the product working. The bars are absolute, in each name's own history, so
+      a quiet day genuinely produces nothing. Over the last 89 sessions the US list was
+      empty on 21% of them and the Canadian list on 40%. A scanner that returns three
+      names every single day has stopped measuring anything.</p>
+
+    <div class="callout hard">
+      <b>The amber banner.</b> If a session says <em>degraded fetch</em>, the data
+      provider returned far fewer names than usual and every percentile on the page is
+      computed against a market that was not there. It has happened: the same session
+      scanned locally and on the server produced 3,092 and 1,076 eligible names. Do not
+      read a degraded session — wait for the next one.
+    </div>
+
+    <h2>What this is not</h2>
+    <p>It is a measuring instrument, not a forecast. <code>score_pct</code> is a
+      percentile of criteria strength within one session's universe — 92 means 8% of the
+      market fired harder on these criteria. It is not a probability of gain.</p>
+    <div class="callout">
+      Measured honestly on 258,651 logged rows over 85 sessions, names this scanner
+      selected went on to <b>underperform</b> in the direction the LONG/SHORT tag points:
+      5-day information coefficient −0.023, 20-day −0.031, both statistically distinguishable
+      from zero. The measurement harness is verified — it finds nothing in random data and
+      finds a planted signal at t=+7.4 — so the finding is about the criteria, not the
+      plumbing. One window of back-adjusted data is not proof of anything, and it is
+      certainly not a reason to trade the opposite. Treat the output as <em>"these names
+      did something unusual today, go look at why"</em> — which is what a screener is for.
+      The <a href="/api/scan/base-rates">measured base rates</a> carry sample sizes and
+      standard errors; read those before the score.
+    </div>
+    <p class="lede" style="margin-top:20px">Not investment advice. No part of this places
+      an order or knows anything about an account.</p>
+  </main>
+</body>
+</html>

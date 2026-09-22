@@ -265,6 +265,11 @@ def backfill_market() -> int:
 # ---- read-back ---------------------------------------------------------------
 
 
+# A session below this share of its neighbours' median eligible count is a
+# degraded fetch, not a quiet market.
+DEGRADED_FRAC = 0.70
+
+
 def _synthetic_filter(include_synthetic: bool) -> tuple[str, list]:
     """SQL fragment excluding generated providers, and its params.
 
@@ -281,14 +286,43 @@ def _synthetic_filter(include_synthetic: bool) -> tuple[str, list]:
     return f" AND r.provider NOT IN ({','.join('?' * len(names))})", names
 
 
-def latest_scan_date(include_synthetic: bool = False) -> str | None:
+def latest_scan_date(include_synthetic: bool = False,
+                     include_degraded: bool = False) -> str | None:
+    """The newest session worth showing as "today".
+
+    Degraded sessions are skipped for the same reason synthetic ones are: the
+    page is supposed to show the market, and a session where the provider
+    returned a third of it does not. It is still logged, still reachable from
+    the history table, and still carries its banner -- it just does not get to
+    be the front page. A CI run logged 330 of ~3,080 eligible names and became
+    the published session; every percentile on it was computed against a market
+    that was not there.
+    """
     clause, params = _synthetic_filter(include_synthetic)
     with _conn() as c:
-        row = c.execute(
-            f"""SELECT MAX(d.as_of_date) FROM scan_day d
+        rows = c.execute(
+            f"""SELECT d.as_of_date, d.n_eligible FROM scan_day d
                 JOIN scan_run r ON r.run_id = d.run_id
-                WHERE 1=1{clause}""", params).fetchone()
-        return row[0] if row and row[0] else None
+                WHERE 1=1{clause}
+                ORDER BY d.as_of_date DESC, d.run_id DESC""", params).fetchall()
+    if not rows:
+        return None
+    if include_degraded:
+        return rows[0][0]
+    # One row per date, newest run first.
+    seen: dict[str, int] = {}
+    for date, n in rows:
+        seen.setdefault(date, int(n or 0))
+    dates = sorted(seen, reverse=True)
+    counts = [seen[d] for d in dates[:30]]
+    if len(counts) < 6:
+        return dates[0]                      # no baseline to judge against
+    for d in dates:
+        others = [seen[x] for x in dates[:30] if x != d]
+        med = float(np.median(others)) if others else 0.0
+        if med <= 0 or seen[d] >= DEGRADED_FRAC * med:
+            return d
+    return dates[0]                          # everything looks thin; show the newest
 
 
 def picks_for(as_of: str | None = None) -> list[dict]:
@@ -349,7 +383,17 @@ def day_history(limit: int = 60, include_synthetic: bool = False) -> list[dict]:
                   ON m.as_of_date = d.as_of_date AND m.rid = d.run_id
                 WHERE 1=1{clause}
                 ORDER BY d.as_of_date DESC LIMIT ?""", (*params, limit)).fetchall()
-        return [dict(r) for r in rows]
+    out = [dict(r) for r in rows]
+    # Mark the thin ones in place, so the history table can say which sessions
+    # not to read rather than presenting 330 eligible names next to 3,096 as if
+    # they were the same kind of number.
+    counts = [int(r["n_eligible"] or 0) for r in out]
+    if len(counts) >= 6:
+        for i, r in enumerate(out):
+            others = counts[:i] + counts[i + 1:]
+            med = float(np.median(others))
+            r["degraded"] = bool(med > 0 and counts[i] < DEGRADED_FRAC * med)
+    return out
 
 
 # A published session is not self-describing. n_eligible is just a number on the
@@ -360,9 +404,6 @@ def day_history(limit: int = 60, include_synthetic: bool = False) -> list[dict]:
 # an ordinary quiet day. composite_z is a percentile of whoever showed up, so a
 # third of the market missing does not make the list shorter, it makes every
 # score in it wrong.
-DEGRADED_FRAC = 0.70            # below this share of the trailing median
-
-
 def session_health(day: dict | None, history: list[dict]) -> dict | None:
     """Is this session's eligible count consistent with the ones around it?"""
     if not day or not history:

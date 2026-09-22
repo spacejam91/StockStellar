@@ -18,10 +18,19 @@ name: Daily scan
 
 on:
   schedule:
-    # 22:30 UTC = 18:30 ET in summer, 17:30 ET in winter. Comfortably after the
-    # 16:00 ET close either way. Cron has no DST, so the local hour drifts by
-    # one across the year; that is harmless for an end-of-day scan.
-    - cron: "30 22 * * 1-5"
+    # 05:30 UTC = 01:30 ET, which is the PREVIOUS weekday's session -- hence
+    # Tue-Sat, not Mon-Fri.
+    #
+    # It used to run at 22:30 UTC, half an hour after the US close, and that
+    # was the whole problem. Yahoo rate-limits datacenter IPs hardest right
+    # then, and it does it silently: yf.download returns an empty frame per
+    # failed ticker instead of raising, so the scan completes on whatever came
+    # back. Measured on the same session, same code: 07:25 UTC returned all
+    # 8,701 tickers and 3,095 eligible names; 22:30 UTC returned about a third
+    # (1,076 eligible) and the next one a tenth (330). composite_z is a
+    # percentile, so a short universe does not shorten the list -- it moves
+    # every score in it.
+    - cron: "30 5 * * 2-6"
   workflow_dispatch:
     inputs:
       history_days:
@@ -63,6 +72,7 @@ jobs:
           uv run python -m tests.test_provider_hygiene
           uv run python -m tests.test_empty_day
           uv run python -m tests.test_log_integrity
+          uv run python -m tests.test_selection
 
       - name: Refresh universe and sectors
         # Cheap and keeps listings/sectors current. Never fail the run on it --
@@ -84,13 +94,50 @@ jobs:
 
       - name: Run the scan
         id: scan
+        # NOT fatal, and that is deliberate. The provider refuses a run whose
+        # coverage is below MIN_COVERAGE, which is correct -- a third of the
+        # market missing moves every percentile -- but a refusal must not also
+        # take the page down. On a refusal the site is rebuilt from the log as
+        # it stands, so the last honest session stays published instead of
+        # being replaced by a degraded one or by nothing.
+        continue-on-error: true
         env:
           MARKET_DATA: ${{ github.event.inputs.provider || 'yahoo' }}
         run: |
           set -o pipefail
-          uv run python -m scanner \
-            --history-days "${{ github.event.inputs.history_days || 0 }}" \
-            --backfill 2>&1 | tee scan-output.txt
+          # Three attempts with a long gap. Yahoo's throttling is stochastic,
+          # so a run refused for coverage is often fine twenty minutes later --
+          # and a refused run costs a whole session of log.
+          for attempt in 1 2 3; do
+            echo "::group::scan attempt $attempt"
+            if uv run python -m scanner \
+                 --history-days "${{ github.event.inputs.history_days || 0 }}" \
+                 --backfill 2>&1 | tee scan-output.txt; then
+              echo "::endgroup::"
+              echo "scanned=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::endgroup::"
+            echo "attempt $attempt was refused or failed"
+            [ "$attempt" -lt 3 ] && sleep $((attempt * 600))
+          done
+          echo "scanned=false" >> "$GITHUB_OUTPUT"
+          exit 1
+
+      - name: Say plainly whether this session was scanned
+        # A red X on a scheduled job is easy to miss; a summary is not.
+        run: |
+          if [ "${{ steps.scan.outputs.scanned }}" = "true" ]; then
+            echo "### Scan complete" >> "$GITHUB_STEP_SUMMARY"
+            grep -E "^  (eligible|fetched|bars/ticker)" scan-output.txt \
+              | sed 's/^/    /' >> "$GITHUB_STEP_SUMMARY" || true
+          else
+            echo "### No session logged — the fetch was refused" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "The page still shows the last good session. Three attempts were made." \
+              >> "$GITHUB_STEP_SUMMARY"
+            tail -20 scan-output.txt | sed 's/^/    /' >> "$GITHUB_STEP_SUMMARY" || true
+          fi
 
       - name: Build the static site
         run: uv run python scripts/build_site.py --out site
@@ -100,6 +147,7 @@ jobs:
           path: site
 
       - name: Commit the updated log
+        if: steps.scan.outputs.scanned == 'true'
         # Never fatal. This is the LAST step of the job and `deploy` needs the
         # job to succeed, so a failure here blocked publishing entirely -- which
         # is what happened on the first run: the scan worked, the artifact

@@ -20,7 +20,7 @@
       <span class="mlabel">{{ label }}</span>
       <span class="mtrack">
         <span class="mfill {{ 'fired' if fired else 'under' }}{{ ' over' if over else '' }}"
-              style="width: {{ [pct, 100] | min | round(1) }}%"></span>
+              style="width: {{ [pct, 100.0] | min | round(1) }}%"></span>
         <span class="mtick" style="left: {{ (100 / span) | round(1) }}%"
               title="this session's bar: {{ '%.2f' | format(threshold) }}"></span>
       </span>

@@ -106,6 +106,8 @@
     th:first-child, td:first-child { text-align: left; }
     th { color: var(--muted); font-weight: 500; }
     tr.none td { color: var(--muted); }
+    tr.thin td { color: var(--amber); opacity: 0.85; }
+    .thinmark { font-size: 10px; }
     .disclaimer { margin: 28px 0 8px; padding: 12px 14px; border-left: 2px solid var(--border);
                   color: var(--muted); font-size: 12px; }
     .scroll { overflow-x: auto; }
@@ -130,7 +132,10 @@
 <body>
   <header>
     <h1>StockStellar</h1>
-    <span class="tag">{{ provider }}</span>
+    <span style="margin-left:auto; display:flex; gap:10px; align-items:center">
+      <a href="/guide" style="font-size:12px">how to read this</a>
+      <span class="tag">{{ provider }}</span>
+    </span>
   </header>
 
   <main>
@@ -178,8 +183,8 @@
                is not a thing a name can be -- score_pct is a percentile that
                rounds to 100 for the top handful of a 3,000-name cross-section,
                which is exactly why composite_z leads the card. #}
-            <div class="rank">#{{ loop.index }} of
-              {{ p.n_market or day.n_eligible }} eligible in {{ p.market }}{%
+            <div class="rank">#{{ loop.index }} of {% if p.n_market %}{{ p.n_market }}
+              eligible in {{ p.market }}{% else %}{{ day.n_eligible }} eligible{% endif %}{%
               if p.ceiling_z %} · scale tops out at {{ '%.2f'|format(p.ceiling_z) }}z{% endif %}</div>
             <div class="kv">
               <span>close <b>{{ '%.2f'|format(p.close) }}</b></span>
@@ -218,6 +223,10 @@
 
       <h2>Recent sessions{% if empty_share is not none %}
         — {{ (empty_share * 100)|round(0)|int }}% empty{% endif %}</h2>
+      {% if history|selectattr('degraded')|list %}
+        <div class="legend">⚠ marks a session where the data provider returned far fewer
+          names than usual. Those scores are percentiles of a market that was not there.</div>
+      {% endif %}
       <div class="scroll">
         <table>
           <thead><tr>
@@ -226,8 +235,9 @@
           </tr></thead>
           <tbody>
             {% for r in history %}
-              <tr {% if r.empty_day %}class="none"{% endif %}>
-                <td class="date"><a href="/scan?as_of={{ r.as_of_date }}">{{ r.as_of_date }}</a></td>
+              <tr class="{{ 'thin' if r.degraded else ('none' if r.empty_day else '') }}">
+                <td class="date"><a href="/scan?as_of={{ r.as_of_date }}">{{ r.as_of_date }}</a>{%
+                  if r.degraded %} <span class="thinmark" title="degraded fetch — do not read this session">⚠</span>{% endif %}</td>
                 <td>{{ r.n_eligible }}</td>
                 <td class="opt">{{ r.n_over_threshold }}</td>
                 <td>{{ r.n_qualified }}</td>

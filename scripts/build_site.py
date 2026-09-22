@@ -88,11 +88,17 @@ def build(out: Path) -> int:
                     .replace('src="/static/', f'src="{up}static/'))
         page = re.sub(r'href="/scan\?as_of=([0-9-]+)"', rf'href="{up}s/\1.html"', page)
         page = page.replace('href="/name/', f'href="{up}name/')
+        page = page.replace('href="/guide"', f'href="{up}guide.html"')
         page = page.replace('href="/"', f'href="{up}index.html"')
         return page
 
     out.mkdir(parents=True, exist_ok=True)
     (out / "index.html").write_text(localise(html, 0), encoding="utf-8")
+
+    # The reading guide. Static, and deliberately reachable even when no scan
+    # has ever run -- it is the page that explains every other one.
+    (out / "guide.html").write_text(
+        localise(env.get_template("guide.html").render(request=None), 0), encoding="utf-8")
 
     # One page per logged session, so the history table is navigable.
     sess_dir = out / "s"
