@@ -331,7 +331,7 @@ LNF.TO,LEON'S FURNITURE LTD.,TSX,Retail Furniture
 FP.V,FP Newspapers Inc.,TSX.V,Manufacturing
 BST.V,Bessor Minerals Inc.,TSX.V,Mining
 CSCI.TO,COSCIENS Biopharma Inc.,TSX,Biopharmaceutical
-CRWN.TO,CROWN CAPITAL PARTNERS INC. J,TSX,Financial Services
+CRWN.V,CROWN CAPITAL PARTNERS INC. J,TSX.V,Financial Services
 LIO.V,Lion One Metals Limited,TSX.V,Mining
 KEI.TO,Kolibri Global Energy Inc.,TSX,Oil/Gas Expl & Dev
 WEC.V,Winchester Equity Corporation,TSX.V,Financial Services
@@ -359,7 +359,6 @@ PTM.TO,PLATINUM GROUP METALS LTD. J,TSX,Mineral Expl & Dev
 WEB.V,Westbridge Renewable Energy Corp.,TSX.V,Business Services
 FAP.TO,abrdn Asia-Pacific Income Fund VCC,TSX,Investment Company
 FCD-UN.TO,Firm Capital Property Trust,TSX,Investment Trust
-MDS-UN.TO,HEALTHCARE SPECIAL OPPORTUNITIES FND CL A UN,TSX,Investment Fund
 DGS.TO,DIVIDEND GROWTH SPLIT CORP. CL 'A',TSX,Investment Company
 OYL.V,CGX Energy Inc.,TSX.V,Oil & Gas
 VQS.V,VIQ Solutions Inc.,TSX.V,Technology
@@ -823,7 +822,6 @@ GNG.V,Golden Goliath Resources Ltd.,TSX.V,Mining
 CSW-B.TO,CORBY SPIRIT AND WINE LIMITED 'B' NV,TSX,Distillery
 ICM.V,Iconic Minerals Ltd.,TSX.V,Mining
 NRM.V,Noram Lithium Corp,TSX.V,Mining
-SLVR.TO,Silver Tiger Metals Inc.,TSX,Mineral Expl & Dev
 TECK-A.TO,TECK RESOURCES LIMITED CL 'A' MV,TSX,Mineral Expl & Dev
 RMO.V,Rainy Mountain Royalty Corp.,TSX.V,Mining
 OTMC.V,ORETERRA METALS CORP.,TSX.V,Mining
@@ -906,7 +904,7 @@ OLY.TO,OLYMPIA FINANCIAL GROUP INC.,TSX,Investment Mgt
 NEXG.V,NeXGold Mining Corp.,TSX.V,Mining
 RYO.V,Rio Silver Inc.,TSX.V,Mining
 ABC.V,Absolutely Critical Resources Corp.,TSX.V,Mining
-SMRV.V,SMOOTH ROCK VENTURES CORP,TSX.V,Mining
+CATX.V,Catalyst One Exploration Corp.,TSX.V,Mining
 GIGA.V,Giga Metals Corporation,TSX.V,Mining
 ILLM.TO,illumin Holdings Inc.,TSX,Technology
 FCA-U.V,Firm Capital Apartment REIT USD,TSX.V,Real Estate
@@ -1399,7 +1397,6 @@ HMR.V,Homerun Resources Inc,TSX.V,Mining
 LSTR.V,Lodestar Metals Corp.,TSX.V,Mining
 CTH.V,CoTec Holdings Corp.,TSX.V,Financial Services
 AUME.V,Auriginal Mining Corp.,TSX.V,Mining
-BRO.V,Barksdale Resources Corp.,TSX.V,Mining
 POOL.V,POOL SAFE INC.,TSX.V,Manufacturing
 TT.V,Total Metals Corp.,TSX.V,Mining
 TBLL.V,Tombill Mines Limited,TSX.V,Mining
@@ -2174,6 +2171,7 @@ CENT.V,Centauri Minerals Inc.,TSX.V,Mining
 ZIGY.V,Stardust Metal Corp.,TSX.V,Mining
 GCUC.V,Green Canada Uranium Corp.,TSX.V,Mining
 NAIA.V,NAIA Relief Inc.,TSX.V,Technology
+ALX.V,Alex Metals Corp.,TSX.V,Unknown
 URB-A.CN,Urbana Corporation A NV,CSE,Diversified Industries
 URB.CN,Urbana Corporation,CSE,Diversified Industries
 CFE.CN,Cartier Silver Corporation,CSE,Mining

@@ -612,7 +612,7 @@ BCAX,Bicara Therapeutics Inc. - Common Stock,NASDAQ,N,2023658.0,2834,Pharma & Bi
 BCBP,"BCB Bancorp, Inc. (NJ) - Common Stock",NASDAQ,N,1228454.0,6035,Banks & Consumer Finance
 BCC,"Boise Cascade, L.L.C. Common Stock",NYSE,,1328581.0,5030,Industrials & Machinery
 BCCQ,Bleichroeder Acquisition Corp. III - Class A Ordinary Shares,NASDAQ,N,2128045.0,,
-BCDA,"BioCardia, Inc. - Common Stock",NASDAQ,D,925741.0,2836,Pharma & Biotech
+BCDA,"BioCardia, Inc. - Common Stock",NASDAQ,N,925741.0,2836,Pharma & Biotech
 BCE,"BCE, Inc. Common Stock",NYSE,,718940.0,4813,Media & Telecom
 BCG,"Binah Capital Group, Inc. - Common Stock",NASDAQ,N,1953984.0,6199,Capital Markets
 BCH,Banco De Chile ADS,NYSE,,1161125.0,6029,Banks & Consumer Finance
@@ -832,7 +832,6 @@ BRN,"Barnwell Industries, Inc. Common Stock",AMEX,,10048.0,1311,"Oil, Gas & Coal
 BRNX,BrenX Ltd. - Ordinary Shares,NASDAQ,N,1901215.0,3433,Industrials & Machinery
 BRO,"Brown & Brown, Inc. Common Stock",NYSE,,79282.0,6411,Insurance
 BROS,Dutch Bros Inc. Class A Common Stock,NYSE,,1866581.0,5810,Retail & Consumer Services
-BRR,"ProCap Financial, Inc. - Common Stock",NASDAQ,N,2076163.0,6199,Capital Markets
 BRSL,"Brightstar Lottery PLC Trading under the Legal Name to begin at the market open on July 21, 2025. Ordinary Shares",NYSE,,1619762.0,7990,Media & Telecom
 BRSP,"BrightSpire Capital, Inc. Class A Common Stock",NYSE,,1717547.0,6798,Real Estate & REITs
 BRT,BRT Apartments Corp. (MD) Common Stock,NYSE,,14846.0,6798,Real Estate & REITs
@@ -1155,7 +1154,7 @@ CLDT,Chatham Lodging Trust (REIT) Common Shares of Beneficial Interest,NYSE,,147
 CLDX,"Celldex Therapeutics, Inc. - Common Stock",NASDAQ,N,744218.0,2835,Pharma & Biotech
 CLF,Cleveland-Cliffs Inc. Common Stock,NYSE,,764065.0,1000,Mining & Metals
 CLFD,"Clearfield, Inc. - Common Stock",NASDAQ,N,796505.0,3661,Tech Hardware
-CLGN,CollPlant Biotechnologies Ltd. - Ordinary Shares,NASDAQ,D,1631487.0,3842,Healthcare Equipment
+CLGN,CollPlant Biotechnologies Ltd. - Ordinary Shares,NASDAQ,N,1631487.0,3842,Healthcare Equipment
 CLH,"Clean Harbors, Inc. Common Stock",NYSE,,822818.0,4955,Utilities
 CLIK,Click Holdings Limited - Ordinary Share,NASDAQ,N,2020027.0,7361,Commercial & Professional Services
 CLIR,ClearSign Technologies Corporation - Common Stock,NASDAQ,N,1434524.0,3823,Industrials & Machinery
@@ -1822,6 +1821,7 @@ ESRT,"Empire State Realty Trust, Inc. Class A Common Stock",NYSE,,1541401.0,6798
 ESS,"Essex Property Trust, Inc. Common Stock",NYSE,,920522.0,6798,Real Estate & REITs
 ESTA,Establishment Labs Holdings Inc. - Common Shares,NASDAQ,N,1688757.0,3842,Healthcare Equipment
 ESTC,Elastic N.V. Ordinary Shares,NYSE,,1707753.0,7372,Software & IT Services
+ESYN,EnerSyn Global Inc. - Common Stock,NASDAQ,N,,,
 ET,Energy Transfer LP Common Units,NYSE,,1276187.0,4922,Utilities
 ETB,Eaton Vance Tax-Managed Buy-Write Income Fund Eaton Vance Tax-Managed Buy-Write Income Fund Common Shares of Beneficial Interest,NYSE,,1308927.0,,
 ETD,Ethan Allen Interiors Inc. Common Stock,NYSE,,896156.0,2511,Industrials & Machinery
@@ -1948,7 +1948,7 @@ FEMY,Femasys Inc. - Common Stock,NASDAQ,N,1339005.0,3841,Healthcare Equipment
 FENC,Fennec Pharmaceuticals Inc. - Common Stock,NASDAQ,N,1211583.0,2836,Pharma & Biotech
 FENG,"Phoenix New Media Limited American Depositary Shares, each representing 48 Class A ordinary shares.",NYSE,,1509646.0,4833,Media & Telecom
 FER,Ferrovial N.V. - Ordinary Shares,NASDAQ,N,1468522.0,1600,Industrials & Machinery
-FERA,Fifth Era Acquisition Corp I - Class A Ordinary Shares,NASDAQ,N,2025401.0,6770,Shell & SPAC
+FERA,Fifth Era Acquisition Corp I - Class A Ordinary Shares,NASDAQ,D,2025401.0,6770,Shell & SPAC
 FERG,Ferguson Enterprises Inc. Common Stock,NYSE,,2011641.0,5070,Industrials & Machinery
 FET,"Forum Energy Technologies, Inc. Common Stock",NYSE,,1401257.0,3533,Industrials & Machinery
 FF,FutureFuel Corp.  Common shares,NYSE,,1337298.0,2860,Materials & Chemicals
@@ -2577,7 +2577,6 @@ HVMC,Highview Merger Corp. - Class A Ordinary Share,NASDAQ,N,2070602.0,6770,Shel
 HVT,"Haverty Furniture Companies, Inc. Common Stock",NYSE,,216085.0,5712,Retail & Consumer Services
 HWBK,"Hawthorn Bancshares, Inc. - Common Stock",NASDAQ,N,893847.0,6021,Banks & Consumer Finance
 HWC,Hancock Whitney Corporation - Common Stock,NASDAQ,N,750577.0,6022,Banks & Consumer Finance
-HWH,HWH International Inc. - Common Stock,NASDAQ,N,1897245.0,5122,Industrials & Machinery
 HWKN,"Hawkins, Inc. - Common Stock",NASDAQ,N,46250.0,5160,Industrials & Machinery
 HWM,Howmet Aerospace Inc. Common Stock,NYSE,,4281.0,3350,Mining & Metals
 HXHX,Haoxin Holdings Limited - Class A Ordinary Shares,NASDAQ,D,1936817.0,4210,Transportation & Logistics
@@ -3670,7 +3669,6 @@ NGVC,"Natural Grocers by Vitamin Cottage, Inc. Common Stock",NYSE,,1547459.0,541
 NGVT,Ingevity Corporation Common Stock,NYSE,,1653477.0,2800,Materials & Chemicals
 NHC,National HealthCare Corporation Common Stock,AMEX,,1047335.0,8051,Healthcare Equipment
 NHI,"National Health Investors, Inc. Common Stock",NYSE,,877860.0,6798,Real Estate & REITs
-NHIC,NewHold Investment Corp III - Class A Ordinary shares,NASDAQ,N,2043699.0,6770,Shell & SPAC
 NHIV,NewHold Investment Corp IV - Class A Ordinary Shares,NASDAQ,N,2099767.0,6770,Shell & SPAC
 NHP,"National Healthcare Properties, Inc. - Class A Common Stock",NASDAQ,N,1561032.0,6798,Real Estate & REITs
 NHS,Neuberger High Yield Strategies Fund Inc. Common Stock,AMEX,,1487610.0,,
@@ -4084,7 +4082,7 @@ PBM,Psyence Biomedical Ltd. - Common Shares,NASDAQ,N,1985062.0,2834,Pharma & Bio
 PBR,Petroleo Brasileiro S.A. Petrobras ADS,NYSE,,1119639.0,1311,"Oil, Gas & Coal"
 PBT,Permian Basin Royalty Trust Common Stock,NYSE,,319654.0,,
 PBYI,Puma Biotechnology Inc - Common Stock,NASDAQ,N,1401667.0,2834,Pharma & Biotech
-PC,Premium Catering (Holdings) Limited - Ordinary Shares,NASDAQ,E,1998056.0,5812,Retail & Consumer Services
+PC,Premium Catering (Holdings) Limited - Ordinary Shares,NASDAQ,N,1998056.0,5812,Retail & Consumer Services
 PCAP,ProCap Acquisition Corp - Class A Ordinary Shares,NASDAQ,N,2056634.0,6770,Shell & SPAC
 PCAR,PACCAR Inc. - Common Stock,NASDAQ,N,75362.0,3711,Industrials & Machinery
 PCB,PCB Bancorp - Common Stock,NASDAQ,N,1423869.0,6022,Banks & Consumer Finance
@@ -5062,6 +5060,7 @@ SVAQ,Silicon Valley Acquisition Corp. - Class A Ordinary Shares,NASDAQ,N,2085659
 SVC,Service Properties Trust - Common Shares of Beneficial Interest,NASDAQ,N,945394.0,6798,Real Estate & REITs
 SVCC,Stellar V Capital Corp. - Class A Ordinary Shares,NASDAQ,N,2033593.0,6770,Shell & SPAC
 SVCO,"Silvaco Group, Inc. - Common Stock",NASDAQ,N,1943289.0,7372,Software & IT Services
+SVIA,"Silvia, Inc. - Common Stock",NASDAQ,N,,,
 SVIV,Spring Valley Acquisition Corp. IV - Class A Ordinary Shares,NASDAQ,N,2098242.0,6770,Shell & SPAC
 SVM,Silvercorp Metals Inc. Common Shares,AMEX,,1340677.0,1040,Mining & Metals
 SVRA,"Savara, Inc. - Common Stock",NASDAQ,N,1160308.0,2834,Pharma & Biotech
@@ -5103,7 +5102,7 @@ TACT,TransAct Technologies Incorporated - Common Stock,NASDAQ,N,1017303.0,3577,T
 TAK,Takeda Pharmaceutical Company Limited American Depositary Shares (each representing 1/2 of a share of Common Stock),NYSE,,1395064.0,2834,Pharma & Biotech
 TAL,TAL Education Group American Depositary Shares,NYSE,,1499620.0,8200,Commercial & Professional Services
 TALO,"Talos Energy, Inc. Common Stock",NYSE,,1724965.0,1311,"Oil, Gas & Coal"
-TANH,Tantech Holdings Ltd. - Class A Common Shares,NASDAQ,D,1588084.0,2860,Materials & Chemicals
+TANH,Tantech Holdings Ltd. - Class A Common Shares,NASDAQ,N,1588084.0,2860,Materials & Chemicals
 TAOP,Taoping Inc. - Ordinary Shares,NASDAQ,N,1552670.0,7372,Software & IT Services
 TAOX,Tao Synergies Inc. - Common Stock,NASDAQ,N,1571934.0,6199,Capital Markets
 TAP,Molson Coors Beverage Company Class B Common Stock,NYSE,,24545.0,2082,Consumer Staples
@@ -5653,7 +5652,7 @@ WB,Weibo Corporation - American Depositary Shares,NASDAQ,N,1595761.0,7370,Softwa
 WBD,"Warner Bros. Discovery, Inc. - Series A Common Stock",NASDAQ,N,1437107.0,4841,Media & Telecom
 WBI,WaterBridge Infrastructure LLC Class A Shares Representing Limited Liability Company Interests,NYSE,,2064947.0,1389,"Oil, Gas & Coal"
 WBTN,WEBTOON Entertainment Inc. - Common stock,NASDAQ,N,1997859.0,2741,Media & Telecom
-WBUY,WEBUY GLOBAL LTD. - Class A Ordinary Shares,NASDAQ,N,1946703.0,5900,Retail & Consumer Services
+WBUY,WEBUY GLOBAL LTD. - Class A Ordinary Shares,NASDAQ,D,1946703.0,5900,Retail & Consumer Services
 WBX,Wallbox N.V. Class A Ordinary Shares,NYSE,,1866501.0,3690,Industrials & Machinery
 WCC,"WESCO International, Inc. Common Stock",NYSE,,929008.0,5063,Industrials & Machinery
 WCCB,West Coast Community Bancorp - Common Stock,NASDAQ,N,2105965.0,,
