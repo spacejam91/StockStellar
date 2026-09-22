@@ -52,7 +52,9 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Three fetch attempts of ~8 minutes each plus 15 minutes of backoff, with
+    # room for the universe refresh and the site build.
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -119,7 +121,7 @@ jobs:
             fi
             echo "::endgroup::"
             echo "attempt $attempt was refused or failed"
-            [ "$attempt" -lt 3 ] && sleep $((attempt * 600))
+            [ "$attempt" -lt 3 ] && sleep $((attempt * 300))
           done
           echo "scanned=false" >> "$GITHUB_OUTPUT"
           exit 1
