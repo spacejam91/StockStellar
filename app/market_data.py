@@ -405,6 +405,22 @@ class YahooMarketData:
                 d["ticker"] = t
                 frames.append(d[["date", "ticker", "open", "high", "low", "close", "volume"]])
 
+        returned = {f["ticker"].iloc[0] for f in frames if len(f)}
+        coverage = len(returned) / max(len(tickers), 1)
+        if coverage < 0.95:
+            # THE failure mode this provider actually has. yf.download never
+            # raises on a per-ticker failure: yfinance catches it internally,
+            # stores an empty frame and only logs "N Failed downloads". So the
+            # retry loop above never fires, `dropped` stays 0, and two thirds of
+            # the universe can vanish with every counter reading zero. That is
+            # exactly what happened -- a 22:30 UTC run right after the US close
+            # returned ~1/3 of the names and reported nothing wrong, while the
+            # same code off-peak returned all 8,701.
+            log.warning(
+                "COVERAGE %.1f%%: only %d of %d requested tickers returned bars. "
+                "Cross-sectional ranks are percentiles, so a short universe moves "
+                "EVERY score. Treat this as a degraded run, not a quiet market.",
+                100 * coverage, len(returned), len(tickers))
         if dropped:
             # Loud on purpose. A silently shortened universe changes every
             # cross-sectional rank in the scan, and the output still looks fine.
@@ -425,6 +441,9 @@ class YahooMarketData:
             index=bars.index,
         )
         bars["market"] = bars["market"].fillna(inferred) if "market" in bars.columns else inferred
+        bars.attrs["coverage"] = coverage
+        bars.attrs["requested"] = len(tickers)
+        bars.attrs["returned"] = len(returned)
         return bars
 
     def benchmarks(self, start=None, end=None) -> pd.DataFrame:
@@ -463,6 +482,10 @@ _PROVIDER = os.getenv("MARKET_DATA", "mock").lower()
 
 BARS_CONTRACT = ["date", "ticker", "open", "high", "low", "close", "volume"]
 
+# Below this share of requested tickers the run is refused outright. Set from
+# observation: a healthy sweep returns ~100%, the degraded CI run returned ~35%.
+MIN_COVERAGE = float(os.getenv("MIN_COVERAGE", "0.80"))
+
 
 def validate_bars(df: pd.DataFrame, provider: str) -> pd.DataFrame:
     """Contract + fill-rate check on every fetch.
@@ -488,6 +511,19 @@ def validate_bars(df: pd.DataFrame, provider: str) -> pd.DataFrame:
     dupes = int(df.duplicated(subset=["ticker", "date"]).sum())
     if dupes:
         raise ValueError(f"provider {provider!r} returned {dupes} duplicate (ticker, date) rows")
+
+    # Coverage is the check that matters most and the one nothing had. A
+    # provider that returns 30% of the universe produces a perfectly
+    # well-formed frame: every column present, every value populated, no
+    # duplicates. It just describes a different, smaller market -- and since
+    # composite_z is a percentile, every score in the run is wrong.
+    cov = df.attrs.get("coverage")
+    if cov is not None and cov < MIN_COVERAGE:
+        raise ValueError(
+            f"provider {provider!r}: only {cov:.1%} of requested tickers returned bars "
+            f"({df.attrs.get('returned')} of {df.attrs.get('requested')}, floor "
+            f"{MIN_COVERAGE:.0%}). A short universe moves every cross-sectional score; "
+            f"this is a degraded upstream, not a quiet market.")
     return df
 
 
@@ -529,9 +565,10 @@ def get_provider(name: str | None = None):
     if name == "polygon":
         from app.polygon_data import PolygonMarketData
         return _Validated(PolygonMarketData())
+    known = sorted(set(impls) | {"polygon"})
     if name not in impls:
         raise ValueError(
-            f"unknown market data provider: {name!r} (have: {'|'.join(sorted(impls))})")
+            f"unknown market data provider: {name!r} (have: {'|'.join(known)})")
     return _Validated(impls[name]())
 
 
@@ -541,6 +578,9 @@ def get_provider(name: str | None = None):
 # existed, was documented as "structural rather than conventional", and was
 # inert on the one path production actually uses. It caught nothing -- including
 # 343 duplicate (ticker, date) rows from a phantom "NAN" ticker.
-provider = get_provider(_PROVIDER if _PROVIDER in
-                        ("mock", "null", "signal", "yahoo", "polygon") else "mock")
+# No silent fallback. An unrecognised MARKET_DATA used to land on MockMarketData,
+# which plants a 5-16% level shift and a 3.5-9x volume spike by design -- so a
+# typo in the workflow would publish picks found in FABRICATED events, labelled
+# with whatever the env var said. get_provider raises on an unknown name.
+provider = get_provider(_PROVIDER)
 log.info("Market data: %s", getattr(provider, "name", _PROVIDER).upper())

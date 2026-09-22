@@ -151,10 +151,29 @@ def import_log(src: Path | None = None) -> dict[str, int]:
     return added
 
 
+def verify(src: Path | None = None) -> list[str]:
+    """Every session in scan_day must have a score partition on disk.
+
+    The CI commit step staged only data/log/*.csv, so data/log/scores/ was never
+    added to git and every cross-section the scheduled scan produced died with
+    the runner -- scan_day and scan_run recorded sessions whose scores did not
+    exist anywhere. Silent, and only visible as a back-test that mysteriously
+    ignores recent history.
+    """
+    src = src or LOG_DIR
+    day_csv = src / "scan_day.csv"
+    if not day_csv.exists():
+        return []
+    dates = set(pd.read_csv(day_csv)["as_of_date"].astype(str))
+    have = {f.name.removesuffix(".csv.gz") for f in (src / "scores").glob("*.csv.gz")} \
+        if (src / "scores").exists() else set()
+    return sorted(dates - have)
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("action", choices=["export", "import", "status"])
+    ap.add_argument("action", choices=["export", "import", "status", "verify"])
     args = ap.parse_args()
 
     if args.action == "export":
@@ -167,6 +186,15 @@ def main() -> int:
             print("  nothing to import (data/log/ absent or empty)")
         for t, n in res.items():
             print(f"  {t:18s} {n:>8,} new rows imported")
+    elif args.action == "verify":
+        missing = verify()
+        if missing:
+            print(f"  {len(missing)} logged session(s) have NO score partition:")
+            for d in missing[:10]:
+                print(f"    {d}")
+            print("  the cross-section for those sessions is not in git")
+            return 1
+        print("  every logged session has a score partition")
     else:
         print(f"  db: {DB_PATH}  exists={DB_PATH.exists()}")
         with _conn() as c:

@@ -119,11 +119,16 @@ jobs:
           # Instead: take origin/main's history, keep this runner's files, and
           # commit them on top. "Ours wins" is correct for generated output.
           uv run python -m scanner.logexport export
+          # Every session in scan_day must have a score partition. The commit
+          # previously staged only data/log/*.csv, so data/log/scores/ was never
+          # added and every cross-section the scheduled scan produced died with
+          # the runner.
+          uv run python -m scanner.logexport verify
 
           for i in 1 2 3; do
             git fetch origin main
             git reset --soft origin/main
-            git add -f data/log/*.csv data/universe_us.csv data/universe_ca.csv
+            git add -f data/log data/universe_us.csv data/universe_ca.csv
             if git diff --staged --quiet; then
               echo "nothing to commit"; exit 0
             fi
