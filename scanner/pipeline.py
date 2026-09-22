@@ -135,7 +135,7 @@ def run_scan(*, provider=None, cfg: ScanConfig | None = None, as_of=None,
     scored = combine.combine(window, cfg)
     picks = select.select(scored, cfg)
     summary = select.day_summary(scored, picks, cfg)
-    hlth = select.health(summary, cfg)
+    hlth = select.health(summary, picks, cfg)
 
     run_ids = []
     if persist and not scored.empty:

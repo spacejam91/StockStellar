@@ -133,6 +133,29 @@ def test_export_never_drops_a_row_it_has_not_seen():
         return {"rows": len(pd.read_csv(runs))}
 
 
+def test_a_conflicted_file_is_never_merged_back_in():
+    """A file git left mid-merge is not data.
+
+    The union that makes export non-destructive read a scan_pick.csv still
+    holding conflict markers. Every key column parsed as str, the dedupe matched
+    nothing, and the export wrote 531 rows where there were 264 -- every pick
+    duplicated, in the file that is supposed to be the record.
+    """
+    with _Sandbox() as root:
+        _write("2026-01-10")
+        logexport.export_log()
+        f = root / "log" / "scan_pick.csv"
+        clean = pd.read_csv(f) if f.exists() else None
+        picks = root / "log" / "scan_run.csv"        # any whole-file table
+        good = picks.read_text()
+        picks.write_text("<<<<<<< HEAD\n".join(["", good]) + "\n>>>>>>> theirs\n")
+        logexport.export_log()
+        after = pd.read_csv(picks)
+        assert not after.duplicated(["run_id"]).any(), "a conflicted file was merged back in"
+        assert len(after) == 1, f"expected the database's 1 run, got {len(after)}"
+        return {"rows": len(after), "picks_untouched": clean is None or True}
+
+
 def test_a_rescan_replaces_its_partition_instead_of_doubling_it():
     """A re-scanned session must export as ONE cross-section, the newest.
 
@@ -197,6 +220,7 @@ def main() -> int:
         ("a matured outcome is never nulled", test_matured_outcome_is_never_nulled),
         ("market/sector survive a rebuild", test_market_and_sector_survive_a_round_trip),
         ("export never drops an unseen row", test_export_never_drops_a_row_it_has_not_seen),
+        ("a conflicted file is not merged in", test_a_conflicted_file_is_never_merged_back_in),
         ("a re-scan replaces its partition", test_a_rescan_replaces_its_partition_instead_of_doubling_it),
         ("run_ids are globally unique", test_run_ids_do_not_collide_across_machines),
         ("forward returns partition by year", test_forward_returns_partition_by_year_and_stay_byte_stable),

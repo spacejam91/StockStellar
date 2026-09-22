@@ -33,7 +33,8 @@ SCORE_COLS = ["ticker", "market", "sector", "side", "composite_raw", "composite_
 
 PICK_COLS = ["rank", "ticker", "market", "sector", "side", "composite_z", "score_pct",
              "n_qualifiers", "close", "atr14", "rvol", "ret_z", "range_ratio",
-             "gap_atr", "drivers", "flags"]
+             "gap_atr", "thr_rvol", "thr_ret_z", "thr_range_ratio", "thr_gap_atr",
+             "ceiling_z", "n_market", "drivers", "flags"]
 
 
 # run_id identifies a run ACROSS MACHINES, because that is how it is used: the
@@ -349,6 +350,40 @@ def day_history(limit: int = 60, include_synthetic: bool = False) -> list[dict]:
                 WHERE 1=1{clause}
                 ORDER BY d.as_of_date DESC LIMIT ?""", (*params, limit)).fetchall()
         return [dict(r) for r in rows]
+
+
+# A published session is not self-describing. n_eligible is just a number on the
+# page, and the one that matters -- "is this smaller than it should be" -- needs
+# the sessions around it. CI and this laptop scanned the SAME session and
+# recorded 1,076 vs 3,092 eligible names, a 65% collapse caused by the data
+# provider rate-limiting a datacenter IP, and the page rendered the thin one as
+# an ordinary quiet day. composite_z is a percentile of whoever showed up, so a
+# third of the market missing does not make the list shorter, it makes every
+# score in it wrong.
+DEGRADED_FRAC = 0.70            # below this share of the trailing median
+
+
+def session_health(day: dict | None, history: list[dict]) -> dict | None:
+    """Is this session's eligible count consistent with the ones around it?"""
+    if not day or not history:
+        return None
+    others = [int(r["n_eligible"]) for r in history
+              if r["as_of_date"] != day["as_of_date"] and r.get("n_eligible")]
+    if len(others) < 5:
+        return None                      # not enough baseline to call anything
+    med = float(np.median(others))
+    if med <= 0:
+        return None
+    n = int(day["n_eligible"])
+    frac = n / med
+    return {
+        "n_eligible": n,
+        "median": int(round(med)),
+        "frac": round(frac, 3),
+        "shortfall_pct": round(100 * (1 - frac), 1),
+        "degraded": bool(frac < DEGRADED_FRAC),
+        "sessions_compared": len(others),
+    }
 
 
 def scores_frame(start: str | None = None, end: str | None = None) -> pd.DataFrame:

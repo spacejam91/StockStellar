@@ -55,6 +55,7 @@
     .mfill { position:absolute; left:0; top:0; height:100%; border-radius:0 4px 4px 0; }
     .mfill.fired { background:var(--accent); }
     .mfill.under { background:#4a5462; }
+    .mfill.over { border-radius:0; box-shadow:inset -4px 0 0 var(--bg); }
     .mtick { position:absolute; top:-3px; width:1px; height:14px; background:var(--muted); }
     .mval { text-align:right; font-variant-numeric:tabular-nums; }
     .mval.under { color:var(--muted); }
@@ -115,11 +116,11 @@
       <h2>Where each parameter landed</h2>
       <div class="card">
         <div class="meters">
-          {{ meter('composite',  pick.composite_z,  th.composite,   3.2, '%+.2f', 'z') }}
-          {{ meter('RVOL',       pick.rvol,         th.rvol,        4.0, '%.1f',  '×') }}
-          {{ meter('move',       pick.ret_z,        th.ret_z,       3.0, '%+.1f', 'σ') }}
-          {{ meter('range/ATR',  pick.range_ratio,  th.range_ratio, 2.5, '%.2f',  '') }}
-          {{ meter('gap/ATR',    pick.gap_atr,      th.gap_atr,     1.5, '%+.2f', '') }}
+              {{ meter('composite', pick.composite_z, th.composite, '%+.2f', 'z') }}
+              {{ meter('RVOL', pick.rvol, pick.thr_rvol or th.rvol, '%.1f',  '×') }}
+              {{ meter('move', pick.ret_z, pick.thr_ret_z or th.ret_z, '%+.1f', 'σ') }}
+              {{ meter('range/ATR', pick.range_ratio, pick.thr_range_ratio or th.range_ratio, '%.2f',  '') }}
+              {{ meter('gap/ATR', pick.gap_atr, pick.thr_gap_atr or th.gap_atr, '%+.2f', '') }}
         </div>
         <div class="muted" style="margin-top:10px">
           close {{ '%.2f'|format(pick.close) }} · ATR14 {{ '%.2f'|format(pick.atr14 or 0) }}

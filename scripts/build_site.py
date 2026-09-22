@@ -27,6 +27,15 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+def _TH(c) -> dict:
+    """Fallback meter limits. The real, per-session ones ride on each pick as
+    thr_*; these only cover rows logged before those were carried."""
+    return {"composite": c.composite_threshold, "rvol": c.qual_rvol,
+            "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
+            "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
+            "max_picks": c.max_picks, "scaled": c.qualifier_mode == "scaled"}
+
+
 ROOT = Path(__file__).parent.parent
 TEMPLATES = ROOT / "app" / "templates"
 STATIC = ROOT / "app" / "static"
@@ -63,10 +72,8 @@ def build(out: Path) -> int:
         history=hist,
         empty_share=empty_share,
         provider=(day or {}).get("provider") or "unknown",
-        th={"composite": c.composite_threshold, "rvol": c.qual_rvol,
-            "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
-            "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
-            "max_picks": c.max_picks},
+        th=_TH(c),
+        shealth=scan_store.session_health(day, hist),
         static_build=True,
     )
 
@@ -99,10 +106,7 @@ def build(out: Path) -> int:
         page = env.get_template("scan.html").render(
             request=None, day=day_i, picks=scan_store.picks_for(d), history=hist,
             empty_share=empty_share, provider=day_i.get("provider") or "unknown",
-            th={"composite": c.composite_threshold, "rvol": c.qual_rvol,
-                "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
-                "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
-                "max_picks": c.max_picks},
+            th=_TH(c), shealth=scan_store.session_health(day_i, hist),
             static_build=True)
         (sess_dir / f"{d}.html").write_text(localise(page, 1), encoding="utf-8")
         written += 1

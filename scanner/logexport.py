@@ -103,6 +103,16 @@ def _union_with_disk(df: pd.DataFrame, path: Path, keys: list[str],
     """
     if not path.exists():
         return df
+    if path.suffix != ".gz":
+        # A file git left mid-merge is not data. Reading one shifted every key
+        # column to str, so the dedupe below matched nothing and the export
+        # wrote 531 rows where there were 264 -- every pick duplicated, in the
+        # file that is supposed to BE the record.
+        head = path.read_bytes()[:1_000_000]
+        if b"\n<<<<<<< " in head or b"\n>>>>>>> " in head:
+            log.warning("%s has unresolved merge conflicts -- exporting database rows "
+                        "only. Resolve it, re-import, and export again.", path)
+            return df
     try:
         disk = read(path)
     except Exception as e:                                       # noqa: BLE001
@@ -114,7 +124,12 @@ def _union_with_disk(df: pd.DataFrame, path: Path, keys: list[str],
     if not k:
         return df
     both = pd.concat([df, disk], ignore_index=True)
-    return both.drop_duplicates(subset=k, keep="first")
+    # Compare keys as text. A CSV round-trip can hand back an int column as str
+    # or float (one stray row is enough), and drop_duplicates compares by value
+    # AND type -- so a dtype difference silently turns "already have it" into a
+    # second copy.
+    marker = both[k].astype(str)
+    return both[~marker.duplicated(keep="first")]
 
 
 def _partition_run_id(path: Path) -> int | None:

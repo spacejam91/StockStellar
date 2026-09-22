@@ -20,7 +20,7 @@ import pandas as pd
 
 from scanner.config import ScanConfig
 
-GATES = ("liquidity", "price", "history", "continuity", "completeness")
+GATES = ("liquidity", "price", "history", "continuity", "completeness", "volatility")
 
 
 def apply(df: pd.DataFrame, cfg: ScanConfig | None = None) -> pd.DataFrame:
@@ -35,6 +35,13 @@ def apply(df: pd.DataFrame, cfg: ScanConfig | None = None) -> pd.DataFrame:
     # not a continuity failure, it is the start of the series.
     out["gate_continuity"] = out["gap_days"].isna() | (out["gap_days"] <= cfg.max_gap_days)
     out["gate_completeness"] = out[["atr14", "ret_std60", "vol_med20"]].notna().all(axis=1)
+    # Keep the ATR denominator interpretable. See ScanConfig.min_atr_frac: three
+    # scored inputs divide by ATR, so a near-zero one manufactures a signal from
+    # noise and an absurdly large one is corrupt data.
+    atr_frac = (out["atr14"] / out["close"].where(out["close"] > 0)).replace(
+        [np.inf, -np.inf], np.nan)
+    out["atr_frac"] = atr_frac
+    out["gate_volatility"] = atr_frac.between(cfg.min_atr_frac, cfg.max_atr_frac)
 
     gate_cols = [f"gate_{g}" for g in GATES]
     out[gate_cols] = out[gate_cols].fillna(False)
@@ -59,37 +66,55 @@ QUALIFIERS = (
 
 
 def scaled_thresholds(df: pd.DataFrame, cfg: ScanConfig) -> pd.DataFrame:
-    """Per-session qualifier levels that hold the expected count steady.
+    """Per-session, PER-MARKET qualifier levels that hold the expected count steady.
 
-    For each session: look back `qualifier_lookback` sessions of ELIGIBLE rows,
-    and take the quantile of each metric that leaves `target_qualifiers` names
-    expected to clear it out of today's eligible count.
+    For each session: look back `qualifier_lookback` sessions of ELIGIBLE rows
+    in the same market, and take the quantile of each metric that leaves
+    `target_qualifiers` names expected to clear it out of today's eligible count.
 
     The window ends at the PREVIOUS session. Including today would make the bar
     a percentile of today's own names, which always admits the same proportion
     and can never produce an empty day -- the exact failure this replaces.
+
+    Per market, because every other stage of this pipeline is: ranking, the
+    composite, the ceiling and the liquidity gate all treat CA and US as
+    separate regimes on the grounds that they are different liquidity worlds.
+    Pooling them here quietly undid that. US supplies ~2,780 of ~3,080 eligible
+    names, so a pooled top-0.2% tail is a US tail wearing both names, and the
+    Canadian half was measured against a bar its own distribution never set.
     """
-    dates = sorted(df.loc[df["eligible"], "date"].unique())
     rows = []
-    for i, d in enumerate(dates):
-        lo = max(0, i - cfg.qualifier_lookback)
-        past = df[df["eligible"] & df["date"].isin(dates[lo:i])] if i else None
-        n_today = int((df["eligible"] & (df["date"] == d)).sum())
-        rec = {"date": d, "n_eligible": n_today}
-        # q chosen so ~target_qualifiers names are expected above it.
-        q = 1.0 - (cfg.target_qualifiers / max(n_today, 1))
-        q = min(max(q, 0.5), 0.99999)
-        for name, col, absolute, fallback in QUALIFIERS:
-            fixed = float(getattr(cfg, fallback))
-            if past is None or past.empty:
-                rec[name] = fixed
-                continue
-            series = past[col].abs() if absolute else past[col]
-            v = float(series.quantile(q)) if series.notna().any() else fixed
-            # Never drop far below the spec's absolute level: a stretch of dead
-            # sessions would otherwise drag the bar down to noise.
-            rec[name] = max(v, fixed * cfg.qualifier_floor_frac)
-        rows.append(rec)
+    for market, mdf in df.groupby("market", sort=True, observed=True):
+        dates = sorted(mdf.loc[mdf["eligible"], "date"].unique())
+        for i, d in enumerate(dates):
+            lo = max(0, i - cfg.qualifier_lookback)
+            past = mdf[mdf["eligible"] & mdf["date"].isin(dates[lo:i])] if i else None
+            n_today = int((mdf["eligible"] & (mdf["date"] == d)).sum())
+            rec = {"date": d, "market": market, "n_eligible": n_today}
+            # q chosen so ~target_qualifiers names are expected above it.
+            q = 1.0 - (cfg.target_qualifiers / max(n_today, 1))
+            q = min(max(q, 0.5), 0.99999)
+            for name, col, absolute, fallback in QUALIFIERS:
+                fixed = float(getattr(cfg, fallback))
+                if past is None or past.empty:
+                    rec[name] = fixed
+                    continue
+                series = past[col].abs() if absolute else past[col]
+                v = float(series.quantile(q)) if series.notna().any() else fixed
+                # Bounded on BOTH sides, against the spec's absolute level.
+                #
+                # The floor was always here: a stretch of dead sessions would
+                # otherwise drag the bar down to noise. The ceiling was not, and
+                # it is the same failure in the other direction -- one violent
+                # session contributes its whole cross-section to a 60-session
+                # window, and at these quantiles (~99.8th) a single crash day
+                # can BE the tail. The bar then sits far above anything the
+                # market produces for the next three months, and every one of
+                # those sessions reports an honest-looking empty day caused by
+                # history rather than by today.
+                rec[name] = min(max(v, fixed * cfg.qualifier_floor_frac),
+                                fixed * cfg.qualifier_ceil_frac)
+            rows.append(rec)
     return pd.DataFrame(rows)
 
 
@@ -118,7 +143,7 @@ def add_qualifiers(out: pd.DataFrame, cfg: ScanConfig) -> pd.DataFrame:
         out["n_qualifiers"] = np.int8(0)
         return out
     out = out.merge(thr.rename(columns={n: f"thr_{n}" for n, _c, _a, _f in QUALIFIERS})
-                       .drop(columns=["n_eligible"]), on="date", how="left")
+                       .drop(columns=["n_eligible"]), on=["date", "market"], how="left")
     fired = sum(
         ((out[col].abs() if absolute else out[col]) >= out[f"thr_{name}"]).fillna(False).astype(int)
         for name, col, absolute, _fb in QUALIFIERS)

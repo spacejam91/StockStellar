@@ -73,11 +73,24 @@
              border-radius: 0 4px 4px 0; }          /* square at baseline, 4px data-end */
     .mfill.fired { background: var(--accent); }
     .mfill.under { background: #4a5462; }
+    /* past the end of the scale: squared off with a cap, so a clamped
+       bar is never mistaken for one that merely reached the end. */
+    .mfill.over { border-radius: 0; box-shadow: inset -4px 0 0 var(--bg); }
     .mtick { position: absolute; top: -3px; width: 1px; height: 14px;
              background: var(--muted); opacity: 0.85; }
     .mval { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
     .mval.under { color: var(--muted); }
     .mkey { font-size: 11px; color: var(--muted); margin-top: 9px; }
+    /* Degraded-fetch banner. Amber, not red: the scan ran and the numbers are
+       arithmetically fine -- they just describe a smaller market than usual,
+       which makes every percentile in them wrong. */
+    .degraded { margin: 12px 0 4px; padding: 11px 13px; border-radius: 8px;
+                border: 1px solid var(--amber); background: rgba(210,153,34,0.08);
+                color: var(--text); font-size: 12.5px; line-height: 1.45; }
+    .degraded b { color: var(--amber); }
+    .mkt { display: flex; align-items: baseline; gap: 8px; margin: 20px 0 8px; }
+    .mkt h2 { margin: 0; }
+    .mkt .mcount { font-size: 11px; color: var(--muted); }
     .legend { font-size: 11px; color: var(--muted); margin: 2px 0 4px; line-height: 1.5; }
     .tkr a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
     .tkr a:hover { border-bottom-color: var(--accent); }
@@ -128,9 +141,28 @@
         {% if day.ceiling_z %} · ceiling {{ day.ceiling_z }}z{% endif %}
       </div>
 
+      {% if shealth and shealth.degraded %}
+        <div class="degraded">
+          <b>Degraded fetch — read this session with suspicion.</b>
+          Only {{ shealth.n_eligible }} names passed the gates, against a median of
+          {{ shealth.median }} over the last {{ shealth.sessions_compared }} sessions
+          ({{ shealth.shortfall_pct }}% short). The score is a percentile of whoever
+          the data provider returned, so a shortfall this large does not shorten the
+          list — it moves every number in it.
+        </div>
+      {% endif %}
+
       {% if picks %}
-        <h2>Flagged — {{ picks|length }} of max 3</h2>
-        {% for p in picks %}
+        {%- set names = {'US': 'United States', 'CA': 'Canada'} -%}
+        {# Selection is per market -- each gets its own threshold, its own sector
+           cap and its own three slots -- so the page says so rather than
+           presenting one merged list whose order is set by group size. #}
+        {% for mkt, group in picks|groupby('market') %}
+        <div class="mkt">
+          <h2>{{ names.get(mkt, mkt) }}</h2>
+          <span class="mcount">{{ group|length }} of max {{ th.max_picks }}</span>
+        </div>
+        {% for p in group %}
           <div class="pick">
             <div class="pick-top">
               <span class="tkr"><a href="/name/{{ p.ticker }}"
@@ -140,28 +172,41 @@
               <span class="score">{{ '%+.2f'|format(p.composite_z) }}<small>z</small></span>
             </div>
             <div class="bar"><span style="width: {{ p.score_pct }}%"></span></div>
-            <div class="rank">#{{ loop.index }} of {{ day.n_eligible }} eligible
-              · stronger than {{ '%.2f'|format(p.score_pct) }}% of them</div>
+            {# The denominator is this name's OWN market, because ranking is.
+               "#1 of 1076" for a Canadian name that competed against 301 was
+               wrong by a factor of three, and "stronger than 100.00% of them"
+               is not a thing a name can be -- score_pct is a percentile that
+               rounds to 100 for the top handful of a 3,000-name cross-section,
+               which is exactly why composite_z leads the card. #}
+            <div class="rank">#{{ loop.index }} of
+              {{ p.n_market or day.n_eligible }} eligible in {{ p.market }}{%
+              if p.ceiling_z %} · scale tops out at {{ '%.2f'|format(p.ceiling_z) }}z{% endif %}</div>
             <div class="kv">
               <span>close <b>{{ '%.2f'|format(p.close) }}</b></span>
               {% if p.atr14 %}<span>ATR14 <b>{{ '%.2f'|format(p.atr14) }}</b></span>{% endif %}
               <span>qualifiers <b>{{ p.n_qualifiers }}/4</b></span>
             </div>
             <div class="meters">
-              {{ meter('composite',  p.composite_z,  th.composite,  3.2,  '%+.2f', 'z') }}
-              {{ meter('RVOL',       p.rvol,         th.rvol,       4.0,  '%.1f',  '×') }}
-              {{ meter('move',       p.ret_z,        th.ret_z,      3.0,  '%+.1f', 'σ') }}
-              {{ meter('range/ATR',  p.range_ratio,  th.range_ratio, 2.5, '%.2f',  '') }}
-              {{ meter('gap/ATR',    p.gap_atr,      th.gap_atr,    1.5,  '%+.2f', '') }}
+              {{ meter('composite', p.composite_z, th.composite, '%+.2f', 'z') }}
+              {{ meter('RVOL', p.rvol, p.thr_rvol or th.rvol, '%.1f',  '×') }}
+              {{ meter('move', p.ret_z, p.thr_ret_z or th.ret_z, '%+.1f', 'σ') }}
+              {{ meter('range/ATR', p.range_ratio, p.thr_range_ratio or th.range_ratio, '%.2f',  '') }}
+              {{ meter('gap/ATR', p.gap_atr, p.thr_gap_atr or th.gap_atr, '%+.2f', '') }}
             </div>
             <div class="mkey"><a class="newslink" href="/name/{{ p.ticker }}">details, news &amp; filings &rarr;</a></div>
             {% if p.drivers %}<div class="drivers">drivers: {{ p.drivers }}</div>{% endif %}
             {% if p.flags %}<div class="flags">⚠ {{ p.flags }}</div>{% endif %}
           </div>
         {% endfor %}
-        <div class="legend">Each bar is the value; the tick is the threshold it has to clear.
-          Blue cleared it, grey did not. A name needs composite &ge; {{ th.composite }}z plus at least
-          {{ th.min_qualifiers }} of the four absolute qualifiers. Tap a ticker for the company.</div>
+        {% endfor %}
+        <div class="legend">Each bar is the value; the tick is the bar it had to clear, at
+          40% of the track, so two rows can be compared by eye. Blue cleared it, grey did not;
+          a squared-off end means the value ran past the scale. A name needs composite
+          &ge; {{ th.composite }}z plus at least {{ th.min_qualifiers }} of the four qualifiers
+          — and{% if th.scaled %} those four levels are set from each market's own trailing
+          60 sessions, so they move with the tape rather than sitting at a fixed number{% else %}
+          those four levels are fixed{% endif %}. Each market is judged only against itself.
+          Tap a ticker for the company.</div>
       {% else %}
         <h2>Flagged</h2>
         <div class="empty">

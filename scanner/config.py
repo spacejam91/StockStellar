@@ -41,6 +41,23 @@ class ScanConfig:
     min_sessions: int = 250
     max_gap_days: int = 3
 
+    # Three of the scored inputs -- gap_atr, range_ratio, ma_dist_atr -- divide
+    # by ATR, so a name whose ATR is near zero produces enormous "unusualness"
+    # out of a rounding error. LB.TO was published on 2026-09-21 with ATR14 of
+    # $0.08 on a $40.66 close: a 17-cent gap read as +2.13 ATR and a 26-cent
+    # range as 3.25x ATR, and it took a top slot. Nothing happened to that
+    # stock; the denominator was broken.
+    #
+    # The far end is data corruption rather than quiet trading: an average true
+    # range larger than half the share price is an unadjusted split or a bad
+    # bar, not a market.
+    #
+    # Measured on 276,679 eligible rows: the floor removes 0.35% and the cap
+    # 0.09%. The 5th percentile of atr14/close is 1.74%, so neither bound is
+    # anywhere near an ordinary low-volatility large cap.
+    min_atr_frac: float = 0.005     # ATR14 >= 0.5% of price
+    max_atr_frac: float = 0.50      # ATR14 <= 50% of price
+
     # --- Step 5: selection --------------------------------------------------
     composite_threshold: float = 2.0
     min_qualifiers: int = 2
@@ -96,7 +113,14 @@ class ScanConfig:
     # 4 also clears but costs picks for no benefit.
     target_qualifiers: int = 5              # expected names clearing the bar
     qualifier_lookback: int = 60            # trailing sessions for the baseline
-    qualifier_floor_frac: float = 0.5       # never fall below this x the absolute level
+    # Bounds on the scaled level, both relative to the spec's absolute one.
+    # The floor stops a stretch of dead sessions dragging the bar down to noise.
+    # The ceiling stops the opposite: at these quantiles one violent session
+    # supplies the entire tail of the 60-session window, and without a cap the
+    # bar stays above anything the market produces for the next three months --
+    # three months of empty days caused by history rather than by today.
+    qualifier_floor_frac: float = 0.5       # never below this x the absolute level
+    qualifier_ceil_frac: float = 2.0        # never above this x the absolute level
 
     # --- Step 6: weights ----------------------------------------------------
     # Equal by default, and that is a considered choice, not laziness. Dawes

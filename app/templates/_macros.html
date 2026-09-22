@@ -1,20 +1,30 @@
-{#- One ratio against its limit. `floor` keeps a small value from filling the
-    track and looking maximal; the tick marks the threshold the value must clear. -#}
-{% macro meter(label, value, threshold, floor, fmt, suffix) %}
-  {%- if value is not none -%}
+{#- One value against the limit it has to clear.
+
+    The scale is FIXED at `span` x the threshold, so the tick always sits at the
+    same place and two rows can be compared by eye. It used to be
+    max(floor, value * 1.15), which is the value's own scale -- so every bar
+    above the floor rendered at exactly 100/1.15 = 87.0% wide regardless of the
+    number beside it, and 83% of published bars were pixel-identical. A chart
+    whose length does not vary with its data is worse than no chart: it looks
+    like a measurement.
+
+    A value past the end of the scale is clamped and marked, rather than
+    silently rescaling everything around it. -#}
+{% macro meter(label, value, threshold, fmt, suffix, span=2.5) %}
+  {%- if value is not none and threshold -%}
     {%- set v = (value | abs) -%}
-    {%- set scale = [floor, v * 1.15] | max -%}
+    {%- set pct = 100 * v / (threshold * span) -%}
+    {%- set over = pct > 100 -%}
     {%- set fired = v >= threshold -%}
     <div class="meter">
       <span class="mlabel">{{ label }}</span>
       <span class="mtrack">
-        <span class="mfill {{ 'fired' if fired else 'under' }}"
-              style="width: {{ (100 * v / scale) | round(1) }}%"></span>
-        <span class="mtick" style="left: {{ (100 * threshold / scale) | round(1) }}%"
-              title="threshold {{ threshold }}"></span>
+        <span class="mfill {{ 'fired' if fired else 'under' }}{{ ' over' if over else '' }}"
+              style="width: {{ [pct, 100] | min | round(1) }}%"></span>
+        <span class="mtick" style="left: {{ (100 / span) | round(1) }}%"
+              title="this session's bar: {{ '%.2f' | format(threshold) }}"></span>
       </span>
       <span class="mval {{ '' if fired else 'under' }}">{{ fmt | format(value) }}{{ suffix }}</span>
     </div>
   {%- endif -%}
 {% endmacro %}
-

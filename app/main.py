@@ -170,13 +170,21 @@ async def api_scan_run(req: ScanRunRequest):
 
 
 def _thresholds() -> dict:
-    """The absolute qualifier limits each meter is drawn against."""
+    """Fallback limits, used only where a pick carries none of its own.
+
+    In the default "scaled" mode these absolute numbers are NOT what a scan
+    applies -- the real bar is a trailing quantile that moves with the market,
+    and it is recorded per pick as thr_*. Drawing a meter against these instead
+    told readers "RVOL 3.0 not met" for a name that had cleared that session's
+    actual bar of 2.1. Templates prefer the pick's own value; these remain for
+    rows logged before thr_* was carried.
+    """
     from scanner.config import ScanConfig
     c = ScanConfig()
     return {"composite": c.composite_threshold, "rvol": c.qual_rvol,
             "ret_z": c.qual_ret_z, "range_ratio": c.qual_range_ratio,
             "gap_atr": c.qual_gap_atr, "min_qualifiers": c.min_qualifiers,
-            "max_picks": c.max_picks}
+            "max_picks": c.max_picks, "scaled": c.qualifier_mode == "scaled"}
 
 
 def _verdict(pick: dict, th: dict) -> dict:
@@ -187,26 +195,36 @@ def _verdict(pick: dict, th: dict) -> dict:
     today's tape, and deliberately does not answer "what happens next", which
     would be a forecast this project does not make.
     """
+    def bar(key: str) -> float:
+        """The level this session actually applied, not the config default.
+
+        A scaled scan sets each qualifier from a trailing quantile, so the
+        config's absolute number is a fallback for old rows only. Restating the
+        rule against a limit the scan never used is not a restatement.
+        """
+        v = pick.get(f"thr_{key}")
+        return float(v) if v is not None else float(th[key])
+
     q = th["min_qualifiers"]
     checks = [
         {"label": f"composite \u2265 {th['composite']}z",
          "value": f"{pick.get('composite_z', 0):+.2f}z",
          "ok": (pick.get("composite_z") or -9) >= th["composite"]},
-        {"label": f"at least {q} of 4 absolute qualifiers",
+        {"label": f"at least {q} of 4 qualifiers",
          "value": f"{pick.get('n_qualifiers', 0)}/4",
          "ok": (pick.get("n_qualifiers") or 0) >= q},
-        {"label": f"RVOL \u2265 {th['rvol']}\u00d7",
+        {"label": f"RVOL \u2265 {bar('rvol'):.2f}\u00d7",
          "value": f"{pick.get('rvol') or 0:.1f}\u00d7",
-         "ok": (pick.get("rvol") or 0) >= th["rvol"]},
-        {"label": f"|move| \u2265 {th['ret_z']}\u03c3",
+         "ok": (pick.get("rvol") or 0) >= bar("rvol")},
+        {"label": f"|move| \u2265 {bar('ret_z'):.2f}\u03c3",
          "value": f"{pick.get('ret_z') or 0:+.1f}\u03c3",
-         "ok": abs(pick.get("ret_z") or 0) >= th["ret_z"]},
-        {"label": f"range/ATR \u2265 {th['range_ratio']}",
+         "ok": abs(pick.get("ret_z") or 0) >= bar("ret_z")},
+        {"label": f"range/ATR \u2265 {bar('range_ratio'):.2f}",
          "value": f"{pick.get('range_ratio') or 0:.2f}",
-         "ok": (pick.get("range_ratio") or 0) >= th["range_ratio"]},
-        {"label": f"|gap|/ATR \u2265 {th['gap_atr']}",
+         "ok": (pick.get("range_ratio") or 0) >= bar("range_ratio")},
+        {"label": f"|gap|/ATR \u2265 {bar('gap_atr'):.2f}",
          "value": f"{pick.get('gap_atr') or 0:+.2f}",
-         "ok": abs(pick.get("gap_atr") or 0) >= th["gap_atr"]},
+         "ok": abs(pick.get("gap_atr") or 0) >= bar("gap_atr")},
     ]
     # "Meets" mirrors selection: the composite floor AND enough qualifiers.
     # The individual qualifier rows are shown for transparency, not ANDed --
@@ -281,5 +299,8 @@ async def scan_page(request: Request, as_of: str | None = None):
             # template -- a meter drawn against a stale limit is worse than no
             # meter, because it looks authoritative while being wrong.
             "th": _thresholds(),
+            # Is this session's eligible count consistent with its neighbours?
+            # A partial fetch publishes as an ordinary number otherwise.
+            "shealth": scan_store.session_health(day, hist),
         },
     )
