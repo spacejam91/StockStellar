@@ -38,7 +38,13 @@ import pandas as pd
 
 log = logging.getLogger(__name__)
 
-BASE = "https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/{d}"
+# Polygon rebranded to Massive in October 2025. The official clients now default
+# to api.massive.com and api.polygon.io is kept alive "for an extended period" --
+# which is a promise with no date on it, so the new host leads and the old one is
+# the fallback. Both answered identically when checked (12,592 US tickers for the
+# same session), so this is about outliving a deprecation, not about behaviour.
+HOSTS = ("https://api.massive.com", "https://api.polygon.io")
+PATH = "/v2/aggs/grouped/locale/us/market/stocks/{d}"
 DATA_DIR = Path(__file__).parent.parent / "data"
 CACHE = DATA_DIR / ".polygon_cache"
 
@@ -76,24 +82,38 @@ class PolygonMarketData:
                 return json.loads(cache.read_text()).get("results")
             except (json.JSONDecodeError, OSError):
                 pass
-        url = BASE.format(d=d.isoformat()) + \
-            f"?adjusted={'true' if self.adjusted else 'false'}&apiKey={self.api_key}"
-        try:
-            with urllib.request.urlopen(url, timeout=45) as r:
-                payload = json.loads(r.read())
-        except urllib.error.HTTPError as e:
-            if e.code == 429:
-                log.warning("polygon rate limit on %s; backing off 15s", d)
-                time.sleep(15)
-                return self._fetch_day(d)
-            if e.code in (401, 403):
+        query = (PATH.format(d=d.isoformat())
+                 + f"?adjusted={'true' if self.adjusted else 'false'}&apiKey={self.api_key}")
+        payload, last_err = None, None
+        for host in HOSTS:
+            try:
+                with urllib.request.urlopen(host + query, timeout=45) as r:
+                    payload = json.loads(r.read())
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 429:
+                    log.warning("%s rate limit on %s; backing off 15s", host, d)
+                    time.sleep(15)
+                    return self._fetch_day(d)
+                if e.code in (401, 403):
+                    # Try the other host before giving up: a key issued under
+                    # one brand may not be registered against the other's key
+                    # store. A dead key fails on both and still lands here.
+                    last_err = e
+                    continue
+                log.info("%s %s: HTTP %d", host, d, e.code)
+                last_err = e
+                continue
+            except (urllib.error.URLError, TimeoutError) as e:
+                log.info("%s %s: %s", host, d, e)
+                last_err = e
+                continue
+        if payload is None:
+            if isinstance(last_err, urllib.error.HTTPError) and last_err.code in (401, 403):
                 raise SystemExit(
-                    "polygon rejected the key (HTTP %d). Set POLYGON_API_KEY to a valid "
-                    "free key from polygon.io." % e.code)
-            log.info("polygon %s: HTTP %d", d, e.code)
-            return None
-        except (urllib.error.URLError, TimeoutError) as e:
-            log.info("polygon %s: %s", d, e)
+                    f"the key was rejected by every host ({', '.join(HOSTS)}) with HTTP "
+                    f"{last_err.code}. Set POLYGON_API_KEY to a valid key from massive.com "
+                    f"(formerly polygon.io) -- and check it has not been rotated away.")
             return None
 
         results = payload.get("results")
