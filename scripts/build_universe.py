@@ -101,6 +101,7 @@ def build_us() -> pd.DataFrame:
         # E delinquent, Q bankrupt, N normal.
         "financial_status": df["Financial Status"],
     })
+    out = out[out["ticker"].notna() & (out["ticker"].str.strip() != "")]
     out = out.drop_duplicates("ticker")
     print(f"  US: {before:,} rows -> {len(out):,} common equities "
           f"({out.exchange.value_counts().to_dict()})")
@@ -133,6 +134,7 @@ def build_ca() -> pd.DataFrame:
     })
     # A bare Canadian ticker is provably not unique across venues, so dedupe on
     # the suffixed form, which is what Yahoo is asked for.
+    out = out[out["ticker"].notna() & (out["ticker"].str.strip() != "")]
     out = out.drop_duplicates("ticker")
 
     # Canadian sub-suffixes sit BEFORE the venue suffix (FTN.PR.A.TO), so they
