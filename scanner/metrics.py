@@ -84,9 +84,17 @@ def compute(
     df["_bb_width"] = bb_width
     # Percentile of today's Bollinger width against this name's own trailing
     # year — catches squeeze -> expansion, which raw width cannot.
-    df["bb_width_pct"] = _g(df, "_bb_width").transform(
+    # Distance from the middle, NOT the raw percentile. The comment above says
+    # this catches "squeeze -> expansion", but ranking the raw percentile scores
+    # a squeeze LOWEST: a name at the tightest Bollinger width of its own year
+    # sits at 0.004 and gets the least unusual z in a side-neutral pillar.
+    # Half the stated purpose was simply not implemented. |pct - 0.5| makes
+    # both extremes -- coiled and expanded -- score as unusual, which is what a
+    # side-neutral range input is supposed to mean.
+    _pct = _g(df, "_bb_width").transform(
         lambda s: s.rolling(252, min_periods=60).rank(pct=True)
     )
+    df["bb_width_pct"] = (_pct - 0.5).abs()
     df = df.drop(columns=["_bb_width"])
 
     # --- structure pillar (flips) ------------------------------------------
@@ -104,8 +112,17 @@ def compute(
     # neutral one. Keep it NaN so it drops out of the pillar mean.
     df.loc[hi55.isna() | lo55.isna(), "donchian_dir"] = np.nan
 
-    hi252 = _roll(df, "high", 252, "max", min_periods=252)
-    lo252 = _roll(df, "low", 252, "min", min_periods=252)
+    # Shifted by one, like the donchian windows above. Including today puts
+    # today's own high inside the range it is measured against, so a new
+    # 52-week high can never exceed +0.5 and every breakout -- by a cent or by
+    # 30% -- lands in the same razor-thin band. Measured before the fix: the
+    # observed range over 200 names was -0.4949..0.4972, never reaching the
+    # bound. Shifting restores the ability to rank breakouts by how far they
+    # actually broke.
+    hi252 = _g(df, "high").transform(
+        lambda s: s.rolling(252, min_periods=252).max().shift(1))
+    lo252 = _g(df, "low").transform(
+        lambda s: s.rolling(252, min_periods=252).min().shift(1))
     df["pct_52w_centered"] = _safe_div(df["close"] - lo252, hi252 - lo252) - 0.5
     df["ma_dist_atr"] = _safe_div(df["close"] - _roll(df, "close", 50, "mean"), df["atr14"])
 
@@ -139,6 +156,17 @@ def compute(
     # and the scanner will "find" it every single time if nobody looks.
     df["suspect_unadjusted_split"] = (df["ret"].abs() > 0.35) & (df["rvol"] < 1.5)
 
+    # Sanitise EVERY scoring input, not just the ones that happen to go through
+    # _safe_div. That helper only guards denominators, so ret, ret_5d, ret_20d
+    # and rs_sector_20d could all carry inf -- a single close of 0.0 anywhere in
+    # a ticker's history produces inf in all four. An inf then takes the maximum
+    # z in its group and the top of the shortlist with it. Done here, once, so a
+    # new input cannot forget it.
+    from scanner.config import INPUTS
+    for col in list(INPUTS) + ["ret", "ret_5d", "ret_20d"]:
+        if col in df.columns:
+            df[col] = _finite(df[col])
+
     return df
 
 
@@ -151,6 +179,14 @@ def _attach_benchmark(df: pd.DataFrame, benchmarks: pd.DataFrame) -> pd.DataFram
     out["rs_5d"] = out["ret_5d"] - out["bench_5d"]
     out["rs_20d"] = out["ret_20d"] - out["bench_20d"]
     return out.drop(columns=["bench_5d", "bench_20d"])
+
+
+def _finite(s: pd.Series) -> pd.Series:
+    """inf -> NaN. An inf survives ranking as the single most extreme name in
+    the universe and takes the top of the list with it; rank_to_z([1,2,3,inf])
+    hands inf the maximum z. A NaN is excluded from the ranking instead, which
+    is the correct treatment for a value that is not a number."""
+    return s.replace([np.inf, -np.inf], np.nan)
 
 
 def _safe_div(num, den):
