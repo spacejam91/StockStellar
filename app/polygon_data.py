@@ -9,9 +9,22 @@ session in a single request, so there is no per-symbol polling to rate-limit.
 
     GET /v2/aggs/grouped/locale/us/market/stocks/{date}
 
-Free tier: end-of-day only, unlimited calls to this endpoint, and it works from
-a datacenter IP -- so unlike Yahoo it can run in GitHub Actions. End-of-day is
-the right granularity here anyway: the scan runs after the close.
+Free tier: end-of-day only, 2 years of history, and FIVE REQUESTS PER MINUTE.
+
+That last number is the one that matters, and an earlier version of this file
+asserted the opposite -- "unlimited calls to this endpoint" -- which was wrong
+and was measured to be wrong: the API returns 429 "exceeded the maximum
+requests per minute", and after enough of them it escalates to 401 "Unknown API
+Key" on a key that worked seconds earlier.
+
+One request returns one SESSION for the whole US market, so history costs one
+request per trading day. At 5/min a cold build of 400 sessions is 80 minutes of
+wall clock and ~0.6 GB of cached JSON. That is fine to do once on a laptop and
+does not fit a CI job, so this provider is not a drop-in replacement for the
+daily scheduled run until the cache is persisted between runs. It IS the right
+source once warm: a daily run needs exactly one new request.
+
+Each session is cached on disk forever, so the cost is paid once.
 
 Set POLYGON_API_KEY. Get a free key at polygon.io (no card). US only -- Canada
 is not available from Polygon at any tier, so the Canadian half stays on Yahoo,
@@ -54,12 +67,18 @@ class PolygonMarketData:
 
     name = "polygon"
 
+    # Free tier: 5 requests per minute. Sleeping 12.5s between calls keeps us
+    # inside it by construction rather than discovering it as a 429 -- which
+    # matters because the penalty escalates to a 401 on a valid key, and a
+    # burst spent on a rate limit is a burst of history not fetched.
+    RATE_LIMIT_PER_MIN = 5
+
     def __init__(self, api_key: str | None = None, sessions: int = 400,
-                 adjusted: bool = True, pause: float = 0.2):
+                 adjusted: bool = True, pause: float | None = None):
         self.api_key = api_key or os.getenv("POLYGON_API_KEY", "")
         self.sessions = sessions
         self.adjusted = adjusted
-        self.pause = pause
+        self.pause = (60.0 / self.RATE_LIMIT_PER_MIN + 0.5) if pause is None else pause
         self._bars: pd.DataFrame | None = None
 
     # -- universe -----------------------------------------------------------
@@ -92,8 +111,10 @@ class PolygonMarketData:
                 break
             except urllib.error.HTTPError as e:
                 if e.code == 429:
-                    log.warning("%s rate limit on %s; backing off 15s", host, d)
-                    time.sleep(15)
+                    # The limit is per MINUTE, so sleeping 15s just spends the
+                    # next attempt on the same wall. Wait the window out.
+                    log.warning("%s rate limit on %s; waiting out the 60s window", host, d)
+                    time.sleep(62)
                     return self._fetch_day(d)
                 if e.code in (401, 403):
                     # Try the other host before giving up: a key issued under
@@ -141,6 +162,15 @@ class PolygonMarketData:
     def _build(self) -> pd.DataFrame:
         # Walk back calendar days, skipping the ones with no results (weekends
         # and holidays), until `sessions` trading days are collected.
+        cached = len(list(CACHE.glob("*.json"))) if CACHE.exists() else 0
+        need = max(self.sessions - cached, 0)
+        if need > 20:
+            log.warning(
+                "polygon: %d of %d sessions are not cached. At %d requests/minute that "
+                "is about %d minutes. Each session is cached permanently, so this is a "
+                "one-time cost -- but it will not fit inside a CI job.",
+                need, self.sessions, self.RATE_LIMIT_PER_MIN,
+                round(need / self.RATE_LIMIT_PER_MIN))
         rows, d, got, tried = [], date.today(), 0, 0
         while got < self.sessions and tried < self.sessions * 2:
             tried += 1

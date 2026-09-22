@@ -113,10 +113,20 @@ jobs:
           # Canadian data at any tier, so Canada stays on Yahoo, where ~2,800
           # names is well inside what it will serve.
           #
-          # Falls back to yahoo when POLYGON_API_KEY is not configured, so the
-          # scan still runs -- just with the coverage problem this replaces.
-          MARKET_DATA: ${{ github.event.inputs.provider
-            || (secrets.POLYGON_API_KEY && 'hybrid' || 'yahoo') }}
+          # The scheduled run stays on YAHOO for now, and that is a measured
+          # decision rather than caution. Massive's free tier is 5 requests per
+          # minute -- an earlier note in polygon_data.py claimed the grouped
+          # endpoint was unmetered, which was simply wrong. One request returns
+          # one session, so a cold 400-session build is ~80 minutes and 0.6 GB
+          # of cache: fine once on a laptop, and it does not fit a 75-minute
+          # job. Until that cache is persisted between runs, selecting hybrid
+          # here would trade a coverage problem for a timeout.
+          #
+          # Meanwhile the schedule move did the job on its own: 05:30 UTC
+          # returned 8,700 of 8,700 tickers twice, against 1,076 and then 330
+          # at 22:30. Pass provider=hybrid by hand to use Massive for the US
+          # half once its cache is warm.
+          MARKET_DATA: ${{ github.event.inputs.provider || 'yahoo' }}
           POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
           set -o pipefail
