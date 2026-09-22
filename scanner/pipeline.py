@@ -32,6 +32,7 @@ class ScanResult:
     scored: pd.DataFrame
     health: dict
     run_ids: list[int]
+    fetch: dict | None = None
 
     @property
     def is_empty_day(self) -> bool:
@@ -62,6 +63,32 @@ def run_scan(*, provider=None, cfg: ScanConfig | None = None, as_of=None,
         raise RuntimeError(f"provider {provider.name!r} returned no bars")
     bars["date"] = pd.to_datetime(bars["date"])
     universe_size = int(bars["ticker"].nunique())
+
+    # Report what actually arrived. Without this, a shallow or partial fetch is
+    # invisible: the scan completes, the gates quietly reject more names, and
+    # the output is a shorter list that looks like a quiet market. A local run
+    # and a CI run of the SAME session differed by 3,092 vs 1,076 eligible
+    # names and there was nothing in either log to say why.
+    #
+    # per_ticker matters more than the totals: gate_history needs
+    # cfg.min_sessions (250) bars per name, and a 500-calendar-day window only
+    # yields ~345 trading sessions, so the margin is thin enough that a
+    # shallower fetch moves that gate sharply.
+    per_ticker = bars.groupby("ticker", sort=False).size()
+    fetch_stats = {
+        "rows": int(len(bars)),
+        "tickers": universe_size,
+        "sessions": int(bars["date"].nunique()),
+        "first": str(bars["date"].min().date()),
+        "last": str(bars["date"].max().date()),
+        "bars_per_ticker_median": int(per_ticker.median()),
+        "bars_per_ticker_p10": int(per_ticker.quantile(0.10)),
+        "tickers_below_min_sessions": int((per_ticker < cfg.min_sessions).sum()),
+    }
+    log.info("fetch: %(rows)s rows, %(tickers)s tickers, %(sessions)s sessions "
+             "(%(first)s..%(last)s); bars/ticker median %(bars_per_ticker_median)s "
+             "p10 %(bars_per_ticker_p10)s; %(tickers_below_min_sessions)s tickers under "
+             "the %(min)s-session gate", {**fetch_stats, "min": cfg.min_sessions})
 
     try:
         bench = provider.benchmarks()
@@ -110,7 +137,7 @@ def run_scan(*, provider=None, cfg: ScanConfig | None = None, as_of=None,
                 config=cfg_dict, universe_size=universe_size, provider=provider.name))
 
     return ScanResult(as_of=target, provider=provider.name, picks=picks, summary=summary,
-                      scored=scored, health=hlth, run_ids=run_ids)
+                      scored=scored, health=hlth, run_ids=run_ids, fetch=fetch_stats)
 
 
 def format_watchlist(result: ScanResult) -> str:
@@ -122,6 +149,16 @@ def format_watchlist(result: ScanResult) -> str:
         lines.append(f"  eligible {int(r['n_eligible']):,}   over threshold "
                      f"{int(r['n_over_threshold'])}   qualified {int(r['n_qualified'])}"
                      f"   ceiling {r['ceiling_z']}")
+    if result.fetch:
+        # What actually arrived from the provider. A shallow or partial fetch
+        # is otherwise invisible: the gates reject more names and the output
+        # reads as a quiet market.
+        f = result.fetch
+        lines.append(f"  fetched {f['rows']:,} bars  {f['tickers']:,} tickers  "
+                     f"{f['sessions']} sessions ({f['first']}..{f['last']})")
+        lines.append(f"  bars/ticker median {f['bars_per_ticker_median']} "
+                     f"p10 {f['bars_per_ticker_p10']}   "
+                     f"{f['tickers_below_min_sessions']:,} under the history gate")
     today = result.today()
     if today.empty:
         lines += ["", "  No names cleared the threshold today.", "",
