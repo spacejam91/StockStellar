@@ -74,6 +74,27 @@
       td.n { text-align:left; margin-bottom:4px; }
       td.n code { font-size:12px; }
     }
+
+    /* Actually printable. The app is dark, paper is not: a dark background
+       either burns a cartridge or is dropped by the browser and takes the
+       light text with it, printing blank. Invert the palette for print and
+       keep each parameter block off a page break. */
+    @media print {
+      :root { --bg:#fff; --panel:#fff; --border:#c9d1d9; --text:#000; --muted:#555;
+              --accent:#0b5cad; --amber:#8a6100; }
+      body { font-size:11pt; }
+      header { border-bottom:1px solid var(--border); padding:0 0 8px; }
+      header a.back { display:none; }
+      main { padding:0; max-width:none; }
+      .param, .callout { break-inside:avoid; page-break-inside:avoid; }
+      .param { border:1px solid var(--border); }
+      h2 { break-after:avoid; page-break-after:avoid; }
+      a { color:inherit; text-decoration:underline; }
+      .mfill.under { background:#b9c0c8 !important; }
+      .mfill.fired { background:#0b5cad !important; }
+      .mtrack { background:#e6e9ed !important; }
+      code { background:#f0f2f5; }
+    }
   </style>
 </head>
 <body>
@@ -243,7 +264,9 @@
       The <a href="/api/scan/base-rates">measured base rates</a> carry sample sizes and
       standard errors; read those before the score.
     </div>
-    <p class="lede" style="margin-top:20px">Not investment advice. No part of this places
+    <p class="lede" style="margin-top:20px" class="noprint">This page prints: use your
+      browser's Share &rarr; Print (iOS) or Ctrl/Cmd-P.</p>
+    <p class="lede">Not investment advice. No part of this places
       an order or knows anything about an account.</p>
   </main>
 </body>
