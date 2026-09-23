@@ -836,7 +836,7 @@ BRSL,"Brightstar Lottery PLC Trading under the Legal Name to begin at the market
 BRSP,"BrightSpire Capital, Inc. Class A Common Stock",NYSE,,1717547.0,6798,Real Estate & REITs
 BRT,BRT Apartments Corp. (MD) Common Stock,NYSE,,14846.0,6798,Real Estate & REITs
 BRTM,B&R Technology Merger Corp. - Class A Ordinary Shares,NASDAQ,N,2131350.0,,
-BRTX,"BioRestorative Therapies, Inc. - Common Stock",NASDAQ,H,1505497.0,8090,Healthcare Equipment
+BRTX,"BioRestorative Therapies, Inc. - Common Stock",NASDAQ,E,1505497.0,8090,Healthcare Equipment
 BRUN,Boost Run Inc. - Class A Common Stock,NASDAQ,N,2090646.0,7374,Software & IT Services
 BRVE,"Braveheart Bio, Inc. - Common Stock",NASDAQ,N,2131524.0,,
 BRW,Saba Capital Income & Opportunities Fund SBI,NYSE,,826020.0,,
@@ -2364,9 +2364,9 @@ GSRF,GSR IV Acquisition Corp. - Class A ordinary share,NASDAQ,N,2072404.0,6770,S
 GSRV,GSR V Acquisition Corp. - Class A ordinary shares,NASDAQ,N,2111762.0,6770,Shell & SPAC
 GSUN,Golden Sun Technology Group Limited - Class A Ordinary Shares,NASDAQ,D,1826376.0,8200,Commercial & Professional Services
 GT,The Goodyear Tire & Rubber Company - Common Stock,NASDAQ,N,42582.0,3011,Materials & Chemicals
-GTBP,"GT Biopharma, Inc. - Common Stock",NASDAQ,D,109657.0,2834,Pharma & Biotech
+GTBP,"GT Biopharma, Inc. - Common Stock",NASDAQ,N,109657.0,2834,Pharma & Biotech
 GTE,Gran Tierra Energy Inc. Common Stock,AMEX,,1273441.0,1311,"Oil, Gas & Coal"
-GTEC,Greenland Technologies Holding Corporation - Class A Ordinary Shares,NASDAQ,D,1735041.0,3560,Industrials & Machinery
+GTEC,Greenland Technologies Holding Corporation - Class A Ordinary Shares,NASDAQ,N,1735041.0,3560,Industrials & Machinery
 GTEN,"Gores Holdings X, Inc. - Class A ordinary shares",NASDAQ,N,1986817.0,6770,Shell & SPAC
 GTERA,Globa Terra Acquisition Corporation - Class A Ordinary Shares,NASDAQ,N,2043766.0,6770,Shell & SPAC
 GTES,Gates Industrial Corporation Ltd. Common Shares,NYSE,,1718512.0,3560,Industrials & Machinery
@@ -2743,7 +2743,7 @@ INTZ,Intrusion Inc. - Common Stock,NASDAQ,D,736012.0,3576,Tech Hardware
 INUV,"Inuvo, Inc.",AMEX,,829323.0,7310,Commercial & Professional Services
 INV,"Innventure, Inc. - Common Stock",NASDAQ,N,2001557.0,6770,Shell & SPAC
 INVA,"Innoviva, Inc. - Common Stock",NASDAQ,N,1080014.0,2834,Pharma & Biotech
-INVE,"Identiv, Inc. - Common Stock",NASDAQ,N,1036044.0,3577,Tech Hardware
+INVE,"INVE Technologies, Inc. - Common Stock",NASDAQ,N,1036044.0,3577,Tech Hardware
 INVH,Invitation Homes Inc. Common Stock,NYSE,,1687229.0,6510,Real Estate & REITs
 INVX,"Innovex International, Inc. Common Stock",NYSE,,1042893.0,3533,Industrials & Machinery
 INVZ,Innoviz Technologies Ltd. - Ordinary shares,NASDAQ,D,1835654.0,3714,Industrials & Machinery
@@ -3282,7 +3282,7 @@ MBIN,Merchants Bancorp - Common Stock,NASDAQ,N,1629019.0,6022,Banks & Consumer F
 MBIO,"Mustang Bio, Inc. - Common Stock",NASDAQ,D,1680048.0,2834,Pharma & Biotech
 MBLY,Mobileye Global Inc. - Class A Common Stock,NASDAQ,N,1910139.0,7372,Software & IT Services
 MBOT,Microbot Medical Inc.  - Common Stock,NASDAQ,N,883975.0,3841,Healthcare Equipment
-MBRX,"Moleculin Biotech, Inc. - Common Stock",NASDAQ,N,1659617.0,2834,Pharma & Biotech
+MBRX,"Moleculin Biotech, Inc. - Common Stock",NASDAQ,D,1659617.0,2834,Pharma & Biotech
 MBUU,"Malibu Boats, Inc. - Common Stock",NASDAQ,N,1590976.0,3730,Industrials & Machinery
 MBVI,M3-Brigade Acquisition VI Corp. - Class A Ordinary Shares,NASDAQ,N,2073928.0,6770,Shell & SPAC
 MBWM,Mercantile Bank Corporation - Common Stock,NASDAQ,N,1042729.0,6022,Banks & Consumer Finance
@@ -3825,6 +3825,7 @@ NVTS,Navitas Semiconductor Corporation - Common Stock,NASDAQ,N,1821769.0,3674,Se
 NVX,NOVONIX Limited - American Depository Shares,NASDAQ,N,1859795.0,3690,Industrials & Machinery
 NWAX,New America Acquisition I Corp. Class A Common Stock,NYSE,,2074878.0,6770,Shell & SPAC
 NWBI,"Northwest Bancshares, Inc. - Common Stock",NASDAQ,N,1471265.0,6021,Banks & Consumer Finance
+NWCL,newcleo plc - Ordinary Shares,NASDAQ,N,2131813.0,,
 NWE,"NorthWestern Energy Group, Inc.  - Common Stock",NASDAQ,N,1993004.0,4931,Utilities
 NWFL,Norwood Financial Corp. - Common Stock,NASDAQ,N,1013272.0,6022,Banks & Consumer Finance
 NWG,"NatWest Group plc American Depositary Shares, (each representing two (2) Ordinary Shares)",NYSE,,844150.0,6029,Banks & Consumer Finance
@@ -4207,7 +4208,6 @@ PLSE,"Pulse Biosciences, Inc - Common Stock",NASDAQ,N,1625101.0,3841,Healthcare 
 PLSM,Pulsenmore Ltd. - Ordinary Shares,NASDAQ,N,2064764.0,3841,Healthcare Equipment
 PLTK,Playtika Holding Corp. - Common Stock,NASDAQ,N,1828016.0,7374,Software & IT Services
 PLTR,Palantir Technologies Inc. - Class A Common Stock,NASDAQ,N,1321655.0,7372,Software & IT Services
-PLTS,Platinum Analytics Cayman Limited - Class A Ordinary Shares,NASDAQ,D,2053033.0,7372,Software & IT Services
 PLUG,"Plug Power, Inc. - Common Stock",NASDAQ,N,1093691.0,3620,Industrials & Machinery
 PLUN,Plutonian Acquisition Corp II Class A Ordinary Shares,NYSE,,2065661.0,,
 PLUR,Pluri Inc. - Common Stock,NASDAQ,D,1158780.0,2836,Pharma & Biotech
@@ -5142,7 +5142,7 @@ TDG,Transdigm Group Incorporated Common Stock,NYSE,,1260221.0,3728,Industrials &
 TDIC,Dreamland Limited - Class A Ordinary Shares,NASDAQ,N,2041338.0,8741,Commercial & Professional Services
 TDOC,"Teladoc Health, Inc. Common Stock",NYSE,,1477449.0,8011,Healthcare Equipment
 TDS,"Telephone and Data Systems, Inc. Common Shares",NYSE,,1051512.0,4813,Media & Telecom
-TDTH,Trident Digital Tech Holdings Ltd - Class B Ordinary Shares,NASDAQ,D,1983550.0,7389,Commercial & Professional Services
+TDTH,Trident Digital Tech Holdings Ltd - Class B Ordinary Shares,NASDAQ,N,1983550.0,7389,Commercial & Professional Services
 TDUP,ThredUp Inc. - Class A Common Stock,NASDAQ,N,1484778.0,5961,Retail & Consumer Services
 TDW,Tidewater Inc. Common Stock,NYSE,,98222.0,4400,Transportation & Logistics
 TDWD,Tailwind 2.0 Acquisition Corp. - Class A Ordinary Shares,NASDAQ,N,2076616.0,6770,Shell & SPAC
