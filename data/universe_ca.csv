@@ -461,6 +461,7 @@ TK.V,Tinka Resources Limited,TSX.V,Mining
 SCR.TO,Strathcona Resources Ltd.,TSX,Oil/Gas Expl & Dev
 QPT.V,Quest Pharmatech Inc.,TSX.V,Technology
 ROK.V,ROK Resources Inc.,TSX.V,Oil & Gas
+SML.V,Southstone Minerals Limited,TSX.V,Mining
 CBI.V,Colibri Resource Corporation,TSX.V,Mining
 SDE.TO,Spartan Delta Corp.,TSX,Oil/Gas Expl & Dev
 MON.V,Montero Mining And Exploration Ltd.,TSX.V,Mining
@@ -1703,7 +1704,6 @@ WGT.V,Westgate Energy Inc.,TSX.V,Oil & Gas
 SM.V,Sierra Madre Gold and Silver Ltd.,TSX.V,Mining
 BECN.V,BEACN Wizardry & Magic Inc.,TSX.V,Technology
 NBLC.V,Nobel Resources Corp.,TSX.V,Mining
-THNC.TO,Thinkific Labs Inc.,TSX,Education Softwr Tech
 SERV.V,Elevate Service Group Inc.,TSX.V,Business Services
 MNRG.V,Monumental Energy Corp.,TSX.V,Mining
 AE.V,American Eagle Gold Corp.,TSX.V,Mining
@@ -2447,7 +2447,7 @@ SUR.CN,Surface Metals Inc.,CSE,Mining
 HAMR.CN,Silver Hammer Mining Corp,CSE,Mining
 AAWH-U.CN,"Ascend Wellness Holdings, Inc.",CSE,Life Sciences
 DTC.CN,Defence Therapeutics Inc,CSE,Life Sciences
-MARY.CN,Mary Agrotechnologies Inc,CSE,Life Sciences
+MARY-X.CN,Mary Agrotechnologies Inc,CSE,Life Sciences
 WDGY.CN,Wedgemount Resources Corp,CSE,Mining
 FNI.CN,Fathom Nickel Inc.,CSE,Mining
 MUSL.CN,Promino Nutritional Sciences Inc.,CSE,Life Sciences
@@ -2455,7 +2455,7 @@ EONX.CN,EonX Technologies Inc.,CSE,Technology
 AUEX.CN,Advanced Gold Exploration Inc.,CSE,Mining
 PRR.CN,Prospect Ridge Resources Corp.,CSE,Mining
 PLLR.CN,Forty Pillars Mining Corp.,CSE,Mining
-GRHK.CN,Greenhawk Resources Inc.,CSE,Mining
+GRHK-X.CN,Greenhawk Resources Inc.,CSE,Mining
 NIOX.CN,NiobiumX Mining Inc.,CSE,Mining
 HWG.CN,Headwater Gold Inc.,CSE,Mining
 FRDM.CN,Freedom Gold Corp.,CSE,Mining
@@ -2534,7 +2534,7 @@ WMC.CN,Wayfinder Metals Corp.,CSE,Mining
 VOLT.CN,Voltage Metals Corp.,CSE,Mining
 LIVE.CN,Live Energy Minerals Corp.,CSE,Mining
 ISP.CN,Inspiration Mining Corp.,CSE,Mining
-PGA.CN,Pegmatite One Lithium and Gold Corp.,CSE,Mining
+ALLG.CN,Allegiance Resources Corp.,CSE,Mining
 BY.CN,Beyond Minerals Inc.,CSE,Mining
 TARG.CN,Target Metals Corp.,CSE,Mining
 TICO.CN,Talent Infinity Resource Developments Inc.,CSE,Mining

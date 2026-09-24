@@ -246,7 +246,7 @@ ALNT,Allient Inc. - Common Stock,NASDAQ,N,46129.0,3825,Industrials & Machinery
 ALNY,"Alnylam Pharmaceuticals, Inc. - Common Stock",NASDAQ,N,1178670.0,2834,Pharma & Biotech
 ALOV,"Aldabra 4 Liquidity Opportunity Vehicle, Inc. - Class A Ordinary Shares",NASDAQ,N,2083989.0,6770,Shell & SPAC
 ALOY,REalloys Inc. - Common Stock,NASDAQ,N,1567900.0,1000,Mining & Metals
-ALP,Alpha Compute Corp  - Ordinary Shares,NASDAQ,D,1095435.0,6199,Capital Markets
+ALP,Alpha Compute Corp  - Ordinary Shares,NASDAQ,N,1095435.0,6199,Capital Markets
 ALPS,ALPS Group Inc - Ordinary Share,NASDAQ,D,2025774.0,8000,Healthcare Equipment
 ALPX,Alpex Acquisition Corporation - Class A Ordinary Shares,NASDAQ,N,,,
 ALRM,"Alarm.com Holdings, Inc. - Common Stock",NASDAQ,N,1459200.0,7372,Software & IT Services
@@ -1562,7 +1562,6 @@ DOCU,"DocuSign, Inc. - Common Stock",NASDAQ,N,1261333.0,7372,Software & IT Servi
 DOGZ,Dogness (International) Corporation - Class A Common Stock,NASDAQ,N,1707303.0,3990,Retail & Consumer Services
 DOLE,Dole plc Ordinary Shares,NYSE,,1857475.0,100,Consumer Staples
 DOMH,Dominari Holdings Inc. - Common Stock,NASDAQ,N,12239.0,6211,Capital Markets
-DOMO,"Domo, Inc. - Class B Common Stock",NASDAQ,N,1505952.0,7372,Software & IT Services
 DOO,BRP Inc. - Common Subordinate Voting Shares,NASDAQ,N,1748797.0,3790,Industrials & Machinery
 DORM,"Dorman Products, Inc. - Common Stock",NASDAQ,N,868780.0,3714,Industrials & Machinery
 DOUG,Douglas Elliman Inc. Common Stock,NYSE,,1878897.0,6531,Real Estate & REITs
@@ -1961,7 +1960,7 @@ FG,"F&G Annuities & Life, Inc. Common Stock",NYSE,,1934850.0,6311,Insurance
 FGBI,"First Guaranty Bancshares, Inc. - Common Stock",NASDAQ,N,1408534.0,6035,Banks & Consumer Finance
 FGI,FGI Industries Ltd. - Ordinary Shares,NASDAQ,N,1864943.0,3430,Industrials & Machinery
 FGII,FG Imperii Acquisition Corp. - Class A Ordinary Shares,NASDAQ,N,2090452.0,6770,Shell & SPAC
-FGL,Founder Group Limited - Class A Ordinary Shares,NASDAQ,N,1989930.0,1700,Industrials & Machinery
+FGL,Founder Group Limited - Class A Ordinary Shares,NASDAQ,D,1989930.0,1700,Industrials & Machinery
 FGNX,FG Nexus Inc. - Common Stock,NASDAQ,N,1591890.0,6199,Capital Markets
 FHB,"First Hawaiian, Inc. - Common Stock",NASDAQ,N,36377.0,6022,Banks & Consumer Finance
 FHI,"Federated Hermes, Inc. Common Stock",NYSE,,1056288.0,6282,Capital Markets
@@ -2561,6 +2560,7 @@ HUBC,Hub Cyber Security Ltd. - Ordinary Shares,NASDAQ,N,1905660.0,3576,Tech Hard
 HUBCZ,Hub Cyber Security Ltd. - Warrant,NASDAQ,N,1905660.0,3576,Tech Hardware
 HUBG,"Hub Group, Inc. - Class A Common Stock",NASDAQ,E,940942.0,4731,Transportation & Logistics
 HUBS,"HubSpot, Inc. Common Stock",NYSE,,1404655.0,7372,Software & IT Services
+HUCK,"Huckleberry.ai, Inc. - Class B Common Stock",NASDAQ,N,,,
 HUDI,"Huadi International Group Co., Ltd. - Ordinary Shares",NASDAQ,D,1791725.0,3317,Mining & Metals
 HUHU,HUHUTECH International Group Inc. - Ordinary Shares,NASDAQ,N,1945415.0,3360,Mining & Metals
 HUIZ,Huize Holding Limited - American Depositary Shares,NASDAQ,N,1778982.0,6411,Insurance
@@ -2572,7 +2572,6 @@ HURC,"Hurco Companies, Inc. - Common Stock",NASDAQ,N,315374.0,3823,Industrials &
 HURN,Huron Consulting Group Inc. - Common Stock,NASDAQ,N,1289848.0,8742,Commercial & Professional Services
 HUT,Hut 8 Corp. - Common Stock,NASDAQ,N,1964789.0,6199,Capital Markets
 HUYA,"HUYA Inc. American depositary shares, each  representing one Class A ordinary share",NYSE,,1728190.0,7370,Software & IT Services
-HVII,Hennessy Capital Investment Corp. VII - Ordinary Shares,NASDAQ,N,1846416.0,4911,Utilities
 HVMC,Highview Merger Corp. - Class A Ordinary Share,NASDAQ,N,2070602.0,6770,Shell & SPAC
 HVT,"Haverty Furniture Companies, Inc. Common Stock",NYSE,,216085.0,5712,Retail & Consumer Services
 HWBK,"Hawthorn Bancshares, Inc. - Common Stock",NASDAQ,N,893847.0,6021,Banks & Consumer Finance
@@ -2673,7 +2672,7 @@ ILPT,Industrial Logistics Properties Trust - Common Shares of Beneficial Interes
 IMA,"ImageneBio, Inc. - Common Stock",NASDAQ,N,1835579.0,2836,Pharma & Biotech
 IMAX,Imax Corporation Common Stock,NYSE,,921582.0,3861,Industrials & Machinery
 IMC,IMC Rare Earths Ltd Ordinary Shares,AMEX,,2098395.0,,
-IMCC,IM Cannabis Corp. - Common Shares,NASDAQ,D,1792030.0,2833,Pharma & Biotech
+IMCC,IM Cannabis Corp. - Common Shares,NASDAQ,N,1792030.0,2833,Pharma & Biotech
 IMCR,Immunocore Holdings plc - American Depositary Shares,NASDAQ,N,1671927.0,2836,Pharma & Biotech
 IMDX,Insight Molecular Diagnostics Inc. - Common Stock,NASDAQ,N,1642380.0,2835,Pharma & Biotech
 IMKTA,"Ingles Markets, Incorporated - Class A Common Stock",NASDAQ,N,50493.0,5411,Consumer Staples
@@ -2718,7 +2717,7 @@ INIO,INNIO N.V. - Ordinary Shares,NASDAQ,N,2109150.0,,
 INKT,"MiNK Therapeutics, Inc. - Common Stock",NASDAQ,N,1840229.0,2836,Pharma & Biotech
 INLF,INLIF LIMITED - Class A Ordinary shares,NASDAQ,N,1991592.0,3569,Industrials & Machinery
 INLX,"Intellinetics, Inc. Common Stock",AMEX,,1081745.0,7372,Software & IT Services
-INM,InMed Pharmaceuticals Inc. - Common Shares,NASDAQ,N,1728328.0,2834,Pharma & Biotech
+INM,InMed Pharmaceuticals Inc. - Common Shares,NASDAQ,D,1728328.0,2834,Pharma & Biotech
 INMB,INmune Bio Inc. - Common stock,NASDAQ,N,1711754.0,2836,Pharma & Biotech
 INMD,InMode Ltd.  - Ordinary Shares,NASDAQ,N,1742692.0,3845,Healthcare Equipment
 INN,"Summit Hotel Properties, Inc. Common Stock",NYSE,,1497645.0,6798,Real Estate & REITs
@@ -3943,6 +3942,7 @@ ONCO,"Onconetix, Inc.  - Common Stock",NASDAQ,N,1782107.0,2834,Pharma & Biotech
 ONCY,Oncolytics Biotech Inc. - Common Stock,NASDAQ,D,1129928.0,2834,Pharma & Biotech
 ONDS,Ondas Inc - Common Stock,NASDAQ,N,1646188.0,3663,Tech Hardware
 ONEG,OneConstruction Group Limited - Ordinary Shares,NASDAQ,N,2030834.0,1520,Industrials & Machinery
+ONEN,ONE Nuclear Energy Inc. - Common Stock,NASDAQ,N,,,
 ONEW,OneWater Marine Inc. - Class A Common Stock,NASDAQ,N,1772921.0,5531,Retail & Consumer Services
 ONFO,Onfolio Holdings Inc. - Common Stock,NASDAQ,D,1825452.0,7374,Software & IT Services
 ONIT,Onity Group Inc. Common Stock,NYSE,,873860.0,6162,Banks & Consumer Finance
@@ -4465,7 +4465,7 @@ RDZN,"Roadzen, Inc. - Ordinary Shares",NASDAQ,N,1868640.0,6411,Insurance
 REA,"Rare Earths Americas, Inc. Common Stock",AMEX,,2095743.0,1000,Mining & Metals
 REAL,"The RealReal, Inc. - Common Stock",NASDAQ,N,1573221.0,5900,Retail & Consumer Services
 REAX,Real REMAX Group Inc. - Common Stock,NASDAQ,N,2136387.0,,
-REBN,"Reborn Coffee, Inc. - Common Stock",NASDAQ,N,1707910.0,5812,Retail & Consumer Services
+REBN,"Reborn Coffee, Inc. - Common Stock",NASDAQ,D,1707910.0,5812,Retail & Consumer Services
 RECT,Rectitude Holdings Ltd - Ordinary Shares,NASDAQ,N,1995116.0,3420,Industrials & Machinery
 REED,"Reed's, Inc. Common Stock",AMEX,,1140215.0,2086,Consumer Staples
 REF,Reformation Inc. Common Stock,NYSE,,1787117.0,,
@@ -5119,7 +5119,6 @@ TBI,"TrueBlue, Inc. Common Stock",NYSE,,768899.0,7363,Commercial & Professional 
 TBLA,Taboola.com Ltd. - Ordinary Shares,NASDAQ,N,1840502.0,7370,Software & IT Services
 TBLD,Thornburg Income Builder Opportunities Trust - Closed End Fund,NASDAQ,N,1820378.0,,
 TBN,Tamboran Resources Corporation Common stock,NYSE,,1997652.0,1311,"Oil, Gas & Coal"
-TBPH,"Theravance Biopharma, Inc. - Ordinary Shares",NASDAQ,N,1583107.0,2834,Pharma & Biotech
 TC,Token Cat Limited - American Depositary Shares,NASDAQ,N,1743340.0,7389,Commercial & Professional Services
 TCBI,"Texas Capital Bancshares, Inc. - Common Stock",NASDAQ,N,1077428.0,6022,Banks & Consumer Finance
 TCBK,TriCo Bancshares - Common Stock,NASDAQ,N,356171.0,6022,Banks & Consumer Finance
@@ -5867,11 +5866,11 @@ YSG,"Yatsen Holding Limited American Depositary Shares, each representing twenty
 YSS,York Space Systems Inc. Common Stock,NYSE,,2086587.0,3760,Industrials & Machinery
 YSWY,"Yesway, Inc. - Class A Common Stock",NASDAQ,N,1859836.0,5411,Consumer Staples
 YSXT,"YSX Tech. Co., Ltd  - Class A Ordinary Shares",NASDAQ,N,1993463.0,7500,Retail & Consumer Services
-YTRA,"Yatra Online, Inc. - Ordinary Shares",NASDAQ,D,1516899.0,4700,Transportation & Logistics
+YTRA,"Yatra Online, Inc. - Ordinary Shares",NASDAQ,N,1516899.0,4700,Transportation & Logistics
 YUM,"Yum! Brands, Inc.",NYSE,,1041061.0,5812,Retail & Consumer Services
 YUMC,"Yum China Holdings, Inc. Common Stock",NYSE,,1673358.0,5812,Retail & Consumer Services
 YXT,YXT.COM GROUP HOLDING LIMITED - American Depository Shares,NASDAQ,N,1872090.0,7372,Software & IT Services
-YYAI,AiRWA Inc. - Common Stock,NASDAQ,E,1674440.0,7370,Software & IT Services
+YYAI,AiRWA Inc. - Common Stock,NASDAQ,N,1674440.0,7370,Software & IT Services
 Z,"Zillow Group, Inc. - Class C Capital Stock",NASDAQ,N,1617640.0,7389,Commercial & Professional Services
 ZBAO,Zhibao Technology Inc. - Class A Ordinary Shares,NASDAQ,D,1966750.0,6411,Insurance
 ZBH,"Zimmer Biomet Holdings, Inc. Common Stock",NYSE,,1136869.0,3842,Healthcare Equipment
