@@ -918,7 +918,7 @@ BYD,Boyd Gaming Corporation Common Stock,NYSE,,906553.0,7011,Retail & Consumer S
 BYFC,Broadway Financial Corporation - Class A Common Stock,NASDAQ,N,1001171.0,6035,Banks & Consumer Finance
 BYND,"Beyond Meat, Inc. - Common stock",NASDAQ,N,1655210.0,2000,Consumer Staples
 BYRN,"Byrna Technologies, Inc. - Common Stock",NASDAQ,N,1354866.0,3690,Industrials & Machinery
-BYSI,"BeyondSpring, Inc. - Ordinary Shares",NASDAQ,N,1677940.0,2834,Pharma & Biotech
+BYSI,"BeyondSpring, Inc. - Ordinary Shares",NASDAQ,D,1677940.0,2834,Pharma & Biotech
 BZ,KANZHUN LIMITED - American Depository Shares,NASDAQ,N,1842827.0,7370,Software & IT Services
 BZAI,"Blaize Holdings, Inc. - Common Stock",NASDAQ,N,1871638.0,3674,Semiconductors
 BZFD,"BuzzFeed, Inc. - Class A Common Stock",NASDAQ,N,1828972.0,4899,Media & Telecom
@@ -1987,6 +1987,7 @@ FIVE,"Five Below, Inc. - Common Stock",NASDAQ,N,1177609.0,5331,Retail & Consumer
 FIVN,"Five9, Inc. - Common Stock",NASDAQ,N,1288847.0,7374,Software & IT Services
 FIX,"Comfort Systems USA, Inc. Common Stock",NYSE,,1035983.0,1731,Industrials & Machinery
 FIZZ,National Beverage Corp. - Common Stock,NASDAQ,N,69891.0,2086,Consumer Staples
+FJDI,ARC Group Securities Acquisition I - Class A Ordinary Shares,NASDAQ,N,2094712.0,,
 FJET,"Starfighters Space, Inc. Common Stock",AMEX,,1947016.0,4512,Transportation & Logistics
 FKWL,Franklin Wireless Corp. - common stock,NASDAQ,N,722572.0,3661,Tech Hardware
 FLC,Flaherty & Crumrine Total Return Fund Inc Common Stock,NYSE,,1245648.0,,
@@ -1995,7 +1996,7 @@ FLEX,Flex Ltd. - Ordinary Shares,NASDAQ,N,866374.0,3672,Tech Hardware
 FLG,"Flagstar Bank, N.A. Common Stock",NYSE,,910073.0,6036,Banks & Consumer Finance
 FLGT,"Fulgent Genetics, Inc. - Common Stock",NASDAQ,N,1674930.0,8071,Healthcare Equipment
 FLL,"Full House Resorts, Inc. - Common Stock",NASDAQ,N,891482.0,7011,Retail & Consumer Services
-FLNA,"Filana Therapeutics, Inc. - Common Stock",NASDAQ,N,1069530.0,2834,Pharma & Biotech
+FLNA,"Filana Therapeutics, Inc. - Common Stock",NASDAQ,D,1069530.0,2834,Pharma & Biotech
 FLNC,"Fluence Energy, Inc. - Class A Common Stock",NASDAQ,N,1868941.0,3690,Industrials & Machinery
 FLNG,FLEX LNG Ltd. Ordinary Shares,NYSE,,1772253.0,4400,Transportation & Logistics
 FLNT,"Fluent, Inc. - Common Stock",NASDAQ,N,1460329.0,7310,Commercial & Professional Services
@@ -2588,7 +2589,7 @@ HYLN,Hyliion Holdings Corp. Class A Common Stock,AMEX,,1759631.0,3713,Industrial
 HYMC,Hycroft Mining Holding Corporation - Class A Common Stock,NASDAQ,N,1718405.0,1040,Mining & Metals
 HYNE,"Hoyne Bancorp, Inc. - Common Stock",NASDAQ,N,2073153.0,6036,Banks & Consumer Finance
 HYPD,"Hyperion DeFi, Inc. - Common Stock",NASDAQ,N,1682639.0,2834,Pharma & Biotech
-HYPR,"Hyperfine, Inc.  - Class A Common Stock",NASDAQ,N,1833769.0,3845,Healthcare Equipment
+HYPR,"Hyperfine, Inc.  - Class A Common Stock",NASDAQ,D,1833769.0,3845,Healthcare Equipment
 HYT,"Blackrock Corporate High Yield Fund, Inc. Common Stock",NYSE,,1222401.0,,
 HZO,"MarineMax, Inc.  (FL) Common Stock",NYSE,,1057060.0,5531,Retail & Consumer Services
 IA,"Innovative Solutions and Support, Inc. - Common Stock",NASDAQ,N,836690.0,7371,Software & IT Services
@@ -3117,7 +3118,7 @@ LILA,Liberty Latin America Ltd. - Class A Common Stock,NASDAQ,N,1712184.0,4841,M
 LILAK,Liberty Latin America Ltd. - Class C Common Stock,NASDAQ,N,1712184.0,4841,Media & Telecom
 LILAP,Liberty Latin America Ltd. - 9.0% Fixed Rate Cumulative Perpetual Redeemable Series A Preference Shares,NASDAQ,N,1712184.0,4841,Media & Telecom
 LIME,"Neutron Holdings, Inc. - Common Stock",NASDAQ,N,1699963.0,,
-LIMN,"Liminatus Pharma, Inc. - Class A Common Stock",NASDAQ,D,1971387.0,2836,Pharma & Biotech
+LIMN,"Liminatus Pharma, Inc. - Class A Common Stock",NASDAQ,N,1971387.0,2836,Pharma & Biotech
 LIN,Linde plc - Ordinary Shares,NASDAQ,N,1707925.0,2810,Materials & Chemicals
 LINC,Lincoln Educational Services Corporation - Common Stock,NASDAQ,N,1286613.0,8200,Commercial & Professional Services
 LIND,Lindblad Expeditions Holdings Inc.  - Common Stock,NASDAQ,N,1512499.0,4700,Transportation & Logistics
@@ -4231,6 +4232,7 @@ PMTR,Perimeter Acquisition Corp. I - Class A Ordinary Shares,NASDAQ,N,2061473.0,
 PMTS,CPI Card Group Inc. - Common Stock,NASDAQ,N,1641614.0,2750,Media & Telecom
 PMVP,"PMV Pharmaceuticals, Inc. - Common Stock",NASDAQ,N,1699382.0,2834,Pharma & Biotech
 PN,PN Smart Energy Limited - Class A Ordinary Shares,NASDAQ,N,2001288.0,5045,Industrials & Machinery
+PNAQ,Pinnacle Acquisition Corporation Class A Ordinary Shares,NYSE,,2123955.0,,
 PNBK,Patriot National Bancorp Inc. - Common Stock,NASDAQ,N,1098146.0,6021,Banks & Consumer Finance
 PNC,"PNC Financial Services Group, Inc. (The) Common Stock",NYSE,,713676.0,6021,Banks & Consumer Finance
 PNFP,"Pinnacle Financial Partners, Inc. Common stock",NYSE,,2082866.0,6021,Banks & Consumer Finance

@@ -1704,6 +1704,7 @@ WGT.V,Westgate Energy Inc.,TSX.V,Oil & Gas
 SM.V,Sierra Madre Gold and Silver Ltd.,TSX.V,Mining
 BECN.V,BEACN Wizardry & Magic Inc.,TSX.V,Technology
 NBLC.V,Nobel Resources Corp.,TSX.V,Mining
+THNC.TO,Thinkific Labs Inc.,TSX,Education Softwr Tech
 SERV.V,Elevate Service Group Inc.,TSX.V,Business Services
 MNRG.V,Monumental Energy Corp.,TSX.V,Mining
 AE.V,American Eagle Gold Corp.,TSX.V,Mining
@@ -2220,7 +2221,7 @@ QESS.CN,Aegis Critical Energy Defence Corp.,CSE,Technology
 ZTE.CN,ZTEST Electronics Inc.,CSE,Technology
 ARM.CN,Armada Mercantile Ltd.,CSE,Diversified Industries
 TAI.CN,Talmora Diamond Inc.,CSE,Mining
-PLAY.CN,Playground Ventures Inc.,CSE,Technology
+PLAY-X.CN,Playground Ventures Inc.,CSE,Technology
 GPK.CN,Grand Peak Capital Corp.,CSE,Diversified Industries
 WRUN.CN,Waverunner Capital Inc.,CSE,Technology
 RFR.CN,Renforth Resources Inc.,CSE,Mining
@@ -2268,7 +2269,7 @@ CPTR.CN,Captor Capital Corp,CSE,Diversified Industries
 HHE.CN,First Atlas Resources Corp.,CSE,Mining
 LLL.CN,Lanebury Growth Capital Ltd.,CSE,Diversified Industries
 BLGV.CN,Belgravia Hartford Capital Inc.,CSE,Diversified Industries
-NSHS.CN,NanoSphere Health Sciences Inc.,CSE,Life Sciences
+NSHS-X.CN,NanoSphere Health Sciences Inc.,CSE,Life Sciences
 GOCO.CN,Go Metals Corp,CSE,Mining
 CEXY.CN,Copper One Resources Corp.,CSE,Mining
 NRDX.CN,NordX Metals Corp.,CSE,Mining
@@ -2279,7 +2280,7 @@ AIG.CN,Genesis AI Corp.,CSE,Technology
 GGC.CN,Generic Gold Corp.,CSE,Mining
 USGD.CN,American Pacific Mining Corp.,CSE,Mining
 KASH.CN,Intellabridge Technology Corporation,CSE,Technology
-ULTA.CN,Ultra Brands Ltd.,CSE,Life Sciences
+ULTA-X.CN,Ultra Brands Ltd.,CSE,Life Sciences
 KAS.CN,Dynamite Blockchain Corp.,CSE,Technology
 SXTY.CN,Sixty North Gold Mining Inc.,CSE,Mining
 CSQ.CN,Canamex Gold Corp.,CSE,Mining
