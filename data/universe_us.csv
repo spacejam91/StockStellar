@@ -98,6 +98,7 @@ ADMA,ADMA Biologics Inc - Common Stock,NASDAQ,N,1368514.0,2836,Pharma & Biotech
 ADNT,Adient plc Ordinary Shares,NYSE,,1670541.0,3714,Industrials & Machinery
 ADP,"Automatic Data Processing, Inc. - Common Stock",NASDAQ,N,8670.0,7374,Software & IT Services
 ADPT,Adaptive Biotechnologies Corporation - Common Stock,NASDAQ,N,1478320.0,2836,Pharma & Biotech
+ADRX,"ADARx Pharmaceuticals, Inc. - Common stock",NASDAQ,N,1802369.0,,
 ADSE,ADS-TEC ENERGY PLC - Ordinary Shares,NASDAQ,N,1879248.0,3690,Industrials & Machinery
 ADSK,"Autodesk, Inc. - Common Stock",NASDAQ,N,769397.0,7372,Software & IT Services
 ADT,ADT Inc. Common Stock,NYSE,,1703056.0,7381,Commercial & Professional Services
@@ -248,7 +249,7 @@ ALOV,"Aldabra 4 Liquidity Opportunity Vehicle, Inc. - Class A Ordinary Shares",N
 ALOY,REalloys Inc. - Common Stock,NASDAQ,N,1567900.0,1000,Mining & Metals
 ALP,Alpha Compute Corp  - Ordinary Shares,NASDAQ,N,1095435.0,6199,Capital Markets
 ALPS,ALPS Group Inc - Ordinary Share,NASDAQ,D,2025774.0,8000,Healthcare Equipment
-ALPX,Alpex Acquisition Corporation - Class A Ordinary Shares,NASDAQ,N,,,
+ALPX,Alpex Acquisition Corporation - Class A Ordinary Shares,NASDAQ,N,2125551.0,,
 ALRM,"Alarm.com Holdings, Inc. - Common Stock",NASDAQ,N,1459200.0,7372,Software & IT Services
 ALRS,Alerus Financial Corporation - Common Stock,NASDAQ,N,903419.0,6021,Banks & Consumer Finance
 ALSN,"Allison Transmission Holdings, Inc. Common Stock",NYSE,,1411207.0,3714,Industrials & Machinery
@@ -1820,7 +1821,7 @@ ESRT,"Empire State Realty Trust, Inc. Class A Common Stock",NYSE,,1541401.0,6798
 ESS,"Essex Property Trust, Inc. Common Stock",NYSE,,920522.0,6798,Real Estate & REITs
 ESTA,Establishment Labs Holdings Inc. - Common Shares,NASDAQ,N,1688757.0,3842,Healthcare Equipment
 ESTC,Elastic N.V. Ordinary Shares,NYSE,,1707753.0,7372,Software & IT Services
-ESYN,EnerSyn Global Inc. - Common Stock,NASDAQ,N,,,
+ESYN,EnerSyn Global Inc. - Common Stock,NASDAQ,N,1897245.0,5122,Industrials & Machinery
 ET,Energy Transfer LP Common Units,NYSE,,1276187.0,4922,Utilities
 ETB,Eaton Vance Tax-Managed Buy-Write Income Fund Eaton Vance Tax-Managed Buy-Write Income Fund Common Shares of Beneficial Interest,NYSE,,1308927.0,,
 ETD,Ethan Allen Interiors Inc. Common Stock,NYSE,,896156.0,2511,Industrials & Machinery
@@ -2305,7 +2306,7 @@ GOOG,Alphabet Inc. - Class C Capital Stock,NASDAQ,N,1652044.0,7370,Software & IT
 GOOGL,Alphabet Inc. - Class A Common Stock,NASDAQ,N,1652044.0,7370,Software & IT Services
 GOOS,Canada Goose Holdings Inc. Subordinate Voting Shares,NYSE,,1690511.0,2300,Consumer Staples
 GORO,Goldgroup Mining Inc. Common Shares,AMEX,,1515964.0,,
-GOSS,"Gossamer Bio, Inc. - Common Stock",NASDAQ,D,1728117.0,2834,Pharma & Biotech
+GOSS,"Gossamer Bio, Inc. - Common Stock",NASDAQ,N,1728117.0,2834,Pharma & Biotech
 GOTU,Gaotu Techedu Inc. American Depositary Shares,NYSE,,1768259.0,8200,Commercial & Professional Services
 GOVX,"GeoVax Labs, Inc. - Common Stock",NASDAQ,D,832489.0,2834,Pharma & Biotech
 GP,GreenPower Motor Company Inc. - Common Shares,NASDAQ,N,1584547.0,3713,Industrials & Machinery
@@ -2561,7 +2562,7 @@ HUBC,Hub Cyber Security Ltd. - Ordinary Shares,NASDAQ,N,1905660.0,3576,Tech Hard
 HUBCZ,Hub Cyber Security Ltd. - Warrant,NASDAQ,N,1905660.0,3576,Tech Hardware
 HUBG,"Hub Group, Inc. - Class A Common Stock",NASDAQ,E,940942.0,4731,Transportation & Logistics
 HUBS,"HubSpot, Inc. Common Stock",NYSE,,1404655.0,7372,Software & IT Services
-HUCK,"Huckleberry.ai, Inc. - Class B Common Stock",NASDAQ,N,,,
+HUCK,"Huckleberry.ai, Inc. - Class B Common Stock",NASDAQ,N,1505952.0,7372,Software & IT Services
 HUDI,"Huadi International Group Co., Ltd. - Ordinary Shares",NASDAQ,D,1791725.0,3317,Mining & Metals
 HUHU,HUHUTECH International Group Inc. - Ordinary Shares,NASDAQ,N,1945415.0,3360,Mining & Metals
 HUIZ,Huize Holding Limited - American Depositary Shares,NASDAQ,N,1778982.0,6411,Insurance
@@ -3943,7 +3944,7 @@ ONCO,"Onconetix, Inc.  - Common Stock",NASDAQ,N,1782107.0,2834,Pharma & Biotech
 ONCY,Oncolytics Biotech Inc. - Common Stock,NASDAQ,D,1129928.0,2834,Pharma & Biotech
 ONDS,Ondas Inc - Common Stock,NASDAQ,N,1646188.0,3663,Tech Hardware
 ONEG,OneConstruction Group Limited - Ordinary Shares,NASDAQ,N,2030834.0,1520,Industrials & Machinery
-ONEN,ONE Nuclear Energy Inc. - Common Stock,NASDAQ,N,,,
+ONEN,ONE Nuclear Energy Inc. - Common Stock,NASDAQ,N,1846416.0,4911,Utilities
 ONEW,OneWater Marine Inc. - Class A Common Stock,NASDAQ,N,1772921.0,5531,Retail & Consumer Services
 ONFO,Onfolio Holdings Inc. - Common Stock,NASDAQ,D,1825452.0,7374,Software & IT Services
 ONIT,Onity Group Inc. Common Stock,NYSE,,873860.0,6162,Banks & Consumer Finance
@@ -5062,7 +5063,7 @@ SVAQ,Silicon Valley Acquisition Corp. - Class A Ordinary Shares,NASDAQ,N,2085659
 SVC,Service Properties Trust - Common Shares of Beneficial Interest,NASDAQ,N,945394.0,6798,Real Estate & REITs
 SVCC,Stellar V Capital Corp. - Class A Ordinary Shares,NASDAQ,N,2033593.0,6770,Shell & SPAC
 SVCO,"Silvaco Group, Inc. - Common Stock",NASDAQ,N,1943289.0,7372,Software & IT Services
-SVIA,"Silvia, Inc. - Common Stock",NASDAQ,N,,,
+SVIA,"Silvia, Inc. - Common Stock",NASDAQ,N,2076163.0,6199,Capital Markets
 SVIV,Spring Valley Acquisition Corp. IV - Class A Ordinary Shares,NASDAQ,N,2098242.0,6770,Shell & SPAC
 SVM,Silvercorp Metals Inc. Common Shares,AMEX,,1340677.0,1040,Mining & Metals
 SVRA,"Savara, Inc. - Common Stock",NASDAQ,N,1160308.0,2834,Pharma & Biotech
